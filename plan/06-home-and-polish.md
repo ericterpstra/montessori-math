@@ -1,6 +1,6 @@
 # PRD 06 — Home & polish
 
-**Status:** Not started · depends on PRDs 02–05
+**Status:** Done
 
 ## Overview
 
@@ -16,8 +16,8 @@ The front door and the finishing pass: a home page that routes three audiences (
 
 ## Acceptance criteria
 
-- [ ] Home renders all pathways; every link resolves
-- [ ] /ages shows correct items per band (spot-check against registry data)
-- [ ] No horizontal body scroll at 375px width on any page
-- [ ] Material stages usable at 768×1024 (tablet) with touch
-- [ ] Print QA checklist passed on the three representative documents
+- [x] Home renders all pathways; every link resolves
+- [x] /ages shows correct items per band (spot-check against registry data)
+- [x] No horizontal body scroll at 375px width on any page
+- [x] Material stages usable at 768×1024 (tablet) with touch
+- [x] Print QA checklist passed on the three representative documents

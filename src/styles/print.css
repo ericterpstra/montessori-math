@@ -68,10 +68,10 @@
 }
 
 @media screen {
+  /* True-size Letter preview; narrower viewports scroll it inside .builder-preview. */
   .print-sheet .sheet-page {
     width: 8.5in;
     min-height: 11in;
-    max-width: 100%;
     margin: 0 auto 1rem;
     padding: 0.5in;
     border: 1px solid var(--line);

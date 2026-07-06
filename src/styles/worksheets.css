@@ -9,8 +9,12 @@
 
 @media (max-width: 900px) {
   .builder-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.builder-preview {
+  overflow-x: auto;
 }
 
 .builder-form .preset-row {
