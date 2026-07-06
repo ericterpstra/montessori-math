@@ -2,6 +2,8 @@
 
 A complete, free Montessori mathematics resource for parents and students ages 4–12 (PK–6th grade).
 
+> This document is the overview. Per-feature PRDs with live status and acceptance checklists are tracked in [plan/](plan/). Conventions for coding agents live in [CLAUDE.md](CLAUDE.md).
+
 ## Product principles (agreed with owner)
 
 1. **Resource site, not an LMS.** No login, no accounts, no lesson tracking, no progress storage.
