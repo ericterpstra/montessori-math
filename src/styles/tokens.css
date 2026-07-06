@@ -1,0 +1,61 @@
+/* ------------------------------------------------------------------
+   Design tokens — Montessori Math
+   Color conventions follow authentic Montessori materials.
+   ------------------------------------------------------------------ */
+:root {
+  /* Place-value hierarchy (repeats per family: 1/1k/1M green, 10/10k blue, 100/100k red) */
+  --pv-unit: #2e8b57;
+  --pv-ten: #1e6bb8;
+  --pv-hundred: #c0392b;
+  --pv-thousand: #2e8b57;
+  --pv-ten-thousand: #1e6bb8;
+  --pv-hundred-thousand: #c0392b;
+  --pv-million: #2e8b57;
+
+  /* Golden bead material */
+  --golden: #d4a017;
+  --golden-light: #f0c860;
+  --golden-dark: #9c7410;
+
+  /* Colored bead stair 1-9 (+10 golden) */
+  --bead-1: #d62828;
+  --bead-2: #2e8b57;
+  --bead-3: #ef8fb0;
+  --bead-4: #f4c430;
+  --bead-5: #7fb8e0;
+  --bead-6: #9b7ebd;
+  --bead-7: #f8f8f2;
+  --bead-8: #8b5a2b;
+  --bead-9: #24408e;
+  --bead-10: #d4a017;
+
+  /* Surfaces & ink */
+  --paper: #faf7f0;
+  --paper-warm: #f3ecdd;
+  --card: #ffffff;
+  --ink: #33302a;
+  --ink-soft: #6f6759;
+  --wood: #b58863;
+  --wood-dark: #8a623f;
+  --felt: #3f6b4f; /* green work mat */
+  --line: #e4ddcc;
+  --accent: #b0523c; /* terracotta */
+  --accent-dark: #8d3f2e;
+  --focus: #1e6bb8;
+  --ok: #2e8b57;
+  --error: #c0392b;
+
+  /* Shape & depth */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(51, 48, 42, 0.12);
+  --shadow-md: 0 4px 14px rgba(51, 48, 42, 0.14);
+
+  /* Type */
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+
+  /* Interaction */
+  --touch-target: 44px;
+}

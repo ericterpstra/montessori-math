@@ -1,0 +1,136 @@
+/* ------------------------------------------------------------------
+   Print styles — everything printable targets US Letter.
+   `.print-sheet` wraps content meant for paper (worksheets, lessons).
+   `.no-print` hides UI chrome; `.print-only` shows only on paper.
+   ------------------------------------------------------------------ */
+
+@page {
+  size: letter;
+  margin: 0.5in;
+}
+
+.print-only {
+  display: none !important;
+}
+
+@media print {
+  .print-only {
+    display: revert !important;
+  }
+
+  .no-print,
+  .site-header,
+  .site-footer {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  main.site-main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card,
+  .print-sheet {
+    box-shadow: none;
+    border: none;
+  }
+
+  .sheet-page {
+    break-after: page;
+  }
+
+  .sheet-page:last-child {
+    break-after: auto;
+  }
+
+  .avoid-break {
+    break-inside: avoid;
+  }
+}
+
+/* ---------- Worksheet sheet chrome (screen preview + paper) ---------- */
+
+.print-sheet {
+  background: #fff;
+  color: #000;
+  font-family: var(--font-body);
+}
+
+@media screen {
+  .print-sheet .sheet-page {
+    width: 8.5in;
+    min-height: 11in;
+    max-width: 100%;
+    margin: 0 auto 1rem;
+    padding: 0.5in;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 2px solid #000;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.35in;
+}
+
+.sheet-header .sheet-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sheet-header .name-date {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.sheet-instructions {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin: 0 0 0.25in;
+}
+
+/* ---------- Ink-friendly B&W mode ----------
+   Adding .bw to a .print-sheet strips color; components must render
+   place-value identity through shape/pattern, not color alone. */
+
+.print-sheet.bw {
+  --pv-unit: #000;
+  --pv-ten: #000;
+  --pv-hundred: #000;
+  --pv-thousand: #000;
+  --pv-ten-thousand: #000;
+  --pv-hundred-thousand: #000;
+  --pv-million: #000;
+  --golden: #000;
+  --golden-light: #fff;
+  --golden-dark: #000;
+  --bead-1: #000;
+  --bead-2: #000;
+  --bead-3: #000;
+  --bead-4: #000;
+  --bead-5: #000;
+  --bead-6: #000;
+  --bead-7: #000;
+  --bead-8: #000;
+  --bead-9: #000;
+  --bead-10: #000;
+}

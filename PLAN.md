@@ -46,7 +46,7 @@ No backend, no database, no analytics, no external CDNs (works offline once load
 /ages                 Browse everything by age band / grade
 ```
 
-## Feature 1 — Interactive Montessori materials (16)
+## Feature 1 — Interactive Montessori materials (19)
 
 Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (pure logic), `model.test.ts`, `<Name>.tsx` (UI), and its album lesson content. Registered in `src/materials/registry.ts`.
 
@@ -68,6 +68,9 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 | 14 | Fraction Circles | 6–10 | Insets whole→tenths; naming, equivalence, same-denominator operations |
 | 15 | Bead Chains (skip counting) | 5–8 | Short chains 2–10 with arrow labels; skip counting to squares |
 | 16 | Cards & Counters | 4–5 | Lay out 1–10 with counters; odd/even discovery |
+| 17 | Snake Game | 5–7 | Colored bead snake counted into golden ten-bars with black-and-white bridge beads; total always preserved |
+| 18 | Checkerboard | 7–11 | Multi-digit multiplication (up to 4×4 digits): bead bars as partial products, diagonal slide to sum |
+| 19 | Decimal Board | 9–12 | Decimal fraction material to thousandths (pale blue/pink/pale green mirror colors); build, compare, add/subtract decimals |
 
 **Verifiable goals (every material):**
 - [ ] Pure model with unit tests (≥5 assertions) covering the math: place-value decomposition, exchange rules, operation results, error states.
@@ -81,8 +84,10 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 - Racks & tubes: 9,764 ÷ 4 produces 2,441; guided mode refuses out-of-sequence moves; remainder shown for 9,765 ÷ 4.
 - Hundred board: skip-count mode highlights correct multiples for 2–10.
 - Stamp game subtraction 4,053 − 1,278 requires borrowing across a zero and yields 2,775.
+- Checkerboard: 4,357 × 23 = 100,211 via partial products and diagonal slide.
+- Snake game: any snake's total is preserved through golden-bead exchange.
 
-## Feature 2 — Worksheet generator (11 generators + presets)
+## Feature 2 — Worksheet generator (12 generators + presets)
 
 `src/worksheets/generators/<slug>.ts` exports `generate(params, rng)` (pure, tested) + a Sheet renderer. Builder UI auto-renders a form from each generator's parameter schema, live preview, seed control, color/B&W toggle, answer-key toggle, then `window.print()`.
 
@@ -99,6 +104,7 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 | 9 | Long division | dividend/divisor digits, remainders on/off, racks-and-tubes recording format |
 | 10 | Long multiplication | digits, partial-products scaffold on/off |
 | 11 | Numeral tracing (PK) | numerals 0–9 as dashed SVG strokes, count-and-trace rows |
+| 12 | Decimals | place value to thousandths, compare/order, +/−, decimal-board recording format |
 
 **Verifiable goals (every generator):**
 - [ ] Unit tests: answer key is mathematically correct for every generated problem; parameters respected (e.g. regrouping=off ⇒ no column exceeds 9 in addition); same seed ⇒ identical sheet; count honored.
@@ -106,15 +112,15 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 - [ ] B&W mode contains no color-dependent information.
 - [ ] ≥ 2 ready-made presets linked from relevant lessons ("follow-up work").
 
-## Feature 3 — Album-style lessons (~30)
+## Feature 3 — Album-style lessons (~34)
 
 Typed `Lesson` objects in `src/lessons/content/`, rendered as printable album pages. Every lesson includes: name, ages/grade, strand, prerequisites (linked), materials (physical + virtual link), **direct & indirect aims, step-by-step presentation with suggested language, points of interest, control of error, vocabulary, variations, extensions, what comes next**, and pencil-and-paper follow-up work linking to worksheet presets.
 
-Strands: Numbers to 10 · Linear counting · Decimal system · Memorization of facts · Passage to abstraction · Fractions & decimals.
+Strands: Numbers to 10 · Linear counting · Decimal system · Memorization of facts · Passage to abstraction · Fractions · Decimals.
 
 **Verifiable goals:**
 - [ ] Schema test iterates all lessons: every required album field non-empty; every prerequisite/material/worksheet link resolves.
-- [ ] Each of the 16 materials has ≥ 1 lesson; each strand has an ordered sequence forming a coherent PK→6 path.
+- [ ] Each of the 19 materials has ≥ 1 lesson; each strand has an ordered sequence forming a coherent PK→6 path.
 - [ ] Lesson pages print cleanly (album header, numbered presentation steps, no cut-off content).
 - [ ] Follow-up work sections reference only printable/pencil-paper activities (validated in schema test where machine-checkable).
 
@@ -138,6 +144,7 @@ Pathways by age band (3–6 / 6–9 / 9–12) and grade (PK–K / 1–3 / 4–6)
 - [ ] `npm run build` passes (tsc strict + Vite).
 - [ ] `npm test` green — target ≥ 120 assertions across models, generators, content schema.
 - [ ] Every route renders without console errors (verified via headless preview).
+- [ ] Real-browser interactive testing via Claude in Chrome against the LAN URL: drive the manipulatives, exercise the worksheet builder end-to-end, check print preview.
 - [ ] Independent content-accuracy review pass: Montessori authenticity (colors, sequences, terminology) and mathematical correctness of all album text.
 - [ ] Print QA on representative worksheet, lesson, and scope & sequence chart.
 
@@ -145,8 +152,8 @@ Pathways by age band (3–6 / 6–9 / 9–12) and grade (PK–K / 1–3 / 4–6)
 
 1. **Scaffold** — Vite/React/TS, routing, layout, design tokens, print CSS base. *Commit.*
 2. **Core engine** — place-value model, seeded RNG, exchange logic, shared SVG bead/card/stamp components, material & lesson & generator type contracts, registry pattern, conventions doc for parallel work. Tests. *Commit.*
-3. **Materials** — build all 16 interactives (parallel agents, one folder each) + their album lessons. Wire registry, test, fix. *Commit.*
-4. **Worksheets** — builder UI core, then all 11 generators in parallel + presets. Tests. *Commit.*
+3. **Materials** — build all 19 interactives (parallel agents, one folder each) + their album lessons. Wire registry, test, fix. *Commit.*
+4. **Worksheets** — builder UI core, then all 12 generators in parallel + presets. Tests. *Commit.*
 5. **Parents & lessons glue** — guide pages, scope & sequence, strand sequencing, cross-links. *Commit.*
 6. **Home + polish** — home page, ages browser, responsive/touch pass, print QA. *Commit.*
 7. **Review pass** — multi-agent: content accuracy, math correctness, route smoke tests, print check. Fix findings. *Commit.*
@@ -155,4 +162,4 @@ Pathways by age band (3–6 / 6–9 / 9–12) and grade (PK–K / 1–3 / 4–6)
 
 ## Out of scope (explicitly)
 
-Login/accounts · progress tracking · analytics · public hosting (for now) · snake game, checkerboard, decimal board (listed as future additions in README).
+Login/accounts · progress tracking · analytics · public hosting (for now).
