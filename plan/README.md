@@ -11,7 +11,7 @@ Update the relevant PRD in the same commit that lands the feature work.
 | # | PRD | Status |
 |---|---|---|
 | 00 | [Scaffold](00-scaffold.md) | Done |
-| 01 | [Core engine](01-core-engine.md) | In progress |
+| 01 | [Core engine](01-core-engine.md) | Done |
 | 02 | [Interactive materials (19)](02-materials.md) | Not started |
 | 03 | [Worksheet generator (12)](03-worksheets.md) | Not started |
 | 04 | [Album lessons (~34)](04-lessons.md) | Not started |

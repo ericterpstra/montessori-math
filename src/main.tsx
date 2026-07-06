@@ -5,6 +5,8 @@ import App from './App'
 import './styles/tokens.css'
 import './styles/global.css'
 import './styles/print.css'
+import './styles/materials.css'
+import './styles/album.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
