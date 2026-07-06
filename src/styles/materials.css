@@ -1,0 +1,175 @@
+/* ---------- Interactive material shell ---------- */
+
+.material-shell {
+  margin-top: 1rem;
+}
+
+.material-help {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.material-help summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+}
+
+.material-help-body {
+  padding-top: 0.5rem;
+  color: var(--ink-soft);
+  max-width: 46rem;
+}
+
+.material-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+
+.material-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.material-controls select,
+.material-controls input[type='number'] {
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  min-height: var(--touch-target);
+}
+
+.material-stage {
+  border-radius: var(--radius);
+  padding: 1rem;
+  min-height: 320px;
+  overflow-x: auto;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.mat-felt {
+  background: radial-gradient(ellipse at 30% 20%, #4a7a5b, var(--felt) 70%);
+}
+
+.mat-wood {
+  background: repeating-linear-gradient(95deg, #c19467 0 46px, #b58863 46px 47px, #bd8f68 47px 96px, #b0835e 96px 97px);
+}
+
+.mat-paper {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+/* ---------- Stamp game tiles ---------- */
+
+.stamp-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--stamp-color);
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font-body);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  padding: 0;
+  line-height: 1;
+}
+
+button.stamp-tile {
+  cursor: pointer;
+}
+
+button.stamp-tile:hover {
+  filter: brightness(1.1);
+}
+
+.stamp-tile.selected {
+  outline: 3px solid #fff;
+  box-shadow: 0 0 0 5px var(--focus);
+}
+
+/* ---------- Number cards ---------- */
+
+.number-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fffdf8;
+  border: 1px solid #b9b2a4;
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--card-color);
+  line-height: 1;
+  padding: 0;
+}
+
+button.number-card {
+  cursor: pointer;
+}
+
+button.number-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.number-card.selected {
+  outline: 3px solid var(--focus);
+}
+
+/* ---------- Generic pieces used across materials ---------- */
+
+.bank-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: flex-end;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.bank-tray .bank-item {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bank-tray .bank-item:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.stage-note {
+  color: #fff;
+  opacity: 0.9;
+  font-size: 0.92rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.mat-paper .stage-note {
+  color: var(--ink-soft);
+  text-shadow: none;
+}

@@ -120,6 +120,9 @@
   --pv-ten-thousand: #000;
   --pv-hundred-thousand: #000;
   --pv-million: #000;
+  --pv-tenth: #000;
+  --pv-hundredth: #000;
+  --pv-thousandth: #000;
   --golden: #000;
   --golden-light: #fff;
   --golden-dark: #000;

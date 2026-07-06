@@ -1,0 +1,120 @@
+/* ---------- Album-style lesson pages (screen + print) ---------- */
+
+.album {
+  max-width: 50rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2rem 2.4rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.album-header {
+  border-bottom: 3px double var(--wood);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.album-header h1 {
+  margin-bottom: 0.35rem;
+}
+
+.album-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.album section {
+  margin-bottom: 1.4rem;
+}
+
+.album h2 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--wood-dark);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.album ul,
+.album ol {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.album li {
+  margin-bottom: 0.35rem;
+}
+
+.album ol.presentation li {
+  margin-bottom: 0.65rem;
+}
+
+.album .say {
+  display: block;
+  font-style: italic;
+  color: var(--accent-dark);
+  margin-top: 0.15rem;
+}
+
+.album .say::before {
+  content: '“';
+}
+
+.album .say::after {
+  content: '”';
+}
+
+.album .vocab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  padding: 0;
+}
+
+.album .vocab li {
+  border: 1px solid var(--line);
+  background: var(--paper-warm);
+  border-radius: 999px;
+  padding: 0.1rem 0.7rem;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.album-aims {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .album {
+    padding: 1.2rem 1.1rem;
+  }
+
+  .album-aims {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .album {
+    border: none;
+    padding: 0;
+    max-width: none;
+    font-size: 11pt;
+  }
+
+  .album section {
+    break-inside: avoid;
+  }
+
+  .album .say {
+    color: #000;
+  }
+}

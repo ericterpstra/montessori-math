@@ -12,6 +12,11 @@
   --pv-hundred-thousand: #c0392b;
   --pv-million: #2e8b57;
 
+  /* Decimal fraction places (pale mirror of the whole-number hierarchy) */
+  --pv-tenth: #8ec1e6;
+  --pv-hundredth: #efa3b7;
+  --pv-thousandth: #a9d3ab;
+
   /* Golden bead material */
   --golden: #d4a017;
   --golden-light: #f0c860;
