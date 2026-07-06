@@ -1,0 +1,62 @@
+/* Numeral tracing worksheet. Row = one wide SVG of glyphs + optional bead
+   frame. All meaning survives B&W: dashes/solid carry the trace-vs-model
+   distinction and the bead COUNT (not color) carries the quantity. */
+
+.numeral-tracing-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.numeral-tracing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.15in;
+  break-inside: avoid;
+}
+
+.numeral-tracing-row + .numeral-tracing-row {
+  margin-top: 0.03in;
+}
+
+.numeral-tracing-glyphs {
+  flex: 0 0 auto;
+  display: block;
+}
+
+.numeral-tracing-glyphs text {
+  font-family: var(--font-heading);
+}
+
+/* First glyph: the solid model the child studies before tracing. */
+.numeral-tracing-glyph-model {
+  fill: var(--ink);
+  stroke: none;
+}
+
+/* The rest: dashed outlines to pencil over. */
+.numeral-tracing-glyph-trace {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+/* Bead frame at the row's end; empty for zero — a point of interest. */
+.numeral-tracing-beadframe {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 2.05in;
+  height: 0.55in;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.03in;
+  padding: 0 0.08in;
+}
+
+.numeral-tracing-bead {
+  display: inline-flex;
+  line-height: 0;
+}

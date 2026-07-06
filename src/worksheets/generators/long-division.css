@@ -1,0 +1,94 @@
+/* Long division worksheet — bracket and racks & tubes recording layouts.
+   Every class here is prefixed long-division- (generator convention). */
+
+/* ---------- classic bracket ---------- */
+
+.long-division-bracket {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  line-height: 1.35;
+  margin-top: 0.05in;
+}
+
+/* Blank space above the vinculum where the quotient gets written. */
+.long-division-quotient-space {
+  height: 0.35in;
+}
+
+.long-division-body {
+  display: flex;
+  align-items: flex-start;
+}
+
+.long-division-divisor {
+  /* Extra 2px matches the dividend's border-top so digits share a baseline. */
+  padding: calc(0.12em + 2px) 0.4em 0 0;
+}
+
+/* The ⟌ drawn with borders: vinculum on top, down-stroke on the left. */
+.long-division-dividend {
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  padding: 0.12em 0.7em 0.1em 0.5em;
+}
+
+/* Room for the child's subtraction steps. */
+.long-division-work {
+  min-height: 1.4in;
+}
+
+/* ---------- racks & tubes recording sheet ---------- */
+
+.long-division-eq {
+  font-family: var(--font-mono);
+  font-size: 1.02rem;
+  margin-bottom: 0.1in;
+}
+
+.long-division-answer-line {
+  min-width: 0.9in;
+}
+
+.long-division-table {
+  border-collapse: collapse;
+}
+
+.long-division-table td,
+.long-division-table th {
+  border: 1px solid #000;
+  width: 0.45in;
+  height: 0.3in;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+}
+
+.long-division-table td {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+/* Column headers carry the place color (letters still label them in B&W). */
+.long-division-table th.long-division-place-head {
+  border-bottom-width: 3px;
+  border-bottom-color: currentColor;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.long-division-table th.long-division-row-label {
+  border: none;
+  width: auto;
+  font-weight: 400;
+  font-size: 0.6rem;
+  color: var(--ink-soft);
+  text-align: right;
+  padding-right: 0.08in;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.long-division-given {
+  font-weight: 600;
+}

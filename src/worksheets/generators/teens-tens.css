@@ -1,0 +1,58 @@
+/* Teens & tens worksheet — every class prefixed teens-tens- */
+
+.teens-tens-picture {
+  display: flex;
+  align-items: flex-start;
+  gap: 3px;
+  margin-top: 0.06in;
+}
+
+.teens-tens-answer {
+  margin-top: 0.08in;
+  font-size: 1.05rem;
+}
+
+.teens-tens-answer .write-line.teens-tens-answer-blank {
+  min-width: 2.4em;
+}
+
+.teens-tens-numeral {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 0.2em;
+}
+
+/* Box the child draws beads in (a line per ten, a dot per unit). */
+.teens-tens-drawbox {
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  height: 1.15in;
+  margin-top: 0.08in;
+}
+
+.teens-tens-seqrow {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.1rem;
+  line-height: 2;
+  white-space: nowrap;
+}
+
+.teens-tens-seqrow .write-line.teens-tens-seq-blank {
+  min-width: 1.8em;
+}
+
+.teens-tens-section {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0.22in 0 0.12in;
+}
+
+.teens-tens-section:first-child {
+  margin-top: 0;
+}
+
+/* Sequence answers are long; three columns keeps them from clipping. */
+.answer-list.teens-tens-key {
+  columns: 3;
+}

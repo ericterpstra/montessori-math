@@ -1,0 +1,62 @@
+/* Long multiplication worksheet — column heads and partial-product scaffold. */
+
+/* The op box is several lines tall; keep the problem number at its top. */
+.long-multiplication-problem .vertical-op {
+  vertical-align: top;
+}
+
+/* Checkerboard-colored column heads, one 1ch cell per digit column. */
+.long-multiplication-head-row {
+  display: block;
+  line-height: 1.1;
+  margin-bottom: 0.1em;
+  white-space: pre;
+}
+
+.long-multiplication-head-cell {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+}
+
+.long-multiplication-head-letter {
+  font-family: var(--font-body);
+  font-size: 0.6em;
+  font-weight: 700;
+}
+
+/* One labeled write-on line per multiplier digit (scaffold mode). */
+.vertical-op .op-row.long-multiplication-partial {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 0.75ch;
+  min-height: 1.7em;
+}
+
+.long-multiplication-partial-label {
+  font-family: var(--font-body);
+  font-size: 0.68em;
+  font-style: italic;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  padding-bottom: 0.3em;
+}
+
+.long-multiplication-partial-space {
+  display: inline-block;
+  height: 1.45em;
+  border-bottom: 1px dashed var(--ink-soft);
+}
+
+/* Answer key: product entries are wide, so two columns instead of four. */
+.answer-list.long-multiplication-key {
+  columns: 2;
+}
+
+.long-multiplication-key-partials {
+  display: block;
+  font-size: 0.85em;
+  color: var(--ink-soft);
+  padding-left: 1.4em;
+}

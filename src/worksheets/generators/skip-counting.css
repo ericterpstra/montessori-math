@@ -1,0 +1,111 @@
+/* Skip counting worksheet — chain tickets and multiples tables.
+   All borders use currentColor (black inside .print-sheet), so B&W mode
+   changes nothing: blanks read as empty boxes, the square as a thick box. */
+
+.skip-counting-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28in;
+}
+
+.skip-counting-row {
+  break-inside: avoid;
+}
+
+.skip-counting-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.07in;
+}
+
+.skip-counting-num {
+  color: var(--ink-soft);
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.skip-counting-beads {
+  display: block;
+  flex: none;
+}
+
+/* Arrow-joined chain of tickets */
+
+.skip-counting-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.04in;
+}
+
+.skip-counting-ticket {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.55in;
+  height: 0.46in;
+  padding: 0 0.05in;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+/* The square ticket (n × n) is thick and bold, like the material's square label. */
+.skip-counting-ticket-square {
+  border-width: 3px;
+  font-weight: 700;
+}
+
+.skip-counting-arrow {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+/* Multiples-table strip: header row 1–10, product row beneath. */
+
+.skip-counting-table {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+}
+
+.skip-counting-table th,
+.skip-counting-table td {
+  border: 1px solid currentColor;
+  width: 0.62in;
+  text-align: center;
+  padding: 0;
+}
+
+.skip-counting-table th {
+  font-family: var(--font-body);
+  font-weight: 700;
+  background: var(--paper-warm);
+  height: 0.26in;
+}
+
+.skip-counting-table td {
+  height: 0.38in;
+}
+
+/* Answer key: two wide columns so a full ten-ticket chain stays readable. */
+
+.skip-counting-key {
+  columns: 2;
+}
+
+.skip-counting-key-blank {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.skip-counting-key-note {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-top: 0.25in;
+}

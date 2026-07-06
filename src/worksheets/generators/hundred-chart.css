@@ -1,0 +1,89 @@
+/* Hundred chart puzzles worksheet — every class prefixed `hundred-chart-`. */
+
+/* ---------- fill mode: the 10×10 chart ---------- */
+
+.hundred-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 0.66in);
+  grid-auto-rows: 0.66in;
+  width: max-content;
+  margin: 0 auto;
+  border: 2px solid var(--ink);
+}
+
+.hundred-chart-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ink-soft);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Printed numbers stay light so the blanks (and answers) stand out —
+   the light weight, not color, carries the distinction, so B&W is safe. */
+.hundred-chart-printed {
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.hundred-chart-answer {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Compact completed chart for the answer key. */
+.hundred-chart-grid.hundred-chart-mini {
+  grid-template-columns: repeat(10, 0.42in);
+  grid-auto-rows: 0.42in;
+}
+
+.hundred-chart-mini .hundred-chart-cell {
+  font-size: 0.8rem;
+}
+
+/* ---------- fragment mode: cut-out pieces ---------- */
+
+.hundred-chart-pieces {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3in 0.3in;
+}
+
+.hundred-chart-piece {
+  display: flex;
+  gap: 0.12in;
+  align-items: flex-start;
+  break-inside: avoid;
+}
+
+.hundred-chart-piece-grid {
+  --hc-cell: 0.58in;
+  display: grid;
+  grid-auto-rows: var(--hc-cell);
+}
+
+.hundred-chart-piece-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ink);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hundred-chart-piece-void {
+  border: none;
+}
+
+.hundred-chart-anchor {
+  font-weight: 700;
+}
+
+/* ---------- answer key ---------- */
+
+.hundred-chart-key-note {
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0 0 0.2in;
+}

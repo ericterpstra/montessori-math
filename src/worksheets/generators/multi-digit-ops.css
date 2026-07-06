@@ -1,0 +1,40 @@
+/* Multi-digit vertical operations worksheet (slug: multi-digit-ops). */
+
+.multi-digit-ops-op {
+  font-size: 1.35rem;
+  vertical-align: top;
+}
+
+/* Generous space to write the answer (and work) under the rule. */
+.multi-digit-ops-op .op-answer-space {
+  min-height: 1.7em;
+}
+
+/* Fixed-width operator cell so digit columns align regardless of the
+   +/−/× glyph advance width. */
+.multi-digit-ops-sign {
+  display: inline-block;
+  width: 2ch;
+  text-align: left;
+}
+
+/* Place-value column guides (stamp-game recording paper style). */
+.multi-digit-ops-heads {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.15em;
+}
+
+.multi-digit-ops-head {
+  width: 1ch;
+  text-align: center;
+  border-top: 0.16em solid currentColor;
+}
+
+/* The U / T / H / Th letters still carry the place information when the
+   color variables go black in .bw mode. */
+.multi-digit-ops-head-label {
+  font-size: 0.5em;
+  font-weight: 700;
+  line-height: 1.5;
+}

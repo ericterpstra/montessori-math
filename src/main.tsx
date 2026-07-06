@@ -7,6 +7,8 @@ import './styles/global.css'
 import './styles/print.css'
 import './styles/materials.css'
 import './styles/album.css'
+import './styles/worksheets.css'
+import './styles/guides.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,0 +1,59 @@
+/* Decimals worksheet — scoped styles (every class prefixed `decimals-`). */
+
+.decimals-num {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+}
+
+.decimals-underline {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.16em;
+}
+
+.decimals-line-med {
+  min-width: 1.1in;
+}
+
+.decimals-line-long {
+  min-width: 2.1in;
+}
+
+.decimals-line-order {
+  min-width: 0.62in;
+}
+
+/* Blank circle the child writes <, =, or > inside. */
+.decimals-compare-circle {
+  display: inline-block;
+  width: 0.3in;
+  height: 0.3in;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  vertical-align: -0.08in;
+  margin: 0 0.14in;
+}
+
+.decimals-order-items .decimals-num + .decimals-num {
+  margin-left: 0.22in;
+}
+
+.decimals-order-blanks {
+  display: block;
+  margin-top: 0.3em;
+}
+
+/* Small italic note above each problem in mixed review. */
+.decimals-cue {
+  display: block;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-bottom: 0.1em;
+}
+
+/* Expanded-form and ordering answers run long — two columns keeps them readable. */
+.decimals-key {
+  columns: 2;
+}

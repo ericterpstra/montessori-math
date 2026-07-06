@@ -259,6 +259,35 @@ label.field select {
   margin: 2rem 0 0.5rem;
 }
 
+/* ---------- Home ---------- */
+
+.home-hero {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0 2rem;
+}
+
+.home-hero-beads {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+  flex-shrink: 0;
+}
+
+.home-cta {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .home-hero-beads {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   h1 { font-size: 1.6rem; }
   .site-header-inner { padding: 0.5rem 0.75rem; }

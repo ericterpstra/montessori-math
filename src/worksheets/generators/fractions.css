@@ -1,0 +1,95 @@
+/* Fractions worksheet generator (slug: fractions). All classes prefixed 'fractions-'. */
+
+.fractions-problem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35em;
+}
+
+/* Vertical stack: picture(s) above the written expression. */
+.fractions-col {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.06in;
+}
+
+.fractions-col.fractions-col-left {
+  align-items: flex-start;
+}
+
+/* Horizontal row of circles / operators. */
+.fractions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.fractions-expr {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: 0.05in;
+}
+
+.fractions-op {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.fractions-circle {
+  display: block;
+}
+
+/* Stacked fraction: numerator over a horizontal bar over denominator. */
+.fractions-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  vertical-align: middle;
+}
+
+.fractions-frac .fractions-num,
+.fractions-frac .fractions-den {
+  display: block;
+  padding: 0 0.3em;
+  text-align: center;
+}
+
+.fractions-frac .fractions-den {
+  border-top: 1.5px solid var(--ink);
+}
+
+/* Empty slot the child writes in (above or below the fraction bar). */
+.fractions-slot {
+  min-width: 0.45in;
+  min-height: 1.15em;
+}
+
+/* Wide underlined space for sums that may be written as mixed numbers. */
+.fractions-ansbox {
+  display: inline-block;
+  min-width: 0.95in;
+  height: 0.5in;
+  border-bottom: 1.5px solid var(--ink);
+  vertical-align: bottom;
+}
+
+/* Answer key: stacked fractions need a little more column room. */
+.fractions-key {
+  columns: 3;
+}
+
+.fractions-key .fractions-frac {
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+
+.fractions-key .fractions-whole {
+  font-family: var(--font-mono);
+  margin: 0 0.15em;
+}

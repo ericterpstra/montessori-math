@@ -1,12 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
-import SectionStub from './pages/SectionStub'
+import AgesPage from './pages/AgesPage'
 import NotFound from './pages/NotFound'
 import MaterialsIndex from './materials/MaterialsIndex'
 import MaterialPage from './materials/MaterialPage'
 import LessonsIndex from './lessons/LessonsIndex'
 import LessonPage from './lessons/LessonPage'
+import WorksheetsIndex from './worksheets/WorksheetsIndex'
+import BuilderPage from './worksheets/BuilderPage'
+import ParentsIndex from './parents/ParentsIndex'
+import GuidePage from './parents/GuidePage'
 
 export default function App() {
   return (
@@ -17,9 +21,11 @@ export default function App() {
         <Route path="materials/:slug" element={<MaterialPage />} />
         <Route path="lessons" element={<LessonsIndex />} />
         <Route path="lessons/:slug" element={<LessonPage />} />
-        <Route path="worksheets" element={<SectionStub title="Worksheets" />} />
-        <Route path="parents" element={<SectionStub title="For Parents" />} />
-        <Route path="ages" element={<SectionStub title="Browse by Age" />} />
+        <Route path="worksheets" element={<WorksheetsIndex />} />
+        <Route path="worksheets/:slug" element={<BuilderPage />} />
+        <Route path="parents" element={<ParentsIndex />} />
+        <Route path="parents/:slug" element={<GuidePage />} />
+        <Route path="ages" element={<AgesPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

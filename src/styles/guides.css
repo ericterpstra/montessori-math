@@ -1,0 +1,90 @@
+/* ---------- Parent guide prose pages ---------- */
+
+.guide {
+  max-width: 46rem;
+}
+
+.guide h1 {
+  margin-bottom: 0.35rem;
+}
+
+.guide .guide-lede {
+  font-size: 1.08rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+
+.guide h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.25rem;
+}
+
+.guide h3 {
+  margin-top: 1.3rem;
+}
+
+.guide dl dt {
+  font-weight: 700;
+  margin-top: 0.9rem;
+}
+
+.guide dl dd {
+  margin: 0.15rem 0 0 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--line);
+}
+
+.guide blockquote {
+  margin: 1rem 0;
+  padding: 0.6rem 1rem;
+  background: var(--paper-warm);
+  border-left: 4px solid var(--wood);
+  border-radius: var(--radius-sm);
+  font-style: italic;
+}
+
+/* ---------- Scope & sequence chart ---------- */
+
+.scope-table-wrap {
+  overflow-x: auto;
+}
+
+.scope-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.92rem;
+}
+
+.scope-table th,
+.scope-table td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.scope-table thead th {
+  background: var(--paper-warm);
+}
+
+.scope-strand-row th {
+  background: var(--wood);
+  color: #fff;
+  font-family: var(--font-heading);
+}
+
+@media print {
+  .guide {
+    max-width: none;
+    font-size: 11pt;
+  }
+
+  .scope-table {
+    font-size: 9pt;
+  }
+
+  .scope-strand-row {
+    break-inside: avoid;
+  }
+}

@@ -1,0 +1,40 @@
+/* Place value & expanded form worksheet (generators/place-value.tsx). */
+
+.place-value-grid {
+  row-gap: 0.32in;
+}
+
+.place-value-prompt {
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+/* Underline carries the meaning (never color) so B&W prints stay honest. */
+.place-value-under {
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.18em;
+}
+
+.place-value-work {
+  margin-top: 0.45em;
+  line-height: 2.1;
+}
+
+/* Blank widths tuned so four expanded-form parts fit a half-page column. */
+.place-value-blank-part {
+  width: 0.72in;
+}
+
+.place-value-blank-number {
+  width: 1.4in;
+}
+
+.place-value-blank-value {
+  width: 1.1in;
+}
+
+/* Expanded-form answers are wide; two columns keep the key readable. */
+.place-value-key {
+  columns: 2;
+}

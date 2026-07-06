@@ -1,0 +1,50 @@
+/* Golden bead pictures worksheet — every class prefixed golden-bead-pictures- */
+
+.golden-bead-pictures-problem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08in;
+}
+
+/* One problem's pictured quantity: place groups thousands → units. */
+.golden-bead-pictures-quantity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.12in 0.16in;
+  min-height: 0.45in;
+}
+
+/* All the pieces of one place, laid side by side (wraps if crowded). */
+.golden-bead-pictures-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.golden-bead-pictures-answer {
+  font-size: 1.15rem;
+}
+
+.golden-bead-pictures-line {
+  min-width: 1.2in;
+}
+
+.golden-bead-pictures-numeral {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+/* Empty ruled box the child draws the quantity into. */
+.golden-bead-pictures-drawbox {
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  height: 1.15in;
+}
+
+/* Breakdown strings are long; two columns read better than four. */
+.answer-list.golden-bead-pictures-key {
+  columns: 2;
+}
