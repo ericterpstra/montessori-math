@@ -1,6 +1,6 @@
 # PRD 04 — Album-style lessons (~34)
 
-**Status:** Not started · fills in alongside PRDs 02/03/05
+**Status:** Done — 38 lessons across 7 strands
 
 ## Overview
 
@@ -20,13 +20,13 @@ Full Montessori album lessons written for parents with no training, stored as ty
 
 ## Coverage requirements
 
-- [ ] ~34 lessons total across the 7 strands
-- [ ] Every material (PRD 02) has ≥1 lesson presenting it
-- [ ] Each strand's lessons form an ordered `sequence` with coherent prerequisites — a parent can follow strand order PK→6
-- [ ] Multi-lesson arcs where the material carries several presentations (e.g. golden beads: intro tray → formation → addition → subtraction → multiplication → division)
+- [x] ~34 lessons total across the 7 strands
+- [x] Every material (PRD 02) has ≥1 lesson presenting it
+- [x] Each strand's lessons form an ordered `sequence` with coherent prerequisites — a parent can follow strand order PK→6
+- [x] Multi-lesson arcs where the material carries several presentations (e.g. golden beads: intro tray → formation → addition → subtraction → multiplication → division)
 
 ## Acceptance criteria
 
-- [ ] Schema test iterates the registry: all fields non-empty; every `prerequisites`, `virtualMaterials`, `worksheetSlug`, `presetId` reference resolves; sequences within a strand are unique and contiguous from 1
-- [ ] Lesson pages print cleanly (album header, numbered steps, no clipped sections)
-- [ ] Cross-links work: material page ↔ lessons ↔ worksheet presets
+- [x] Schema test iterates the registry: all fields non-empty; every `prerequisites`, `virtualMaterials`, `worksheetSlug`, `presetId` reference resolves; sequences within a strand are unique and contiguous from 1
+- [x] Lesson pages print cleanly (album header, numbered steps, no clipped sections)
+- [x] Cross-links work: material page ↔ lessons ↔ worksheet presets

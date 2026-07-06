@@ -1,0 +1,209 @@
+/* Bead frame material — all classes prefixed bead-frame- */
+
+.bead-frame-layout {
+  --bead-frame-slot: 44px;
+  --bead-frame-row: 50px;
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  width: max-content;
+}
+
+/* The wooden frame around the wires */
+.bead-frame-frame {
+  border: 12px solid var(--wood);
+  border-bottom-color: var(--wood-dark);
+  border-right-color: var(--wood-dark);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: var(--shadow-md);
+  padding: 0.35rem 0;
+}
+
+.bead-frame-wire-row {
+  display: flex;
+  align-items: stretch;
+  height: var(--bead-frame-row);
+}
+
+/* Place label on the left edge, on its family band */
+.bead-frame-label {
+  width: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.98rem;
+  border-right: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+.bead-frame-band-white {
+  background: var(--card);
+}
+
+.bead-frame-band-gray {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.bead-frame-band-black {
+  background: rgba(0, 0, 0, 0.82);
+}
+
+/* The wire itself: 10 bead slots + a 3-slot gap */
+.bead-frame-wire {
+  position: relative;
+  width: calc(var(--bead-frame-slot) * 13);
+  align-self: center;
+  height: var(--bead-frame-row);
+}
+
+.bead-frame-wire-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+}
+
+.bead-frame-band-black .bead-frame-wire-line {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.bead-frame-band-black .bead-frame-label {
+  filter: brightness(1.5);
+}
+
+.bead-frame-bead {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(var(--slot) * var(--bead-frame-slot));
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: left 0.22s ease;
+}
+
+.bead-frame-bead:hover {
+  filter: brightness(1.12);
+}
+
+.bead-frame-bead:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+/* Side rail: exchange buttons, still-to-slide chips, check marks */
+.bead-frame-side {
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(12px + 0.35rem);
+}
+
+.bead-frame-side-row {
+  height: var(--bead-frame-row);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bead-frame-remaining {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.88);
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.bead-frame-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.bead-frame-check.is-correct {
+  color: var(--ok);
+}
+
+.bead-frame-check.is-wrong {
+  color: var(--error);
+}
+
+/* Buttons (controls row and side rail share the style) */
+.bead-frame-btn {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.bead-frame-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.bead-frame-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Banner above the frame: problem / target / number readout */
+.bead-frame-banner {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  width: max-content;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.bead-frame-banner-label {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.bead-frame-result {
+  color: var(--ok);
+}
+
+.bead-frame-message {
+  margin-top: 0.75rem;
+  min-height: 1.4rem;
+}

@@ -1,0 +1,161 @@
+/* Large Number Cards — material-local styles. All classes prefixed number-cards-. */
+
+.number-cards-bank {
+  align-items: flex-start;
+  gap: 1.1rem;
+}
+
+.number-cards-bank-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.number-cards-bank-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  padding-bottom: 2px;
+}
+
+.number-cards-workspace {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem;
+  margin-top: 0.9rem;
+}
+
+.number-cards-workspace-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.number-cards-workspace-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin-right: auto;
+}
+
+.number-cards-btn {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.number-cards-btn:hover {
+  background: var(--paper-warm);
+}
+
+.number-cards-btn[aria-pressed='true'] {
+  border-color: var(--focus);
+  outline: 2px solid var(--focus);
+  outline-offset: -1px;
+}
+
+/* Tabular figures so stacked digits line up column for column. */
+.number-cards-expanded .number-card,
+.number-cards-composed .number-card,
+.number-cards-target-value {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.number-cards-expanded {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 84px;
+}
+
+.number-cards-composed {
+  position: relative;
+  min-height: 84px;
+}
+
+.number-cards-stack-card {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.number-cards-empty {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  align-self: center;
+}
+
+.number-cards-target {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 1rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.number-cards-target-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.number-cards-target-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.7rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.number-cards-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.number-cards-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.number-cards-check-ok {
+  color: var(--ok);
+}
+
+.number-cards-check-err {
+  color: var(--error);
+}
+
+.number-cards-check-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.number-cards-prompt {
+  margin-bottom: 0.9rem;
+}

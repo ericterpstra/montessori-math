@@ -1,0 +1,242 @@
+/* Multiplication Bead Board — all classes prefixed multiplication-bead-board- */
+
+.multiplication-bead-board-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.multiplication-bead-board-main {
+  flex: 1 1 24rem;
+  min-width: 0;
+}
+
+.multiplication-bead-board-boardrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+/* Card slot on the left edge of the board */
+.multiplication-bead-board-slot {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.multiplication-bead-board-slot-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* The board itself; becomes a <button> while counting */
+.multiplication-bead-board-tapboard {
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+button.multiplication-bead-board-tapboard {
+  cursor: pointer;
+}
+
+button.multiplication-bead-board-tapboard:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.multiplication-bead-board-svg {
+  display: block;
+  width: min(100%, 396px);
+  height: auto;
+}
+
+.multiplication-bead-board-face {
+  fill: var(--paper);
+  stroke: var(--wood-dark);
+  stroke-width: 2;
+}
+
+.multiplication-bead-board-track {
+  fill: rgba(0, 0, 0, 0.06);
+}
+
+.multiplication-bead-board-num {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.multiplication-bead-board-hole {
+  fill: rgba(0, 0, 0, 0.14);
+}
+
+.multiplication-bead-board-disc {
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 1.5;
+}
+
+.multiplication-bead-board-ring-counted {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.6;
+}
+
+.multiplication-bead-board-ring-current {
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: 3;
+}
+
+.multiplication-bead-board-count-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  fill: var(--card);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 2px;
+}
+
+/* Action buttons under the board (and Reset up in the controls bar) */
+.multiplication-bead-board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.75rem 0 0.4rem;
+}
+
+.multiplication-bead-board-btn {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.multiplication-bead-board-btn:hover:not(:disabled) {
+  background: var(--paper-warm);
+}
+
+.multiplication-bead-board-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Checkbox label in the controls bar */
+.multiplication-bead-board-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-height: var(--touch-target);
+}
+
+.multiplication-bead-board-check-label input {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* White panels sitting on the felt mat */
+.multiplication-bead-board-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.75rem;
+  max-width: 30rem;
+}
+
+.multiplication-bead-board-problem {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--ink);
+  margin: 0.1rem 0 0.3rem;
+}
+
+.multiplication-bead-board-panel p {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.multiplication-bead-board-checklist {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+}
+
+.multiplication-bead-board-checklist li {
+  font-weight: 600;
+  padding: 0.12rem 0;
+}
+
+.multiplication-bead-board-mark-ok {
+  color: var(--ok);
+}
+
+.multiplication-bead-board-mark-err {
+  color: var(--error);
+}
+
+/* The written record (mirrors the child's paper) */
+.multiplication-bead-board-record {
+  flex: 0 1 13rem;
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.multiplication-bead-board-record h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.multiplication-bead-board-record ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.multiplication-bead-board-record li {
+  padding: 0.14rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.multiplication-bead-board-record .multiplication-bead-board-record-empty {
+  border-bottom: none;
+  font-family: var(--font-body);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}

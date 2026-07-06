@@ -1,0 +1,154 @@
+/* Teen Board (Seguin A) — component styles. Every class is prefixed teen-board-. */
+
+.teen-board-tray {
+  align-items: center;
+}
+
+.teen-board-tray-label {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 0.35rem;
+}
+
+.teen-board-selected {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+  background: color-mix(in srgb, var(--focus) 14%, transparent);
+}
+
+/* Empty slot left behind when a card or bar is on the board. */
+.teen-board-slot {
+  display: inline-block;
+  width: 27px;
+  height: 44px;
+  border: 2px dashed var(--line);
+  border-radius: 4px;
+}
+
+.teen-board-slot-bar {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.teen-board-supply-count {
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-right: 0.5rem;
+}
+
+.teen-board-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.teen-board-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* One wooden slat printed with '10'; the unit card covers the zero. */
+.teen-board-slat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--wood);
+  border: 3px solid var(--wood-dark);
+  border-radius: 4px;
+  padding: 3px 10px;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.teen-board-slat:hover {
+  filter: brightness(1.07);
+}
+
+.teen-board-digit {
+  width: 32px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* Bead area beside a row. */
+.teen-board-beads {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.teen-board-piece {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.teen-board-piece:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.teen-board-drop {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  border: 2px dashed rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.teen-board-drop:hover:enabled {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.teen-board-drop:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Quiet per-row check: ✓ when quantity and symbol agree, ✗ when they don't. */
+.teen-board-mark {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex: none;
+}
+
+.teen-board-mark.teen-board-ok {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ok);
+}
+
+.teen-board-mark.teen-board-wrong {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--error);
+}

@@ -1,0 +1,235 @@
+/* Unit Division Board — component styles (all classes prefixed division-board-) */
+
+.division-board-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.division-board-problem {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--card);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  margin: 0 0 0.25rem;
+}
+
+.division-board-board {
+  background: var(--card);
+  border: 2px solid var(--pv-unit);
+  border-radius: var(--radius);
+  padding: 0.7rem;
+  box-shadow: var(--shadow-md);
+}
+
+.division-board-slots {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 2px;
+  margin-bottom: 0.4rem;
+}
+
+.division-board-slot {
+  min-width: var(--touch-target);
+  min-height: 60px;
+  padding: 2px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.division-board-slot:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.division-board-slot-empty {
+  width: 26px;
+  height: 26px;
+  border: 2px dashed var(--line);
+  border-radius: 50%;
+}
+
+.division-board-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  grid-auto-rows: 38px;
+  gap: 2px;
+  border-top: 1px solid var(--line);
+  padding-top: 0.4rem;
+}
+
+.division-board-hole {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.division-board-hole::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.division-board-hole svg {
+  position: relative;
+}
+
+.division-board-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 220px;
+  max-width: 300px;
+  flex: 1;
+}
+
+.division-board-tray {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.division-board-tray-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+
+.division-board-tray-beads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-content: flex-start;
+  min-height: 44px;
+}
+
+.division-board-tray-empty {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+.division-board-tray-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.88rem;
+  color: var(--accent-dark);
+  font-weight: 600;
+}
+
+.division-board-deal {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.division-board-pad {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  margin-top: 1rem;
+  max-width: 620px;
+}
+
+.division-board-pad-title {
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.division-board-pad-row {
+  margin-bottom: 0.6rem;
+}
+
+.division-board-pad-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.division-board-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.division-board-key {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.division-board-key:hover {
+  background: var(--paper-warm);
+}
+
+.division-board-key[aria-pressed='true'] {
+  background: var(--pv-unit);
+  border-color: var(--pv-unit);
+  color: var(--card);
+}
+
+.division-board-reading {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  margin: 0.4rem 0 0.6rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.division-board-reading .division-board-blank {
+  min-width: 1.4rem;
+  text-align: center;
+  border-bottom: 2px solid var(--ink-soft);
+  display: inline-block;
+}
+
+.division-board-mark-ok {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.division-board-mark-bad {
+  color: var(--error);
+  font-weight: 700;
+}
+
+.division-board-check-notes {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+}
+
+.division-board-check-notes li {
+  margin-bottom: 0.25rem;
+}
+
+.division-board-note-ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.division-board-note-hint {
+  color: var(--accent-dark);
+}

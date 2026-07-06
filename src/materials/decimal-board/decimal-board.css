@@ -1,0 +1,253 @@
+/* Decimal Board — component styles (all classes prefixed decimal-board-) */
+
+.decimal-board-problem {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--card);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  margin: 0 0 0.25rem;
+}
+
+.decimal-board-board {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: var(--shadow-md);
+  margin: 0 0 0.75rem;
+  vertical-align: top;
+}
+
+.decimal-board-board-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+}
+
+.decimal-board-columns {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.decimal-board-col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 104px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 8px solid var(--decimal-board-col-color);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.3rem;
+}
+
+.decimal-board-compact .decimal-board-col {
+  min-width: 96px;
+}
+
+.decimal-board-col-head {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+/* The bold decimal point between units and tenths */
+.decimal-board-point {
+  width: 22px;
+  flex: 0 0 22px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.1rem;
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 0.6;
+  color: var(--ink);
+}
+
+.decimal-board-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: var(--touch-target);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+  margin-bottom: 0.35rem;
+}
+
+.decimal-board-add:hover {
+  background: var(--paper-warm);
+}
+
+.decimal-board-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 0;
+  min-height: 96px;
+  flex: 1;
+}
+
+.decimal-board-piece {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+}
+
+button.decimal-board-piece {
+  cursor: pointer;
+}
+
+button.decimal-board-piece:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.decimal-board-col-count {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+  padding-top: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.decimal-board-col-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding-top: 0.15rem;
+}
+
+.decimal-board-col-note {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.decimal-board-ok {
+  color: var(--ok);
+}
+
+.decimal-board-bad {
+  color: var(--error);
+}
+
+.decimal-board-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0.5rem 0 0;
+  text-align: right;
+}
+
+/* Exchange strip */
+
+.decimal-board-exchanges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 0.75rem;
+}
+
+.decimal-board-exchange-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+}
+
+.decimal-board-exchange-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+/* Compare layout */
+
+.decimal-board-compare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.decimal-board-compare-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  align-self: center;
+}
+
+.decimal-board-symbol {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.decimal-board-symbol:hover {
+  background: var(--paper-warm);
+}
+
+.decimal-board-symbol[aria-pressed='true'] {
+  background: var(--focus);
+  border-color: var(--focus);
+  color: var(--card);
+}
+
+.decimal-board-verdict {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Action row */
+
+.decimal-board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+}

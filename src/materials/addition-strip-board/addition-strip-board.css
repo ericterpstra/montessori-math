@@ -1,0 +1,257 @@
+/* Addition Strip Board — all classes prefixed addition-strip-board- */
+
+.addition-strip-board-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+/* ---------- The board ---------- */
+
+.addition-strip-board-board {
+  --asb-cell: 44px;
+  display: grid;
+  grid-template-columns: repeat(18, var(--asb-cell));
+  grid-template-rows: 52px repeat(4, var(--asb-cell));
+  width: max-content;
+  background: var(--paper);
+  border: 3px solid var(--wood-dark);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+
+.addition-strip-board-head,
+.addition-strip-board-cell {
+  border-right: 1px solid var(--line);
+  box-sizing: border-box;
+}
+
+/* The red line that descends after column 10. */
+.addition-strip-board-tenline {
+  border-right: 3px solid var(--pv-hundred);
+}
+
+.addition-strip-board-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  grid-row: 1;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  border-bottom: 2px solid var(--wood);
+  background: var(--paper-warm);
+  padding: 0;
+}
+
+.addition-strip-board-head-red {
+  color: var(--pv-hundred);
+}
+
+.addition-strip-board-head-blue {
+  color: var(--pv-ten);
+}
+
+button.addition-strip-board-head {
+  cursor: pointer;
+}
+
+button.addition-strip-board-head:hover {
+  background: var(--golden-light);
+}
+
+/* Free-exploration / ways highlight of the sum column. */
+.addition-strip-board-head-answer {
+  background: var(--golden-light);
+  box-shadow: inset 0 0 0 2px var(--golden-dark);
+}
+
+/* Target number in "ways to make" mode. */
+.addition-strip-board-head-target {
+  outline: 3px dashed var(--accent);
+  outline-offset: -5px;
+}
+
+/* Honest practice marks. */
+.addition-strip-board-head-correct {
+  background: var(--ok);
+  color: var(--card);
+}
+
+.addition-strip-board-head-wrong {
+  background: var(--paper);
+  color: var(--error);
+  box-shadow: inset 0 0 0 3px var(--error);
+}
+
+.addition-strip-board-mark {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.addition-strip-board-cell {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/* ---------- Strips ---------- */
+
+.addition-strip-board-strip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--wood-dark);
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  padding: 0;
+  cursor: pointer;
+  color: var(--card);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.addition-strip-board-strip-blue {
+  background: var(--pv-ten);
+}
+
+.addition-strip-board-strip-red {
+  background: var(--pv-hundred);
+}
+
+.addition-strip-board-strip:hover {
+  filter: brightness(1.12);
+}
+
+/* Segments dividing the red strip into unit squares (blue lines, as on the real board). */
+.addition-strip-board-segs {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+.addition-strip-board-seg {
+  flex: 1;
+}
+
+.addition-strip-board-seg + .addition-strip-board-seg {
+  border-left: 2px solid var(--pv-ten);
+}
+
+.addition-strip-board-strip-num {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* Strips laid on the board sit on the top work row of the grid. */
+.addition-strip-board-strip-on-board {
+  grid-row: 2;
+  z-index: 1;
+  margin: 3px 2px;
+}
+
+/* ---------- Racks of strips ---------- */
+
+.addition-strip-board-racks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.addition-strip-board-rack {
+  --asb-rack-unit: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem 0.8rem;
+}
+
+.addition-strip-board-rack-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.2rem;
+}
+
+.addition-strip-board-rack .addition-strip-board-strip {
+  height: var(--touch-target);
+  min-width: var(--touch-target);
+}
+
+/* ---------- Status line, practice panel, ways list ---------- */
+
+.addition-strip-board-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  min-height: var(--touch-target);
+}
+
+.addition-strip-board-problem {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--paper);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.addition-strip-board-blue-num {
+  color: var(--pv-ten);
+}
+
+.addition-strip-board-red-num {
+  color: var(--pv-hundred);
+}
+
+.addition-strip-board-ways {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem 0.8rem;
+  min-width: 12rem;
+}
+
+.addition-strip-board-ways-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
+.addition-strip-board-ways ul {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.addition-strip-board-ways li {
+  padding: 0.15rem 0;
+}
+
+.addition-strip-board-ways-count {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0;
+}

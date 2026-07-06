@@ -1,0 +1,187 @@
+/* Cards & Counters — scoped styles. All colors come from tokens.css
+   variables (white/black overlays for depth only, matching materials.css). */
+
+.cards-and-counters-tray {
+  align-items: center;
+}
+
+.cards-and-counters-tray-label {
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-right: 0.25rem;
+}
+
+.cards-and-counters-tray-empty {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.cards-and-counters-supply {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.cards-and-counters-hint {
+  margin: 0 0 0.75rem;
+}
+
+.cards-and-counters-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 0.5rem;
+}
+
+.cards-and-counters-column {
+  flex: none;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-and-counters-markrow {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.cards-and-counters-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--card);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.cards-and-counters-mark-ok {
+  color: var(--ok);
+}
+
+.cards-and-counters-mark-bad {
+  color: var(--error);
+}
+
+.cards-and-counters-slot {
+  width: 48px;
+  height: 72px;
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  padding: 0;
+}
+
+.cards-and-counters-slot:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.cards-and-counters-area {
+  width: 100%;
+  min-height: var(--touch-target);
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  padding: 10px 8px 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.cards-and-counters-area:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cards-and-counters-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px 26px;
+  grid-auto-rows: 26px;
+  gap: 7px 10px;
+  min-height: 26px;
+}
+
+.cards-and-counters-counter {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bead-1);
+  box-shadow:
+    inset 0 -3px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.cards-and-counters-plus {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  align-self: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* The odd/even wand: rises from below each column of counters. Pairs leave
+   a gap for it to pass through; a lone centered counter blocks it. */
+.cards-and-counters-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -18px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--paper);
+  z-index: 0;
+}
+
+.cards-and-counters-line-even {
+  height: calc(100% + 26px);
+}
+
+.cards-and-counters-line-odd {
+  height: 30px;
+}
+
+.cards-and-counters-parity {
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.cards-and-counters-remove {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--paper);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cards-and-counters-remove:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.cards-and-counters-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}

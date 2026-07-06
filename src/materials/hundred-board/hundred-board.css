@@ -1,0 +1,174 @@
+/* Hundred Board — all classes prefixed hundred-board- */
+
+.hundred-board-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* ---------- Tile tray ---------- */
+
+.hundred-board-tray {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hundred-board-tray-label {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.hundred-board-pile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-height: 132px;
+  overflow-y: auto;
+  padding: 0.2rem;
+  flex: 1 1 16rem;
+}
+
+.hundred-board-tile,
+.hundred-board-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  width: 48px;
+  height: 48px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 0;
+}
+
+.hundred-board-tile {
+  background: var(--paper);
+  border: 1px solid var(--wood-dark);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.hundred-board-tile:hover {
+  background: var(--paper-warm);
+}
+
+.hundred-board-tile.hundred-board-selected {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+  background: var(--card);
+}
+
+/* ---------- The board ---------- */
+
+.hundred-board-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 48px);
+  gap: 4px;
+  background: var(--wood);
+  border: 4px solid var(--wood-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  width: max-content;
+  box-shadow: var(--shadow-md);
+}
+
+.hundred-board-cell {
+  position: relative;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--wood-dark);
+  color: transparent;
+}
+
+.hundred-board-cell:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.hundred-board-cell.hundred-board-filled {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.hundred-board-cell.hundred-board-filled:hover {
+  background: var(--paper-warm);
+}
+
+/* Skip-count mode: numbers always visible */
+.hundred-board-cell.hundred-board-skip {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.hundred-board-cell.hundred-board-tapped {
+  background: var(--pv-ten);
+  border-color: var(--pv-ten);
+  color: var(--card);
+}
+
+/* ---------- Check marks (honest, symbol + color) ---------- */
+
+.hundred-board-cell.hundred-board-wrong {
+  border: 3px solid var(--error);
+}
+
+.hundred-board-cell.hundred-board-hit {
+  border: 3px solid var(--ok);
+}
+
+.hundred-board-cell.hundred-board-miss {
+  border: 3px dashed var(--error);
+}
+
+.hundred-board-mark {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--card);
+  pointer-events: none;
+}
+
+.hundred-board-mark-check {
+  background: var(--ok);
+}
+
+.hundred-board-mark-cross {
+  background: var(--error);
+}
+
+.hundred-board-mark-dot {
+  background: var(--error);
+  font-size: 0.9rem;
+}
+
+/* ---------- Messages ---------- */
+
+.hundred-board-message {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.8rem;
+  color: var(--ink);
+  font-weight: 600;
+  max-width: 34rem;
+}
+
+.hundred-board-message.hundred-board-complete {
+  border-left: 5px solid var(--ok);
+}

@@ -1,0 +1,171 @@
+/* Bead Chains — all classes prefixed bead-chains- */
+
+.bead-chains-btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.bead-chains-btn:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--wood);
+}
+
+/* ---------- Ticket tray ---------- */
+
+.bead-chains-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.1rem;
+  min-height: calc(var(--touch-target) + 1.2rem);
+}
+
+.bead-chains-tray-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-right: 0.25rem;
+}
+
+.bead-chains-ticket {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: 0.25rem 0.6rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--bead-chains-color, var(--golden));
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bead-chains-ticket:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.bead-chains-ticket.bead-chains-selected {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- The chain ---------- */
+
+.bead-chains-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 3px;
+  row-gap: 1.6rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.bead-chains-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+/* ---------- Label slots at the end of each bar ---------- */
+
+.bead-chains-slot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  border: 2px dashed rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--card);
+}
+
+.bead-chains-slot-filled {
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--bead-chains-color, var(--golden));
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.bead-chains-slot:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Traditional emphasis: the square ticket, placed correctly, is larger. */
+.bead-chains-slot-square {
+  min-width: calc(var(--touch-target) + 18px);
+  min-height: calc(var(--touch-target) + 14px);
+  font-size: 1.6rem;
+  border-left-width: 9px;
+}
+
+/* Check marks — glyph plus color, never color alone. */
+.bead-chains-slot-right {
+  border-color: var(--ok);
+}
+
+.bead-chains-slot-wrong {
+  border-color: var(--error);
+  border-left-color: var(--error);
+}
+
+.bead-chains-mark {
+  position: absolute;
+  top: -0.65rem;
+  right: -0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.bead-chains-mark-right {
+  color: var(--ok);
+}
+
+.bead-chains-mark-wrong {
+  color: var(--error);
+}
+
+/* ---------- Square note ---------- */
+
+.bead-chains-square-note {
+  margin-top: 1.1rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+}

@@ -1,0 +1,267 @@
+/* Stamp Game — scoped styles (every class prefixed stamp-game-) */
+
+.stamp-game-problem {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--card);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  margin: 0 0 0.6rem;
+}
+
+.stamp-game-problem-note {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+/* ---------- Bank ---------- */
+
+.stamp-game-bank-item {
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stamp-game-bank-stack {
+  position: relative;
+  display: inline-block;
+  margin: 3px 3px 0 0;
+}
+
+/* a hint of the stack of stamps in the box */
+.stamp-game-bank-stack::before,
+.stamp-game-bank-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.55);
+  z-index: -1;
+}
+
+.stamp-game-bank-stack::before {
+  transform: translate(3px, -3px);
+}
+
+.stamp-game-bank-stack::after {
+  transform: translate(6px, -6px);
+}
+
+.stamp-game-bank-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: capitalize;
+}
+
+.stamp-game-bank-hint {
+  margin-left: 0.5rem;
+  align-self: center;
+}
+
+.bank-tray .stamp-game-bank-hint {
+  color: var(--ink-soft);
+  text-shadow: none;
+}
+
+/* ---------- Messages (control of error, refusals) ---------- */
+
+.stamp-game-message-wrap {
+  min-height: 0.25rem;
+}
+
+.stamp-game-message {
+  background: rgba(255, 255, 255, 0.92);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  margin: 0.6rem 0;
+  max-width: 42rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- Regions & place columns ---------- */
+
+.stamp-game-region {
+  margin-top: 0.9rem;
+}
+
+.stamp-game-region-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.stamp-game-value {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.1rem 0.65rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-shadow: none;
+}
+
+.stamp-game-columns {
+  display: flex;
+  gap: 0.7rem;
+  align-items: stretch;
+  width: max-content;
+}
+
+.stamp-game-column {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem;
+  width: 152px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.stamp-game-col-head {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: capitalize;
+  margin-bottom: 0.3rem;
+}
+
+.stamp-game-col-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  flex: 0 0 auto;
+}
+
+.stamp-game-col-count {
+  margin-left: auto;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.stamp-game-check {
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.stamp-game-check.stamp-game-ok {
+  color: var(--ok);
+}
+
+.stamp-game-check.stamp-game-bad {
+  color: var(--error);
+}
+
+.stamp-game-stamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-content: flex-start;
+  min-height: 96px;
+  flex: 1;
+}
+
+.stamp-game-compact .stamp-game-stamps {
+  min-height: 50px;
+}
+
+/* ---------- Exchange / deal buttons ---------- */
+
+.stamp-game-xbtn {
+  min-height: var(--touch-target);
+  width: 100%;
+  margin-top: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.35rem;
+}
+
+.stamp-game-xbtn:hover {
+  background: var(--paper-warm);
+}
+
+.stamp-game-deal {
+  background: var(--paper-warm);
+  border-color: var(--wood);
+  font-weight: 700;
+}
+
+.stamp-game-deal:hover {
+  background: var(--card);
+}
+
+/* ---------- Build rows (addition / multiplication) ---------- */
+
+.stamp-game-row-btn {
+  min-height: var(--touch-target);
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-weight: 700;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+
+.stamp-game-row-btn[aria-pressed='true'] {
+  border-color: var(--focus);
+  background: var(--card);
+}
+
+/* ---------- Division skittle rows ---------- */
+
+.stamp-game-skittle-row {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin-top: 0.9rem;
+}
+
+.stamp-game-skittle {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding-top: 0.5rem;
+  min-width: 2rem;
+}
+
+.stamp-game-skittle-num {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---------- Actions ---------- */
+
+.stamp-game-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.9rem 0 0.2rem;
+}
+
+.stamp-game-num {
+  width: 6.5rem;
+}

@@ -1,0 +1,290 @@
+/* Racks & Tubes — component styles (all classes prefixed racks-and-tubes-) */
+
+.racks-and-tubes-problem {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  margin: 0 0 0.25rem;
+}
+
+.racks-and-tubes-notice {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent-dark);
+  font-weight: 600;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.8rem;
+  margin: 0.4rem 0;
+  max-width: 46rem;
+}
+
+/* ---------- Racks (the bead supply, one cup per place) ---------- */
+
+.racks-and-tubes-racks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.racks-and-tubes-rack {
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.6rem;
+  min-width: 132px;
+  max-width: 190px;
+  flex: 1;
+}
+
+.racks-and-tubes-rack-gray {
+  background: rgba(224, 224, 224, 0.94);
+}
+
+.racks-and-tubes-rack-active {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.racks-and-tubes-rack-name {
+  margin: 0 0 0.3rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.racks-and-tubes-rack-beads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-content: flex-start;
+  min-height: 34px;
+}
+
+.racks-and-tubes-rack-empty {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.racks-and-tubes-rack-count {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+/* ---------- Work row: boards + actions on the left, paper on the right ---------- */
+
+.racks-and-tubes-workrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.racks-and-tubes-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1 1 380px;
+}
+
+.racks-and-tubes-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---------- Division boards ---------- */
+
+.racks-and-tubes-boards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.racks-and-tubes-board {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.7rem;
+  box-shadow: var(--shadow-md);
+}
+
+.racks-and-tubes-board-units {
+  border: 3px solid var(--pv-unit);
+}
+
+.racks-and-tubes-board-tens {
+  border: 3px solid var(--pv-ten);
+}
+
+.racks-and-tubes-board-title {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.racks-and-tubes-board-place {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.racks-and-tubes-board-supply {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-content: flex-start;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.45rem;
+  min-height: 32px;
+  margin-bottom: 0.45rem;
+  max-width: 330px;
+}
+
+.racks-and-tubes-board-supply-empty {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.racks-and-tubes-board-noskittles {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.racks-and-tubes-board-grid {
+  display: grid;
+  grid-auto-rows: 30px;
+  gap: 2px;
+  border-top: 1px solid var(--line);
+  padding-top: 0.35rem;
+}
+
+.racks-and-tubes-skittle-cell {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 48px;
+}
+
+.racks-and-tubes-bead-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.racks-and-tubes-bead-cell::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.racks-and-tubes-bead-cell svg {
+  position: relative;
+}
+
+.racks-and-tubes-board-count {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* ---------- The written record (paper long division) ---------- */
+
+.racks-and-tubes-paper {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+  flex: 0 1 auto;
+  min-width: 220px;
+}
+
+.racks-and-tubes-paper-title {
+  margin: 0 0 0.4rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.racks-and-tubes-paper-sheet {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.racks-and-tubes-paper-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.racks-and-tubes-paper-gutter {
+  white-space: pre;
+  padding-right: 0.35rem;
+}
+
+.racks-and-tubes-paper-cells {
+  white-space: pre;
+  padding-left: 0.35rem;
+}
+
+.racks-and-tubes-paper-dividend {
+  border-left: 2px solid var(--ink);
+  border-top: 2px solid var(--ink);
+  padding-top: 0.1rem;
+}
+
+.racks-and-tubes-paper-underline {
+  border-bottom: 1.5px solid var(--ink-soft);
+}
+
+.racks-and-tubes-paper-digit {
+  font-weight: 700;
+}
+
+.racks-and-tubes-paper-ghost {
+  opacity: 0.35;
+}
+
+.racks-and-tubes-paper-counting {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.racks-and-tubes-paper-rem {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.racks-and-tubes-paper-check {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  color: var(--ok);
+  font-weight: 600;
+  max-width: 20rem;
+}
+
+.racks-and-tubes-paper-check p {
+  margin: 0 0 0.3rem;
+}
+
+.racks-and-tubes-paper-warn {
+  color: var(--error);
+}

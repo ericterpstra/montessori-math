@@ -1,0 +1,116 @@
+/* ---------- Colored Bead Stair ---------- */
+
+.bead-stair-bank {
+  min-height: 56px;
+}
+
+.bead-stair-bar svg {
+  display: block;
+}
+
+.bead-stair-selected {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.bead-stair-tray-empty {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  align-self: center;
+}
+
+.bead-stair-note {
+  min-height: 1.4em;
+  margin: 0.1rem 0 0.6rem;
+}
+
+.bead-stair-stair {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: 0.25rem 0;
+}
+
+.bead-stair-rowwrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bead-stair-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0.3rem 0.4rem;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  overflow: visible;
+}
+
+.bead-stair-row:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/*
+ * The slot outline's inner width is set inline to exactly n beads
+ * (content-box), so the right bar fills it edge to edge, a long bar
+ * visibly overhangs past the dashed border, and a short bar leaves a gap.
+ */
+.bead-stair-slot {
+  box-sizing: content-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  height: 26px;
+  border: 2px dashed rgba(255, 255, 255, 0.55);
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.bead-stair-slot svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.bead-stair-numeral-slot {
+  display: inline-block;
+  width: 27px;
+  height: 42px;
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.bead-stair-numeral {
+  flex-shrink: 0;
+}
+
+.bead-stair-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.bead-stair-mark-ok {
+  color: var(--ok);
+}
+
+.bead-stair-mark-err {
+  color: var(--error);
+}

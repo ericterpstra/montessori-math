@@ -1,0 +1,154 @@
+/* Fraction Circles — component styles (all classes prefixed fraction-circles-) */
+
+.fraction-circles-frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: flex-end;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin: 0.6rem 0 0.9rem;
+}
+
+.fraction-circles-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.fraction-circles-frame-dim {
+  opacity: 0.4;
+}
+
+.fraction-circles-inset {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: inline-flex;
+}
+
+.fraction-circles-inset:not(:disabled):hover {
+  filter: brightness(1.08);
+  box-shadow: var(--shadow-sm);
+}
+
+.fraction-circles-inset:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.fraction-circles-inset:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.fraction-circles-inset-svg {
+  display: block;
+  width: 86px;
+  height: 86px;
+}
+
+.fraction-circles-frame-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.fraction-circles-mat {
+  display: block;
+  max-width: none;
+}
+
+.fraction-circles-mat-sector {
+  cursor: pointer;
+}
+
+.fraction-circles-mat-sector:hover {
+  filter: brightness(1.15);
+}
+
+.fraction-circles-mat-sector:focus-visible {
+  outline: 3px solid var(--focus);
+}
+
+.fraction-circles-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.fraction-circles-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  margin-top: 0.9rem;
+  max-width: 640px;
+  box-shadow: var(--shadow-sm);
+}
+
+.fraction-circles-panel-name {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.fraction-circles-panel-symbol {
+  font-size: 1.25rem;
+  color: var(--accent-dark);
+}
+
+.fraction-circles-panel-sub {
+  margin: 0.3rem 0 0;
+  color: var(--ink-soft);
+}
+
+.fraction-circles-panel-hint {
+  margin: 0 0 0.5rem;
+  color: var(--ink-soft);
+}
+
+.fraction-circles-notes {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+}
+
+.fraction-circles-notes li {
+  margin-bottom: 0.25rem;
+}
+
+.fraction-circles-note-ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.fraction-circles-note-hint {
+  color: var(--accent-dark);
+}
+
+.fraction-circles-toggle {
+  min-height: var(--touch-target);
+  cursor: pointer;
+}
+
+.fraction-circles-toggle input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--focus);
+  cursor: pointer;
+}
