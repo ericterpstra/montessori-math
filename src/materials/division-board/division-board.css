@@ -17,6 +17,7 @@
 }
 
 .division-board-board {
+  --db-scale-w: 22px;
   background: var(--card);
   border: 2px solid var(--pv-unit);
   border-radius: var(--radius);
@@ -24,10 +25,38 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Printed numeral scales, as on the physical board: 1–9 across the top, 1–9 down the left side. */
+.division-board-scale-top {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 2px;
+  margin-left: var(--db-scale-w);
+  margin-bottom: 2px;
+}
+
+.division-board-scale-side {
+  flex: 0 0 var(--db-scale-w);
+  display: grid;
+  grid-auto-rows: 38px;
+  row-gap: 2px;
+}
+
+.division-board-scale-top span,
+.division-board-scale-side span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
 .division-board-slots {
   display: grid;
   grid-template-columns: repeat(9, 44px);
   gap: 2px;
+  margin-left: var(--db-scale-w);
   margin-bottom: 0.4rem;
 }
 
@@ -55,13 +84,17 @@
   border-radius: 50%;
 }
 
+.division-board-body {
+  display: flex;
+  border-top: 1px solid var(--line);
+  padding-top: 0.4rem;
+}
+
 .division-board-grid {
   display: grid;
   grid-template-columns: repeat(9, 44px);
   grid-auto-rows: 38px;
   gap: 2px;
-  border-top: 1px solid var(--line);
-  padding-top: 0.4rem;
 }
 
 .division-board-hole {

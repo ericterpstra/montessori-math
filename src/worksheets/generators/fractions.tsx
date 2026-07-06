@@ -151,8 +151,9 @@ function sectorPath(den: number, i: number): string {
 
 /**
  * A circle divided into `den` equal sectors with the first `shaded` filled red
- * (like the fraction insets). In B&W mode --bead-1 goes black: shaded vs.
- * unshaded stays fully readable — no color-only information.
+ * (like the fraction insets). In B&W mode --fraction-shade becomes a mid gray,
+ * so the dark division lines stay visible between adjacent shaded sectors —
+ * shaded vs. unshaded stays fully readable with no color-only information.
  */
 function FractionCircle({ den, shaded, size }: { den: number; shaded: number; size: number }) {
   const sectors = []
@@ -161,8 +162,8 @@ function FractionCircle({ den, shaded, size }: { den: number; shaded: number; si
       <path
         key={i}
         d={sectorPath(den, i)}
-        fill={i < shaded ? 'var(--bead-1)' : 'none'}
-        stroke="var(--ink-soft)"
+        fill={i < shaded ? 'var(--fraction-shade)' : 'none'}
+        stroke="var(--ink)"
         strokeWidth={1.5}
         strokeLinejoin="round"
       />,
@@ -176,7 +177,7 @@ function FractionCircle({ den, shaded, size }: { den: number; shaded: number; si
       aria-hidden="true"
     >
       {sectors}
-      <circle cx={50} cy={50} r={45} fill="none" stroke="var(--ink-soft)" strokeWidth={2.5} />
+      <circle cx={50} cy={50} r={45} fill="none" stroke="var(--ink)" strokeWidth={2.5} />
     </svg>
   )
 }

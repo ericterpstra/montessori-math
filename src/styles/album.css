@@ -110,8 +110,14 @@
     font-size: 11pt;
   }
 
-  .album section {
+  /* Keep list items and headings intact, but let long sections break
+     between steps — a section taller than one page must not overflow. */
+  .album li {
     break-inside: avoid;
+  }
+
+  .album h2 {
+    break-after: avoid;
   }
 
   .album .say {

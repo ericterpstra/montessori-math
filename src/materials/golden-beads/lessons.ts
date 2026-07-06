@@ -211,15 +211,23 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Write or choose a problem such as 1,568 + 1,679. Have your child build the first number on the mat, beads in columns, and check it against the cards.',
-        say: 'First we lay out one thousand five hundred sixty-eight.',
+        text: 'Start with a problem that needs no trades, such as 1,234 + 2,345. Have your child build the first number on the mat, beads in columns, and check it against the cards.',
+        say: 'First we lay out one thousand two hundred thirty-four.',
       },
       {
         text: 'Build the second number below or beside the first, keeping each place in its own column.',
         say: 'Now the second number. We are going to put them together — that is what addition means.',
       },
       {
-        text: 'Push the two quantities together column by column, starting with the units. Count the units aloud.',
+        text: 'Push the two quantities together column by column, starting with the units, and count each column aloud: nine units, seven tens, five hundreds, three thousands. No column overflows.',
+        say: 'Nine units. Seven tens. Five hundreds. Three thousands.',
+      },
+      {
+        text: 'Read the answer from the mat, place by place, and stack the answer cards: 3,579. Record the whole sum on paper.',
+        say: 'One thousand two hundred thirty-four plus two thousand three hundred forty-five makes three thousand five hundred seventy-nine.',
+      },
+      {
+        text: 'Another day — or right away, if your child is eager — present a problem where a column overflows: 1,568 + 1,679. Build both numbers as before, push them together, and count the units.',
         say: 'Seventeen units! Can a column keep more than nine? No — we exchange.',
       },
       {
@@ -249,7 +257,6 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['addition', 'addend', 'sum', 'exchange', 'carrying'],
     variations: [
-      'Static addition first (no exchanges needed, e.g. 1,234 + 2,345) if the exchange step overwhelms',
       'Three addends for a confident child — the exchanging becomes even more satisfying',
       'Let your child invent the problem and you do the fetching, while they act as the banker who approves every trade',
     ],
@@ -303,11 +310,22 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Choose a problem that forces borrowing, such as 4,053 − 1,278. Have your child build 4,053 on the mat and check it with the cards. Point out the empty hundreds column.',
-        say: 'Four thousand fifty-three. Look — no hundreds at all in this number.',
+        text: 'Start with a problem that needs no trades, such as 4,567 − 1,234. Have your child build 4,567 on the mat and check it with the cards.',
+        say: 'Four thousand five hundred sixty-seven. We are going to give part of it away — that is what subtraction means.',
       },
       {
-        text: 'Show the amount to take away with the small cards: 1,278. Begin with the units.',
+        text: 'Show the amount to take away with the small cards: 1,234. Begin with the units: count out four units and set them aside off the mat. Three remain.',
+        say: 'We give away four units. Three are left.',
+      },
+      {
+        text: 'Continue column by column: take away three ten-bars, then two hundred-squares, then one thousand-cube. Every column has enough to give.',
+      },
+      {
+        text: 'Read the remainder from the mat — 3,333 — stack the answer cards, and record the problem on paper.',
+        say: 'Four thousand five hundred sixty-seven take away one thousand two hundred thirty-four leaves three thousand three hundred thirty-three.',
+      },
+      {
+        text: 'Another day — or right away, if your child is eager — choose a problem where one column runs short: 4,563 − 1,238. Have your child build 4,563, check it with the cards, and begin with the units.',
         say: 'We must give away eight units, but we only have three. What can we do?',
       },
       {
@@ -315,23 +333,19 @@ export const lessons: Lesson[] = [
         say: 'One ten makes ten units. Now we can give eight away.',
       },
       {
-        text: 'Move to the tens: four remain but seven must go. There are no hundreds to trade — so first exchange one thousand-cube for ten hundred-squares, then one hundred-square for ten ten-bars.',
-        say: 'The hundreds column is empty, so we ask the thousands for help first.',
-      },
-      {
-        text: 'Continue taking away column by column, counting the beads rather than reciting: remove seven ten-bars, then two hundred-squares, then one thousand-cube, exchanging first whenever a column runs short. Let the beads do the arithmetic.',
+        text: 'Continue taking away column by column, counting the beads rather than reciting: five ten-bars remain (one went to the bank), so give three away; then two hundred-squares; then one thousand-cube. That single trade was the only one needed.',
         say: 'Count what is left in each column.',
       },
       {
-        text: 'Read the remainder from the mat — 2,775 — stack the answer cards, and record the problem on paper.',
-        say: 'Four thousand fifty-three take away one thousand two hundred seventy-eight leaves two thousand seven hundred seventy-five.',
+        text: 'Read the remainder from the mat — 3,325 — stack the answer cards, and record the problem on paper.',
+        say: 'Four thousand five hundred sixty-three take away one thousand two hundred thirty-eight leaves three thousand three hundred twenty-five.',
       },
       {
         text: 'In the virtual material, choose Subtraction. Your child lays out the starting number, checks it, then taps pieces to return them to the bank, using the exchange buttons whenever a column runs short. Check marks every place honestly.',
       },
     ],
     pointsOfInterest: [
-      'The empty hundreds column that sends your child "up the street" to the thousands for help',
+      'The moment a column cannot pay what it owes — "we only have three, but eight must go!"',
       'Trading one big piece for ten smaller ones — the reverse of the addition trade',
       'The pile of taken-away beads growing while the mat shrinks',
     ],
@@ -342,13 +356,13 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['subtraction', 'minuend', 'subtrahend', 'difference', 'borrowing', 'exchange'],
     variations: [
-      'Static subtraction first (no borrowing, e.g. 4,567 − 1,234) to settle the routine',
-      'Story problems: "The bakery had 4,053 raisins and used 1,278 in the bread…"',
+      'Story problems: "The bakery had 4,563 raisins and used 1,238 in the bread…"',
       'Play banker and customer: your child must ask the banker (you) for each trade and explain why it is fair',
     ],
     extensions: [
       'Write the same problem in columns on paper and find where each bead trade appears as a crossed-out digit',
-      'Check by addition: add the answer and the subtrahend with beads and watch 4,053 reappear',
+      'Check by addition: add the answer and the subtrahend with beads and watch 4,563 reappear',
+      'The harder challenge — borrowing across a zero: try 4,053 − 1,278. The hundreds column is completely empty, so before the tens can pay, your child must ask the thousands for help — one thousand becomes ten hundreds, then one hundred becomes ten tens. The answer is 2,775.',
     ],
     whatComesNext:
       'Golden Bead Multiplication follows — your child discovers it is simply adding the same number several times, and the exchanges feel like old friends.',
@@ -396,11 +410,11 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Choose a problem such as 1,568 × 3. Tell your child the plan before you start.',
-        say: 'We are going to take one thousand five hundred sixty-eight — three times!',
+        text: 'Start with a problem where no column overflows, such as 1,212 × 3. Tell your child the plan before you begin.',
+        say: 'We are going to take one thousand two hundred twelve — three times!',
       },
       {
-        text: 'Have your child build 1,568 on the mat and check it. Then build it again below, and check. Then a third time.',
+        text: 'Have your child build 1,212 on the mat and check it. Then build it again below, and check. Then a third time.',
         say: 'That is once… twice… three times. The same number every time.',
       },
       {
@@ -408,7 +422,11 @@ export const lessons: Lesson[] = [
         say: 'Every row is exactly the same. When we add the same number again and again, we call it multiplication.',
       },
       {
-        text: 'Push all three layouts together column by column, starting with the units, and count each column aloud.',
+        text: 'Push all three layouts together column by column, starting with the units, and count each column aloud: six units, three tens, six hundreds, three thousands. Read the product — 3,636 — stack the answer cards, and record the problem on paper.',
+        say: 'One thousand two hundred twelve taken three times makes three thousand six hundred thirty-six.',
+      },
+      {
+        text: 'Another day — or right away, if your child is eager — present 1,568 × 3, where the columns overflow. Build the three layouts, checking each against the cards, then push them together starting with the units.',
         say: 'Twenty-four units! Too many for one column — off to the bank.',
       },
       {
@@ -434,7 +452,6 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['multiplication', 'times', 'multiplicand', 'multiplier', 'product'],
     variations: [
-      'Start with 2 as the multiplier and a small number like 234 taken twice',
       'Skip-count the layouts before combining: 1,568… 3,136… 4,704 (with your help)',
       'Group multiplication: each family member builds one copy of the number, then all copies are combined',
     ],
@@ -488,23 +505,30 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Choose a problem such as 9,764 ÷ 4. Stand four skittles in a row, with space below each for its share. Have your child build 9,764 on the mat and check it.',
-        say: 'Four friends are going to share nine thousand seven hundred sixty-four — exactly fairly.',
+        text: 'Start with a problem that shares out evenly with no trades, such as 9,393 ÷ 3. Stand three skittles in a row, with space below each for its share. Have your child build 9,393 on the mat and check it.',
+        say: 'Three friends are going to share nine thousand three hundred ninety-three — exactly fairly.',
       },
       {
-        text: 'Begin with the thousands, the biggest pieces. Deal them out one at a time, one to each skittle in turn, until fewer than four remain.',
-        say: 'One thousand for you, one for you, one for you, one for you… and again.',
+        text: 'Begin with the thousands, the biggest pieces. Deal them out one at a time, one to each skittle in turn, until they are gone — nine thousands, three for each friend.',
+        say: 'One thousand for you, one for you, one for you… and again.',
       },
       {
-        text: 'One thousand-cube is left and cannot be shared among four. Take it to the bank and exchange it for ten hundred-squares.',
+        text: 'Deal the hundreds, the tens, and the units the same way. Every column shares out evenly with nothing left on the mat.',
+      },
+      {
+        text: 'Look at one skittle’s share and read it: 3 thousands, 1 hundred, 3 tens, 1 unit — 3,131. Point out that every skittle has exactly the same.',
+        say: 'Each friend receives three thousand one hundred thirty-one. The answer in division is what one person gets.',
+      },
+      {
+        text: 'Another day — or right away, if your child is eager — try 9,764 ÷ 4 with four skittles. Deal the thousands until fewer than four remain. One thousand-cube is left and cannot be shared among four.',
+        say: 'One thousand is left, and four friends are waiting. What can we do?',
+      },
+      {
+        text: 'Take the leftover thousand to the bank and exchange it for ten hundred-squares.',
         say: 'One thousand makes ten hundreds. Now we can keep sharing.',
       },
       {
-        text: 'Deal the hundreds (seventeen now), then exchange the leftover hundred for ten tens, deal the tens, and finally deal the units the same way.',
-      },
-      {
-        text: 'Look at one skittle’s share and read it: 2 thousands, 4 hundreds, 4 tens, 1 unit — 2,441. Point out that every skittle has exactly the same.',
-        say: 'Each friend receives two thousand four hundred forty-one. The answer in division is what one person gets.',
+        text: 'Deal the hundreds (seventeen now), then exchange the leftover hundred for ten tens, deal the tens, and finally deal the units the same way. Each skittle’s share reads 2,441 — two thousand four hundred forty-one.',
       },
       {
         text: 'Try 9,765 ÷ 4 next. Everything repeats, but at the very end one unit cannot be shared. It stays on the mat.',
@@ -522,14 +546,13 @@ export const lessons: Lesson[] = [
     ],
     controlOfError: [
       'Fair sharing is visible: if two skittle rows differ, something went wrong and the child can see where',
-      'Multiplying back — one share taken four times — rebuilds the dividend, remainder included',
+      'Multiplying back — one share taken once per skittle — rebuilds the dividend, remainder included',
       'The virtual Check tells the child when a column can still be dealt or exchanged, and only then marks each place of the share',
     ],
     vocabulary: ['division', 'share', 'dividend', 'divisor', 'quotient', 'remainder', 'skittle'],
     variations: [
-      'Share among 2 or 3 first — fewer skittles means quicker rounds',
+      'Share among 2 skittles first — fewer friends means quicker rounds',
       'Use snacks-for-toys pretend play: crackers shared among stuffed animals, then beads shared among skittles',
-      'Choose problems with remainder zero at first, then spring a remainder and talk about it',
     ],
     extensions: [
       'Record division on paper as 9,764 ÷ 4 = 2,441 and, later, with the remainder written as "r 1"',

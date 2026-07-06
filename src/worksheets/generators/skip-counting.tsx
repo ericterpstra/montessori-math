@@ -96,9 +96,16 @@ function titleFor(params: SkipCountingParams): string {
   return params.n === 'mixed' ? `${base} — Mixed` : `${base} — ${params.n}s`
 }
 
-/** Sequences per printed page (each row must keep room for child handwriting). */
-function pageCapacity(mode: SkipCountingMode): number {
-  return mode === 'table' ? 9 : 8
+/**
+ * Sequences per printed page (each row must keep room for child handwriting).
+ * Ten-ticket chains ('beyond' mode, or 'chains' counting by 10s) are the
+ * widest, tallest rows; those pages hold fewer so they never overflow
+ * vertically, even if a chain wraps to a second line.
+ */
+export function pageCapacity(params: Pick<SkipCountingParams, 'mode' | 'n'>): number {
+  if (params.mode === 'table') return 9
+  if (params.mode === 'beyond' || params.n === '10') return 6
+  return 8
 }
 
 function chunk<T>(items: readonly T[], size: number): T[][] {
@@ -179,7 +186,7 @@ function TableRow({ seq, index }: { seq: SkipCountingSequence; index: number }) 
 }
 
 function Sheet({ data, params }: SheetProps<SkipCountingParams, SkipCountingData>) {
-  const capacity = pageCapacity(params.mode)
+  const capacity = pageCapacity(params)
   return (
     <>
       {chunk(data.sequences, capacity).map((pageSeqs, page) => (

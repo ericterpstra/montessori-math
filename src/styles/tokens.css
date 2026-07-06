@@ -17,6 +17,10 @@
   --pv-hundredth: #efa3b7;
   --pv-thousandth: #a9d3ab;
 
+  /* Fraction insets: red circles in green metal frames */
+  --inset-frame: #4c7a54;
+  --fraction-shade: var(--bead-1);
+
   /* Golden bead material */
   --golden: #d4a017;
   --golden-light: #f0c860;

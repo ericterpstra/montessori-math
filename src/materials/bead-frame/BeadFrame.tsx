@@ -206,9 +206,9 @@ export default function BeadFrame() {
     <p>
       Each wire is one place: green units at the top, then blue tens, red hundreds, and so on down the frame. Beads
       rest on the left; tap a bead to slide it (and the beads between it and the gap) to the right, where it counts —
-      tap a counted bead to slide it back. In Addition and Subtraction, work one wire at a time, and when a wire fills
-      up (or runs empty), press its Exchange button to trade ten beads for one bead on the wire below — exactly like
-      carrying and borrowing on paper.
+      tap a counted bead to slide it back. In Addition and Subtraction, work one wire at a time: when a wire fills up,
+      its Exchange button trades the ten beads for one bead on the wire below; when a wire runs empty, Exchange
+      borrows one bead from the wire below and brings ten forward here — carrying and borrowing, exactly as on paper.
     </p>
   )
 

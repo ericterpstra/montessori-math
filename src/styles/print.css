@@ -136,4 +136,7 @@
   --bead-8: #000;
   --bead-9: #000;
   --bead-10: #000;
+  --inset-frame: #000;
+  /* Mid gray so black sector-division lines stay visible on shaded fractions. */
+  --fraction-shade: #b3b3b3;
 }

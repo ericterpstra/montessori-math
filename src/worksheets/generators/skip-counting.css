@@ -32,20 +32,22 @@
   flex: none;
 }
 
-/* Arrow-joined chain of tickets */
+/* Arrow-joined chain of tickets.
+   Sized so a full ten-ticket chain fits one line inside the 7.5in printable
+   width: 10 × 0.5in tickets + 9 arrows (~0.15in) + 18 × 0.03in gaps ≈ 6.9in. */
 
 .skip-counting-chain {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.04in;
+  gap: 0.03in;
 }
 
 .skip-counting-ticket {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 0.55in;
+  min-width: 0.5in;
   height: 0.46in;
   padding: 0 0.05in;
   border: 1.5px solid currentColor;
@@ -61,7 +63,7 @@
 }
 
 .skip-counting-arrow {
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   line-height: 1;
 }
 

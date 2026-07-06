@@ -19,7 +19,8 @@ export const BEAD_STAIR_VARS: readonly string[] = [
   'var(--bead-10)',
 ]
 
-const BEAD_STROKE = 'rgba(0,0,0,0.35)'
+/* Strong enough that light beads (the white 7-bar) keep a visible rim in print. */
+const BEAD_STROKE = 'rgba(0,0,0,0.55)'
 
 interface BeadShapeProps {
   cx: number
@@ -32,7 +33,7 @@ interface BeadShapeProps {
 export function BeadShape({ cx, cy, r, fill }: BeadShapeProps) {
   return (
     <g>
-      <circle cx={cx} cy={cy} r={r} fill={fill} stroke={BEAD_STROKE} strokeWidth={r * 0.09} />
+      <circle cx={cx} cy={cy} r={r} fill={fill} stroke={BEAD_STROKE} strokeWidth={Math.max(0.6, r * 0.09)} />
       <ellipse cx={cx - r * 0.3} cy={cy - r * 0.35} rx={r * 0.38} ry={r * 0.26} fill="#fff" opacity={0.4} />
     </g>
   )

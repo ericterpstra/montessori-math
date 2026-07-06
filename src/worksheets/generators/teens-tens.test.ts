@@ -1,7 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { createRng } from '../../lib/rng'
-import { def, RUN_LENGTH } from './teens-tens'
-import type { TeensTensData, TeensTensMode, TeensTensParams, TeensTensRange } from './teens-tens'
+import {
+  def,
+  RUN_LENGTH,
+  paginateProblems,
+  PAGE_BUDGET_IN,
+  ROW_HEIGHT_IN,
+  ROW_GAP_IN,
+  SECTION_HEADING_IN,
+} from './teens-tens'
+import type {
+  ProblemKind,
+  SectionChunk,
+  TeensTensData,
+  TeensTensMode,
+  TeensTensParams,
+  TeensTensRange,
+} from './teens-tens'
 
 const SEEDS = [1, 2, 42, 99, 12345]
 const MODES: TeensTensMode[] = ['bead-to-numeral', 'numeral-to-bead', 'sequences', 'mixed']
@@ -162,6 +177,86 @@ describe('teens-tens: seed determinism', () => {
     const a = gen(params, 1)
     const b = gen(params, 2)
     expect(JSON.stringify(a)).not.toBe(JSON.stringify(b))
+  })
+})
+
+describe('teens-tens: pagination', () => {
+  // Independent recomputation of the grid columns per kind.
+  function cols(kind: ProblemKind, range: TeensTensRange): number {
+    return kind === 'sequence' ? 2 : range === 'teens' ? 5 : 4
+  }
+
+  // Independent recomputation of a page's printed height from the layout
+  // constants: per chunk, a heading (mixed only) plus its grid rows and the
+  // gaps between them.
+  function pageHeight(page: SectionChunk[], params: TeensTensParams): number {
+    let h = 0
+    for (const chunk of page) {
+      const rows = Math.ceil(chunk.items.length / cols(chunk.kind, params.range))
+      h += params.mode === 'mixed' ? SECTION_HEADING_IN : 0
+      h += rows * ROW_HEIGHT_IN[chunk.kind] + (rows - 1) * ROW_GAP_IN
+    }
+    return h
+  }
+
+  it('count is honored across pages: every problem appears once, in order', () => {
+    for (const count of [6, 10, 14, 15]) {
+      everyCombo(count, (params, data) => {
+        const pages = paginateProblems(data.problems, params)
+        expect(pages.length).toBeGreaterThanOrEqual(1)
+        const flat = pages.flat().flatMap((chunk) => chunk.items)
+        expect(flat.map((x) => x.n)).toEqual(data.problems.map((_, i) => i + 1))
+        flat.forEach((x, i) => expect(x.p).toBe(data.problems[i]))
+      })
+    }
+  })
+
+  it('chunks are homogeneous and continued flags mark sections split across pages', () => {
+    for (const count of [6, 15]) {
+      everyCombo(count, (params, data) => {
+        const pages = paginateProblems(data.problems, params)
+        const seen = new Set<ProblemKind>()
+        for (const chunk of pages.flat()) {
+          expect(chunk.items.length).toBeGreaterThan(0)
+          for (const { p } of chunk.items) expect(p.kind).toBe(chunk.kind)
+          expect(chunk.continued).toBe(seen.has(chunk.kind))
+          seen.add(chunk.kind)
+        }
+      })
+    }
+  })
+
+  it('every page fits within the US Letter height budget', () => {
+    for (const count of [6, 10, 14, 15]) {
+      everyCombo(count, (params, data) => {
+        const pages = paginateProblems(data.problems, params)
+        for (const page of pages) {
+          expect(pageHeight(page, params)).toBeLessThanOrEqual(PAGE_BUDGET_IN + 1e-9)
+        }
+      })
+    }
+  })
+
+  it('large mixed sheets split onto a second page instead of overflowing', () => {
+    for (const count of [14, 15]) {
+      for (const seed of SEEDS) {
+        const params: TeensTensParams = { mode: 'mixed', range: 'tens', count }
+        const pages = paginateProblems(gen(params, seed).problems, params)
+        expect(pages.length).toBeGreaterThanOrEqual(2)
+      }
+    }
+  })
+
+  it('single-mode sheets stay on one page even at max count', () => {
+    for (const mode of ['bead-to-numeral', 'numeral-to-bead', 'sequences'] as const) {
+      for (const range of RANGES) {
+        for (const seed of SEEDS) {
+          const params: TeensTensParams = { mode, range, count: 15 }
+          const pages = paginateProblems(gen(params, seed).problems, params)
+          expect(pages).toHaveLength(1)
+        }
+      }
+    }
   })
 })
 

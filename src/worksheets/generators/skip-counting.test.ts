@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createRng } from '../../lib/rng'
-import { def } from './skip-counting'
+import { def, pageCapacity } from './skip-counting'
 import type { SkipCountingData, SkipCountingMode, SkipCountingParams } from './skip-counting'
 
 const SEEDS = [1, 42, 777, 2026, 31415]
@@ -151,6 +151,27 @@ describe('skip-counting: count honored', () => {
         expect(gen({ count, mode, n: 'mixed' }).sequences).toHaveLength(count)
       }
     }
+  })
+})
+
+describe('skip-counting: page capacity', () => {
+  it('table pages hold nine rows regardless of n', () => {
+    expect(pageCapacity({ mode: 'table', n: '2' })).toBe(9)
+    expect(pageCapacity({ mode: 'table', n: '10' })).toBe(9)
+    expect(pageCapacity({ mode: 'table', n: 'mixed' })).toBe(9)
+  })
+
+  it('ten-ticket chain pages (beyond mode, or chains of 10s) hold six rows', () => {
+    expect(pageCapacity({ mode: 'beyond', n: '2' })).toBe(6)
+    expect(pageCapacity({ mode: 'beyond', n: '10' })).toBe(6)
+    expect(pageCapacity({ mode: 'beyond', n: 'mixed' })).toBe(6)
+    expect(pageCapacity({ mode: 'chains', n: '10' })).toBe(6)
+  })
+
+  it('shorter chain pages hold eight rows', () => {
+    expect(pageCapacity({ mode: 'chains', n: '5' })).toBe(8)
+    expect(pageCapacity({ mode: 'chains', n: '9' })).toBe(8)
+    expect(pageCapacity({ mode: 'chains', n: 'mixed' })).toBe(8)
   })
 })
 

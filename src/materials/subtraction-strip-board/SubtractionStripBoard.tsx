@@ -55,13 +55,18 @@ function Board({ minuend, subtrahend, showAnswer, answerTone, wrongTap, onHeader
             classes.push(answerTone === 'ok' ? 'subtraction-strip-board-answer-ok' : 'subtraction-strip-board-answer')
           }
           if (wrongTap === n) classes.push('subtraction-strip-board-wrong')
+          // The squares row below is decorative (aria-hidden), so the header
+          // labels carry the blue strip's position for screen-reader users.
+          let label = covered ? `${n}, covered by the wood strip` : `${n}`
+          if (strip !== null && n === strip.end) label += ', the blue strip ends here'
+          if (strip !== null && n === answer) label += ', just left of the blue strip — read your answer here'
           return (
             <button
               key={n}
               type="button"
               className={classes.join(' ')}
               onClick={() => onHeaderTap(n)}
-              aria-label={covered ? `${n}, covered by the wood strip` : `${n}`}
+              aria-label={label}
             >
               {covered ? '' : n}
             </button>

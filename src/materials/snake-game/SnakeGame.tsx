@@ -116,7 +116,7 @@ export default function SnakeGame() {
         </button>
       )}
       {state.phase === 'done' && (
-        <button type="button" className="btn primary" onClick={() => setShowProof((v) => !v)} aria-pressed={showProof}>
+        <button type="button" className="btn primary" onClick={() => setShowProof((v) => !v)}>
           {showProof ? 'Hide the proof' : 'Prove it'}
         </button>
       )}

@@ -124,7 +124,7 @@ export const lessons: Lesson[] = [
       'The decimal board and colored counters from the introduction lesson (paper columns and buttons or beads in four colors)',
       'A second paper board, or the same sheet folded in half, so two quantities can sit side by side for comparing',
       'Three small cards written <, =, and > for comparison work',
-      'Slips of paper with problems: comparison pairs like 0.3 ? 0.25, sums like 1.4 + 0.75, and differences like 2.1 − 0.35',
+      'Slips of paper with problems: comparison pairs like 0.3 ? 0.25, sums like 1.23 + 0.45 and 1.4 + 0.75, and differences like 2.87 − 1.34 and 2.1 − 0.35',
       'Pencil and paper for recording each problem and its answer',
     ],
     virtualMaterials: ['decimal-board'],
@@ -157,19 +157,27 @@ export const lessons: Lesson[] = [
         say: 'We always compare the biggest places first.',
       },
       {
-        text: 'Move to addition. Write 1.4 + 0.75 on a slip. Have your child build 1.4 across the top of the board and 0.75 below it, then slide the two quantities together column by column.',
+        text: 'Move to addition. Write 1.23 + 0.45 on a slip. Have your child build 1.23 across the top of the board and 0.45 below it, then slide the two quantities together column by column and read the answer: 1.68.',
         say: 'Adding is just putting together — the same as it was with the golden beads.',
+      },
+      {
+        text: 'Record 1.23 + 0.45 = 1.68 in pencil. Now write 1.4 + 0.75 and have your child build and combine the two quantities the same way.',
+        say: 'This time, keep an eye on the tenths column.',
       },
       {
         text: 'Count the tenths column: eleven. Trade ten of them for one unit, carrying it left across the decimal point, and let your child read the answer.',
         say: 'Ten tenths — trade! — one unit crosses the point. Now read it: two point one five.',
       },
       {
-        text: 'Record 1.4 + 0.75 = 2.15 in pencil. Now write 2.1 − 0.35 and have your child build only 2.1.',
+        text: 'Record 1.4 + 0.75 = 2.15 in pencil. Now write 2.87 − 1.34 and have your child build only 2.87.',
         say: 'In taking away, we build just the starting number. The answer will be whatever is left on the board.',
       },
       {
-        text: 'Ask your child to take away 5 hundredths. The hundredths column is empty — so trade 1 tenth for 10 hundredths, then take the 5.',
+        text: 'Take away 1.34 place by place — 4 hundredths, then 3 tenths, then 1 unit — with no trades needed. Read what remains and record 2.87 − 1.34 = 1.53.',
+        say: 'Two point eight seven, take away one point three four — one point five three is left.',
+      },
+      {
+        text: 'Now write 2.1 − 0.35 and have your child build only 2.1, then ask them to take away 5 hundredths. The hundredths column is empty — so trade 1 tenth for 10 hundredths, then take the 5.',
         say: 'Nothing to take! So we break one tenth into ten hundredths — and now we can.',
       },
       {
@@ -196,8 +204,8 @@ export const lessons: Lesson[] = [
     vocabulary: ['greater than', 'less than', 'equal to', 'sum', 'difference', 'exchange', 'carry', 'borrow'],
     variations: [
       'Comparison pairs where the shorter numeral is larger (0.4 vs 0.399, 0.5 vs 0.487) until place-by-place comparing is automatic',
-      'Addition with no trades at first (1.23 + 0.45), then one trade (1.4 + 0.75), then a full cascade (0.999 + 0.001)',
-      'Subtraction with a double borrow across the point, like 2.1 − 0.35 or 3 − 0.001',
+      'Addition with a full cascade of trades, like 0.999 + 0.001, where every column trades up in turn',
+      'Subtraction with a double borrow across the point, like 2.1 − 0.35 — then a full cascade of borrows, like 3 − 0.001',
     ],
     extensions: [
       'Estimate before building: for 1.4 + 0.75 ask, “Will it be more or less than 2?” — then let the board settle it',

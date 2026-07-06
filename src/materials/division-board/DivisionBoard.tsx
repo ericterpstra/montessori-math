@@ -64,7 +64,7 @@ export default function DivisionBoard() {
         ? 'Now deal: tap “Deal a round” to give one bead to each skittle.'
         : dealable
           ? 'Keep dealing rounds while the tray still holds enough beads for everyone.'
-          : 'No more full rounds. Count the beads under one skittle, then the beads left in the tray, and record your answer below.'
+          : 'No more full rounds. Read the number beside the last full row — or count the beads under one skittle — then count the beads left in the tray, and record your answer below.'
 
   const quotientMark = evaluation === null ? null : evaluation.quotientCorrect ? '✓' : '✗'
   const remainderMark = evaluation === null ? null : evaluation.remainderCorrect ? '✓' : '✗'
@@ -76,8 +76,9 @@ export default function DivisionBoard() {
         <p>
           Choose a division problem (or draw one), then tap slots across the top to stand up as many green skittles as the
           divisor — the skittles are the sharers. Tap “Deal a round” to give one bead to each skittle, and keep dealing until the
-          tray can no longer fill a full round. The answer is what one skittle receives; the beads left in the tray are the
-          remainder. Record the quotient and remainder on the answer pad and tap Check — then read the whole equation aloud.
+          tray can no longer fill a full round. The answer is what one skittle receives — read it from the number beside the
+          last full row, or count the beads under one skittle; the beads left in the tray are the remainder. Record the
+          quotient and remainder on the answer pad and tap Check — then read the whole equation aloud.
         </p>
       }
       controls={
@@ -126,6 +127,11 @@ export default function DivisionBoard() {
 
       <div className="division-board-layout">
         <div className="division-board-board">
+          <div className="division-board-scale-top" aria-hidden="true">
+            {range(1, BOARD_COLS).map((n) => (
+              <span key={n}>{n}</span>
+            ))}
+          </div>
           <div className="division-board-slots" role="group" aria-label="skittle slots">
             {board.skittles.map((placedHere, slot) => (
               <button
@@ -140,16 +146,23 @@ export default function DivisionBoard() {
               </button>
             ))}
           </div>
-          <div className="division-board-grid" aria-label={`board with ${board.rowsDealt} rounds dealt`}>
-            {range(0, BOARD_ROWS * BOARD_COLS - 1).map((i) => {
-              const row = Math.floor(i / BOARD_COLS)
-              const col = i % BOARD_COLS
-              return (
-                <div key={i} className="division-board-hole">
-                  {board.skittles[col] && row < board.rowsDealt && <Bead size={26} fill={GREEN} />}
-                </div>
-              )
-            })}
+          <div className="division-board-body">
+            <div className="division-board-scale-side" aria-hidden="true">
+              {range(1, BOARD_ROWS).map((n) => (
+                <span key={n}>{n}</span>
+              ))}
+            </div>
+            <div className="division-board-grid" aria-label={`board with ${board.rowsDealt} rounds dealt`}>
+              {range(0, BOARD_ROWS * BOARD_COLS - 1).map((i) => {
+                const row = Math.floor(i / BOARD_COLS)
+                const col = i % BOARD_COLS
+                return (
+                  <div key={i} className="division-board-hole">
+                    {board.skittles[col] && row < board.rowsDealt && <Bead size={26} fill={GREEN} />}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
 
@@ -188,7 +201,9 @@ export default function DivisionBoard() {
       <div className="division-board-pad">
         <p className="division-board-pad-title">Answer pad</p>
         <div className="division-board-pad-row">
-          <span className="division-board-pad-label">Quotient — count the beads under any one skittle:</span>
+          <span className="division-board-pad-label">
+            Quotient — read the number beside the last full row, or count the beads under one skittle:
+          </span>
           <div className="division-board-keys" role="group" aria-label="record the quotient">
             {range(0, 9).map((n) => (
               <button
@@ -276,7 +291,8 @@ export default function DivisionBoard() {
             )}
             {!evaluation.correct && evaluation.skittlesMatchDivisor && !evaluation.canDealAnotherRound && (
               <li className="division-board-note-hint">
-                Count again — the board holds the answer. The quotient is under one skittle; the remainder is in the tray.
+                Look again — the board holds the answer. The number beside the last full row is the quotient; the remainder is
+                in the tray.
               </li>
             )}
           </ul>

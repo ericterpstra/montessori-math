@@ -6,8 +6,11 @@
  *    write the number
  *  - numeral-to-bead: read a numeral, draw the beads (line per ten, dot per unit)
  *  - sequence: a 6-number counting run with 2–3 missing numbers to fill in
+ *
+ * Sheets paginate: rows flow onto as many US Letter pages as they need
+ * (see paginateProblems), so large mixed sheets never overflow a page.
  */
-import type { CSSProperties } from 'react'
+import { Fragment, type CSSProperties } from 'react'
 import type { RNG } from '../../lib/rng'
 import type { GeneratorDef, SheetProps } from '../types'
 import { SheetPage, AnswerKeyPage } from '../SheetPage'
@@ -132,6 +135,97 @@ function colStyle(cols: number): CSSProperties {
   return { '--cols': cols } as CSSProperties
 }
 
+/* ---------- pagination ---------- */
+
+/**
+ * Per-row height estimates in inches (96 dpi), measured from the rendered
+ * sheet and rounded up a little so a page never overflows. The budget is the
+ * US Letter content area (10in inside 0.5in margins) minus the sheet header
+ * and instruction line.
+ */
+export const PAGE_BUDGET_IN = 8.7
+export const ROW_HEIGHT_IN: Record<ProblemKind, number> = {
+  'bead-to-numeral': 1.9, // number line + 10-bead bar picture + answer line
+  'numeral-to-bead': 1.7, // numeral line + 1.15in draw box
+  sequence: 0.4, // one line of text
+}
+/** Vertical gap between rows of the problems grid. */
+export const ROW_GAP_IN = 0.28
+/** Mixed-mode section heading, including its margins. */
+export const SECTION_HEADING_IN = 0.6
+
+/** Grid columns for a problem kind (sequences are wide; bead pictures narrow). */
+export function kindCols(kind: ProblemKind, range: TeensTensRange): number {
+  if (kind === 'sequence') return 2
+  return range === 'teens' ? 5 : 4
+}
+
+interface Numbered<T> {
+  p: T
+  n: number
+}
+
+/** One same-kind run of problems rendered as a single grid on one page. */
+export interface SectionChunk {
+  kind: ProblemKind
+  /** True when this section started on an earlier page (heading reprints as "continued"). */
+  continued: boolean
+  items: Numbered<TeensTensProblem>[]
+}
+
+/**
+ * Flow the problems onto US Letter pages. Problems keep their 1-based sheet
+ * numbers, kinds stay grouped in order (generate sorts mixed sheets), and a
+ * section that does not fit splits across pages at a grid-row boundary.
+ */
+export function paginateProblems(
+  problems: TeensTensProblem[],
+  params: TeensTensParams,
+): SectionChunk[][] {
+  const mixed = params.mode === 'mixed'
+
+  // Group consecutive same-kind problems into grid rows of `cols` items.
+  const rows: { kind: ProblemKind; items: Numbered<TeensTensProblem>[] }[] = []
+  problems.forEach((p, i) => {
+    const item = { p, n: i + 1 }
+    const last = rows[rows.length - 1]
+    if (last && last.kind === p.kind && last.items.length < kindCols(p.kind, params.range)) {
+      last.items.push(item)
+    } else {
+      rows.push({ kind: p.kind, items: [item] })
+    }
+  })
+
+  const pages: SectionChunk[][] = [[]]
+  const seen = new Set<ProblemKind>()
+  let used = 0
+  for (const row of rows) {
+    let page = pages[pages.length - 1]
+    let chunk: SectionChunk | undefined = page[page.length - 1]
+    let opens = !chunk || chunk.kind !== row.kind
+    // A section heading's margins double as the row gap where it opens.
+    let cost =
+      ROW_HEIGHT_IN[row.kind] +
+      (opens ? (mixed ? SECTION_HEADING_IN : used > 0 ? ROW_GAP_IN : 0) : ROW_GAP_IN)
+    if (used > 0 && used + cost > PAGE_BUDGET_IN) {
+      pages.push([])
+      page = pages[pages.length - 1]
+      chunk = undefined
+      opens = true
+      used = 0
+      cost = ROW_HEIGHT_IN[row.kind] + (mixed ? SECTION_HEADING_IN : 0)
+    }
+    if (opens || !chunk) {
+      chunk = { kind: row.kind, continued: seen.has(row.kind), items: [] }
+      page.push(chunk)
+      seen.add(row.kind)
+    }
+    chunk.items.push(...row.items)
+    used += cost
+  }
+  return pages
+}
+
 /** Golden ten-bars plus a colored bead-stair bar for the units, as on the Seguin boards. */
 function BeadPicture({ tens, units }: { tens: number; units: number }) {
   return (
@@ -168,69 +262,71 @@ function SequenceRun({ p, showAnswers }: { p: SequenceProblem; showAnswers: bool
   )
 }
 
-interface Numbered<T> {
-  p: T
-  n: number
+const SECTION_HEADINGS: Record<ProblemKind, string> = {
+  'bead-to-numeral': 'A. Count the beads and write the number.',
+  'numeral-to-bead': 'B. Draw the beads: a long line for each ten, a dot for each unit.',
+  sequence: 'C. Write the missing numbers.',
+}
+
+function ProblemCell({ p, n }: { p: TeensTensProblem; n: number }) {
+  if (p.kind === 'sequence') {
+    return (
+      <div className="problem teens-tens-seqrow">
+        <span className="problem-number">{n}.</span>
+        <SequenceRun p={p} showAnswers={false} />
+      </div>
+    )
+  }
+  if (p.kind === 'numeral-to-bead') {
+    return (
+      <div className="problem">
+        <span className="problem-number">{n}.</span>
+        <span className="teens-tens-numeral">{p.value}</span>
+        <div className="teens-tens-drawbox" />
+      </div>
+    )
+  }
+  return (
+    <div className="problem">
+      <span className="problem-number">{n}.</span>
+      <BeadPicture tens={p.tens} units={p.units} />
+      <div className="teens-tens-answer">
+        = <span className="write-line teens-tens-answer-blank" />
+      </div>
+    </div>
+  )
 }
 
 function Sheet({ data, params }: SheetProps<TeensTensParams, TeensTensData>) {
-  const numbered: Numbered<TeensTensProblem>[] = data.problems.map((p, i) => ({ p, n: i + 1 }))
-  const reads = numbered.filter((x): x is Numbered<BeadProblem> => x.p.kind === 'bead-to-numeral')
-  const draws = numbered.filter((x): x is Numbered<BeadProblem> => x.p.kind === 'numeral-to-bead')
-  const seqs = numbered.filter((x): x is Numbered<SequenceProblem> => x.p.kind === 'sequence')
   const mixed = params.mode === 'mixed'
-  const cols = params.range === 'teens' ? 5 : 4
+  const pages = paginateProblems(data.problems, params)
 
   return (
-    <SheetPage title={TITLE} instructions={INSTRUCTIONS[params.mode]}>
-      {reads.length > 0 && (
-        <>
-          {mixed && <h3 className="teens-tens-section">A. Count the beads and write the number.</h3>}
-          <div className="problems-grid" style={colStyle(cols)}>
-            {reads.map(({ p, n }) => (
-              <div className="problem" key={n}>
-                <span className="problem-number">{n}.</span>
-                <BeadPicture tens={p.tens} units={p.units} />
-                <div className="teens-tens-answer">
-                  = <span className="write-line teens-tens-answer-blank" />
-                </div>
+    <>
+      {pages.map((chunks, pageIndex) => (
+        <SheetPage
+          key={pageIndex}
+          title={pages.length > 1 ? `${TITLE} (page ${pageIndex + 1} of ${pages.length})` : TITLE}
+          instructions={INSTRUCTIONS[params.mode]}
+        >
+          {chunks.map((chunk) => (
+            <Fragment key={`${chunk.kind}-${chunk.items[0]?.n ?? 0}`}>
+              {mixed && (
+                <h3 className="teens-tens-section">
+                  {SECTION_HEADINGS[chunk.kind]}
+                  {chunk.continued ? ' (continued)' : ''}
+                </h3>
+              )}
+              <div className="problems-grid" style={colStyle(kindCols(chunk.kind, params.range))}>
+                {chunk.items.map(({ p, n }) => (
+                  <ProblemCell key={n} p={p} n={n} />
+                ))}
               </div>
-            ))}
-          </div>
-        </>
-      )}
-      {draws.length > 0 && (
-        <>
-          {mixed && (
-            <h3 className="teens-tens-section">
-              B. Draw the beads: a long line for each ten, a dot for each unit.
-            </h3>
-          )}
-          <div className="problems-grid" style={colStyle(cols)}>
-            {draws.map(({ p, n }) => (
-              <div className="problem" key={n}>
-                <span className="problem-number">{n}.</span>
-                <span className="teens-tens-numeral">{p.value}</span>
-                <div className="teens-tens-drawbox" />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-      {seqs.length > 0 && (
-        <>
-          {mixed && <h3 className="teens-tens-section">C. Write the missing numbers.</h3>}
-          <div className="problems-grid" style={colStyle(2)}>
-            {seqs.map(({ p, n }) => (
-              <div className="problem teens-tens-seqrow" key={n}>
-                <span className="problem-number">{n}.</span>
-                <SequenceRun p={p} showAnswers={false} />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </SheetPage>
+            </Fragment>
+          ))}
+        </SheetPage>
+      ))}
+    </>
   )
 }
 

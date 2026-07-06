@@ -12,7 +12,7 @@ export const lessons: Lesson[] = [
       'The Ten Board (Seguin Board B) gives the tens their names — twenty, thirty, forty, all the way to ninety — and shows that each one is simply that many ten-bars. It follows the Teen Board and opens the door to counting to 99.',
     materialsNeeded: [
       'Seguin Ten Board (Board B): two wooden boards printed 10, 20, 30 … 90 — or nine index cards with the tens written large in black marker',
-      'Nine golden ten-bars — or nine bundles of ten (ten dried beans in a small bag, ten craft sticks rubber-banded, or ten straws bundled) so each “ten” is one graspable thing',
+      '45 golden ten-bars — or 45 bundles of ten (ten dried beans in a small bag, ten craft sticks rubber-banded, or ten straws bundled) so each “ten” is one graspable thing; nine are enough if you build one row at a time',
       'A work mat, tray, or tea towel to define the workspace',
     ],
     virtualMaterials: ['ten-board'],
@@ -48,7 +48,7 @@ export const lessons: Lesson[] = [
         say: 'Ten, twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety.',
       },
       {
-        text: 'Now marry quantity to symbol: ask your child to lay the right number of ten-bars beside each row of the board — one bar next to 10, two bars next to 20, and so on down the board.',
+        text: 'Now marry quantity to symbol: ask your child to lay the right number of ten-bars beside each row of the board — one bar next to 10, two bars next to 20, and so on down the board. A full set of 45 bars makes a staircase down the whole board; with only nine bars, build one row at a time and clear it before the next.',
         say: 'Can you put twenty next to the 20?',
       },
       {
@@ -69,7 +69,7 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety', 'ten-bar'],
     variations: [
-      'Name the tens with bead bars alone, before ever showing the printed board — quantity first, symbol later',
+      'Play the distance game: keep the ten-bars across the room, name a ten (“Bring me sixty”), and have your child fetch the right number of bars to build it — holding the name in mind the whole trip',
       'Point to rows out of order (“What is this one?”) once the sequence is solid',
       'Have your child close their eyes while you hide one pile of bars; they open their eyes, count what is missing, and name it',
     ],

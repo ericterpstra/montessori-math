@@ -190,8 +190,8 @@ export default function NumberCards() {
   const help = (
     <p>
       Tap a card in the bank to bring it to the mat — one card for each place, so tapping a second tens card swaps out
-      the first. Switch between <strong>Side by side</strong> and <strong>Stacked</strong> to see how 3000, 200, 50,
-      and 1 become 3251. In <strong>Read &amp; build</strong>, build the number shown and press Check to see which
+      the first. Switch between <strong>Side by side</strong> and <strong>Stacked</strong> to see how 3,000, 200, 50,
+      and 1 become 3,251. In <strong>Read &amp; build</strong>, build the number shown and press Check to see which
       places match. In <strong>Expand it</strong>, read the stacked number and say its parts out loud before you
       reveal them.
     </p>

@@ -12,7 +12,7 @@ export const lessons: Lesson[] = [
       'The checkerboard is a mat of place-value colored squares that turns long multiplication into a geography lesson: where a bead bar sits tells you what it is worth. This first presentation is only about reading the board — no multiplying yet.',
     materialsNeeded: [
       'A checkerboard mat: 4 rows × 9 columns of squares colored green, blue, red in the repeating place-value pattern (draw one on poster board with markers, or use the virtual board as your reference)',
-      'Colored bead bars 1–9 (pony beads threaded on pipe cleaners work well: red 1, green 2, pink 3, yellow 4, light blue 5, purple 6, white 7, brown 8, dark blue 9)',
+      'Colored bead bars 1–9 (pony beads threaded on pipe cleaners work well: red 1, green 2, pink 3, yellow 4, light blue 5, lavender 6, white 7, brown 8, dark blue 9)',
       'Two sets of small digit cards 0–9: one set in regular ink, one set written in gray',
       'Pencil and paper for the child to record what they discover',
     ],
@@ -21,7 +21,7 @@ export const lessons: Lesson[] = [
     directAims: [
       'Learn the value of every square on the checkerboard: 1 through 100,000,000 along the bottom, growing tenfold with each step left or up',
       'Understand that a bead bar takes its value from the square it sits on — a 3-bar on the 10 square is 30',
-      'Discover the diagonals: squares that touch corner-to-corner all have the same value',
+      'Discover the diagonals: squares that touch corner-to-corner along the down-left/up-right diagonal all have the same value',
     ],
     indirectAims: [
       'Preparation for multiplying multi-digit numbers on the checkerboard',
@@ -47,7 +47,7 @@ export const lessons: Lesson[] = [
       },
       {
         text: 'Point to any square not on the bottom row, for example the 10 square in the second row. Ask your child to find another square worth 10. Trace the diagonal between them with a finger.',
-        say: 'Squares that touch at the corners are worth the same. We call that a diagonal.',
+        say: 'Squares that touch at the corners, stepping down toward the bottom-left, are worth the same. We call that a diagonal.',
       },
       {
         text: 'Slide a bar diagonally down-left along its diagonal to the bottom row and ask whether its value changed. Let your child test this with several bars on several diagonals.',
@@ -126,39 +126,43 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Choose a friendly first problem such as 4,357 × 23 (on the virtual board this is the starting problem). Lay the multiplicand cards 4, 3, 5, 7 along the bottom edge, one under each column, and the gray multiplier cards 2 and 3 up the right edge.',
-        say: 'We are going to multiply four thousand three hundred fifty-seven by twenty-three.',
+        text: 'Begin with a single-digit multiplier so the whole problem lives on the bottom row: 4,357 × 3. Lay the multiplicand cards 4, 3, 5, 7 along the bottom edge, one under each column, and the single gray multiplier card 3 beside the bottom row on the right edge. (On the virtual board, type 4357 and 3 into the multiplicand and multiplier boxes and press Set.)',
+        say: 'We are going to multiply four thousand three hundred fifty-seven by three.',
       },
       {
-        text: 'Start with the units row and the units digit. Point to the square where the 7 column meets the 3 row, and place three 7-bars on it. On the virtual board, the child taps that square and the bars appear.',
+        text: 'Point to the square where the 7 column meets the 3 row — the units square — and place three 7-bars on it. On the virtual board, the child taps that square and the bars appear.',
         say: 'Seven taken three times. Three bars of seven.',
       },
       {
-        text: 'Continue across the units row: three 5-bars on the next square, three 3-bars, three 4-bars. Say what each crossing means as you go.',
+        text: 'Continue across the bottom row: three 5-bars on the tens square, three 3-bars on the hundreds, three 4-bars on the thousands. Say what each crossing means as you go.',
         say: 'Now fifty times three — three bars of five on the tens square.',
-      },
-      {
-        text: 'Move to the tens row for the multiplier digit 2: at each crossing place two bars of the multiplicand digit — two 7-bars, two 5-bars, two 3-bars, two 4-bars.',
-        say: 'This whole row is "times twenty," so everything lands one place higher.',
-      },
-      {
-        text: 'When every crossing is filled, slide the bars in the upper rows down-left along their diagonals to the bottom row. Remind your child of the introduction: diagonal squares are worth the same.',
-        say: 'Slide, don’t lift — along the diagonal nothing changes its value.',
       },
       {
         text: 'Combine the bottom row starting at the right. Count the beads on the units square: 21. Twenty-one is one unit and two tens, so a 1-bar stays and 2 carries to the tens square. On the virtual board, tap the square and watch the exchange.',
         say: 'Twenty-one: the one stays here, the twenty moves one square to the left.',
       },
       {
-        text: 'Work left square by square, combining and carrying, until every square holds a single bar or is empty.',
-        say: 'No square may keep more than nine.',
+        text: 'Work left square by square, combining and carrying, until every square holds a single bar or is empty. Read the bottom row right to left — 1, 3, 0, 7, 1 — and write the product on paper with commas: 13,071.',
+        say: 'Four thousand three hundred fifty-seven times three is thirteen thousand, seventy-one.',
       },
       {
-        text: 'Read the bottom row right to left — 1, 1, 2, 0, 0, 1 — and write the product on paper with commas: 100,211. Let the child read it aloud.',
+        text: 'Now the same multiplicand with a two-digit multiplier: 4,357 × 23 (the starting problem on the virtual board). Keep the multiplicand cards in place; set the gray 3 beside the bottom row and the gray 2 beside the tens row.',
+        say: 'This time we multiply by twenty-three — three units and two tens.',
+      },
+      {
+        text: 'Fill the units row exactly as before: three 7-bars, three 5-bars, three 3-bars, three 4-bars. Then move to the tens row for the multiplier digit 2: at each crossing place two bars of the multiplicand digit — two 7-bars, two 5-bars, two 3-bars, two 4-bars.',
+        say: 'This whole row is "times twenty," so everything lands one place higher.',
+      },
+      {
+        text: 'When every crossing is filled, slide the bars in the tens row down-left along their diagonals to the bottom row. Remind your child of the introduction: diagonal squares are worth the same.',
+        say: 'Slide, don’t lift — along the diagonal nothing changes its value.',
+      },
+      {
+        text: 'Combine the bottom row from the right just as before, carrying one square to the left whenever a square goes past nine. Then read the bottom row right to left — 1, 1, 2, 0, 0, 1 — and write the product on paper with commas: 100,211. Let the child read it aloud.',
         say: 'Four thousand three hundred fifty-seven times twenty-three is one hundred thousand, two hundred eleven.',
       },
       {
-        text: 'Give the child a new problem — start with 4-digit × 1-digit, then 4-digit × 2-digit — and let them run the whole cycle themselves: place, slide, combine, read, and record the result on paper.',
+        text: 'Give the child a new problem — another 4-digit × 1-digit if they want the easier round, then 4-digit × 2-digit — and let them run the whole cycle themselves: place, slide, combine, read, and record the result on paper.',
         say: 'Your turn: place the bars, slide the diagonals, make the exchanges, and read me the answer.',
       },
     ],
@@ -175,9 +179,9 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['multiplicand', 'multiplier', 'partial product', 'product', 'diagonal', 'carry', 'exchange'],
     variations: [
-      'Multiply by a single digit first (4-digit × 1-digit) so the whole problem lives on the bottom row',
       'Include a zero in the multiplicand (for example 4,057 × 23) and notice the empty column',
       'Let the child slide one row at a time and re-count the board total after each slide to prove nothing changed',
+      'Once two-digit multipliers feel easy, try a 3-digit multiplier — the hundreds row adds a second diagonal slide',
     ],
     extensions: [
       'After the board answer is read, write the same problem vertically on paper and match each written partial product to a row of the board',

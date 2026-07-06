@@ -1,6 +1,6 @@
 # PRD 07 — Review & QA
 
-**Status:** Not started · runs after PRDs 02–06
+**Status:** Done — 40 findings raised, 32 confirmed after adversarial verification, all fixed
 
 ## Overview
 
@@ -20,9 +20,9 @@ Independent multi-agent review pass over the finished site, then fixes. Four rev
 
 ## Quality gates (whole project)
 
-- [ ] `npm run build` green (strict tsc + Vite)
-- [ ] `npm test` green — ≥120 assertions across models, generators, content schema
-- [ ] Every route renders without console errors
-- [ ] All PRD 02 material-specific acceptance checks pass in a real browser
-- [ ] Content-accuracy findings triaged; all confirmed issues fixed
-- [ ] Print QA passed (PRD 06 checklist re-run after fixes)
+- [x] `npm run build` green (strict tsc + Vite)
+- [x] `npm test` green — ≥120 assertions across models, generators, content schema
+- [x] Every route renders without console errors
+- [x] All PRD 02 material-specific acceptance checks pass in a real browser
+- [x] Content-accuracy findings triaged; all confirmed issues fixed
+- [x] Print QA passed (PRD 06 checklist re-run after fixes)

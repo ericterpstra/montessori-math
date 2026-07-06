@@ -261,12 +261,14 @@ export default function AdditionStripBoard() {
             <button
               key={p.color}
               type="button"
-              className={`${P}-strip ${P}-strip-${p.color} ${P}-strip-on-board`}
+              className={`${P}-strip-slot`}
               style={{ gridColumn: `${p.startColumn} / span ${p.length}` }}
               onClick={() => removeStrip(p.color)}
               aria-label={`take the ${p.color} ${p.length} strip off the board`}
             >
-              <StripFace color={p.color} n={p.length} />
+              <span className={`${P}-strip ${P}-strip-${p.color} ${P}-strip-on-board`}>
+                <StripFace color={p.color} n={p.length} />
+              </span>
             </button>
           ))}
         </div>

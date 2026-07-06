@@ -72,7 +72,7 @@ function InsetFrame({ den, remaining }: { den: number; remaining: number }) {
   const sweep = TAU / den
   return (
     <svg viewBox="0 0 100 100" className="fraction-circles-inset-svg" aria-hidden="true">
-      <rect x={1} y={1} width={98} height={98} rx={8} fill="var(--ink-soft)" />
+      <rect x={1} y={1} width={98} height={98} rx={8} fill="var(--inset-frame)" />
       <circle cx={50} cy={50} r={41} fill="var(--card)" />
       {den === 1
         ? remaining > 0 && <circle cx={50} cy={50} r={39} fill="var(--bead-1)" stroke="var(--card)" strokeWidth={1.5} />

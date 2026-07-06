@@ -122,8 +122,16 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Write a problem in columns on paper, for example 2,647 + 1,585. Choose one that needs several carries.',
+        text: 'Start with a static problem — one with no carries. Write 2,341 + 1,423 in columns on paper and check it first: no column adds past 9.',
         say: 'Let’s add these on the frame.',
+      },
+      {
+        text: 'Build 2,341 on the frame, then add the second number wire by wire: 3 more units, 2 more tens, 4 more hundreds, 1 more thousand. Read the answer, 3,764, and write it under the line.',
+        say: 'Each wire simply gets more beads. Three thousand seven hundred sixty-four.',
+      },
+      {
+        text: 'Now write a problem that needs several carries, for example 2,647 + 1,585.',
+        say: 'This time some wires will fill up. Watch what happens.',
       },
       {
         text: 'Build the first number on the frame: 2 thousands, 6 hundreds, 4 tens, 7 units slid to the right.',
@@ -161,7 +169,6 @@ export const lessons: Lesson[] = [
     ],
     vocabulary: ['addend', 'sum', 'carry', 'exchange', 'column', 'place'],
     variations: [
-      'Start with static addition (no carries), such as 2,341 + 1,423, before introducing exchanges',
       'Subtraction on the frame: build the larger number and slide beads back to the left, trading one bead from the wire below for ten beads when a wire runs empty — borrowing made visible',
       'Let your child write the problem, you work the frame, and they catch your (deliberate) mistakes',
     ],
@@ -252,7 +259,7 @@ export const lessons: Lesson[] = [
     variations: [
       'Dictate seven-digit numbers, including ones with several zeros, for your child to build and write',
       'Subtraction with borrowing across empty wires — watch a borrow travel down through a zero',
-      'Build 25, then 250, then 2,500, then 25,000: watch the same two beads step down the frame as the number grows tenfold',
+      'Build 25, then 250, then 2,500, then 25,000: watch the same two digits step down the frame, wire by wire, as the number grows tenfold',
     ],
     extensions: [
       'Multiply on the frame by repeated addition: 3 × 2,314 is 2,314 added three times, exchanges and all',

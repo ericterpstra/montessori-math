@@ -11,7 +11,7 @@ export const lessons: Lesson[] = [
     overview:
       'Your child discovers that a whole can be cut into equal parts, and that each family of parts has its own name: halves, thirds, fourths, on up to tenths. The fraction circles make this concrete — every piece is a real, holdable part of the same red circle.',
     materialsNeeded: [
-      'Fraction circles: ten red circles in gray square frames — one whole, then circles cut into 2 through 10 equal pieces (sold as "fraction metal insets"; the virtual material below works too)',
+      'Fraction circles: ten red circles in green square frames — one whole, then circles cut into 2 through 10 equal pieces (sold as "fraction metal insets"; the virtual material below works too)',
       'Household substitute: ten paper plates or traced paper circles, one left whole and the others cut into 2–10 equal wedges — keep each family in its own labeled envelope',
       'A work mat, tray, or solid-color placemat',
       'An apple, tortilla, or sandwich and a table knife for the opening moment',

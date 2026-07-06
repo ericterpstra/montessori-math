@@ -26,9 +26,9 @@ export default function Layout() {
             <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
               <defs>
                 <radialGradient id="hdrbead" cx="35%" cy="30%" r="75%">
-                  <stop offset="0%" stopColor="#f6d27a" />
-                  <stop offset="60%" stopColor="#d4a017" />
-                  <stop offset="100%" stopColor="#9c7410" />
+                  <stop offset="0%" style={{ stopColor: 'var(--golden-light)' }} />
+                  <stop offset="60%" style={{ stopColor: 'var(--golden)' }} />
+                  <stop offset="100%" style={{ stopColor: 'var(--golden-dark)' }} />
                 </radialGradient>
               </defs>
               <circle cx="16" cy="16" r="13" fill="url(#hdrbead)" />

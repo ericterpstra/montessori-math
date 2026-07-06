@@ -385,7 +385,7 @@ export default function GoldenBeads() {
               </button>
             </span>
           )}
-          <button type="button" className="btn" onClick={() => setShowTotal((s) => !s)} aria-pressed={showTotal}>
+          <button type="button" className="btn" onClick={() => setShowTotal((s) => !s)}>
             {showTotal ? 'Hide total' : 'Show total'}
           </button>
           <button type="button" className="btn" onClick={resetWork}>

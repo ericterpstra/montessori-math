@@ -164,13 +164,12 @@ export default function HundredBoard() {
         {mode === 'shuffled' && (
           <div className="hundred-board-tray no-print">
             <span className="hundred-board-tray-label">Tile pile ({pile.length} left):</span>
-            <div className="hundred-board-pile" role="listbox" aria-label="shuffled tile pile">
+            <div className="hundred-board-pile" role="group" aria-label="shuffled tile pile">
               {pile.map((tile) => (
                 <button
                   key={tile}
                   type="button"
-                  role="option"
-                  aria-selected={selectedTile === tile}
+                  aria-pressed={selectedTile === tile}
                   className={`hundred-board-tile${selectedTile === tile ? ' hundred-board-selected' : ''}`}
                   onClick={() => setSelectedTile(selectedTile === tile ? null : tile)}
                 >

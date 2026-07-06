@@ -103,7 +103,7 @@ export const lessons: Lesson[] = [
     ages: [4, 7],
     grades: 'PK–1',
     overview:
-      'All thirty-six number cards are laid out in one grand grid so your child sees the whole decimal system at a glance — then learns the trick at its heart: stacking cards so 3000, 200, 50, and 1 read as 3,251.',
+      'All thirty-six number cards are laid out in one grand grid so your child sees the whole decimal system at a glance — then learns the trick at its heart: stacking cards so 3,000, 200, 50, and 1 read as 3,251.',
     materialsNeeded: [
       'A full set of large number cards, 1–9 in green, 10–90 in blue, 100–900 in red, and 1000–9000 in green. Make your own from index cards or card stock: units one digit wide, tens two, hundreds three, thousands four, so the widths nest when stacked.',
       'A large clear workspace — a rug or the kitchen floor works better than a table for the full layout.',
@@ -113,7 +113,7 @@ export const lessons: Lesson[] = [
     prerequisites: ['number-cards-intro', 'golden-beads-formation'],
     directAims: [
       'Read and compose numbers up to 9,999 from place-value cards.',
-      'Move fluently between expanded form (3000 + 200 + 50 + 1) and standard form (3,251).',
+      'Move fluently between expanded form (3,000 + 200 + 50 + 1) and standard form (3,251).',
       'Discover the role of zero as a placeholder — in 4,053 no hundreds card is used, and the zero of the 4000 card shows through.',
     ],
     indirectAims: [
@@ -168,9 +168,9 @@ export const lessons: Lesson[] = [
       'Quiet solo work: let your child rebuild the whole bird’s-eye layout alone — placing all 36 cards in order is a complete work in itself.',
     ],
     extensions: [
-      'Write it down: after stacking a number, your child copies both forms on paper — 3000 + 200 + 50 + 1 = 3251.',
+      'Write it down: after stacking a number, your child copies both forms on paper — 3,000 + 200 + 50 + 1 = 3,251.',
       'Pair with the golden beads: build the quantity on a tray, then build the matching card stack, and check that beads and cards tell the same story.',
-      'Zero detective: build 4,053, 4,503, and 4,530 in turn and talk about how the same cards land in different places.',
+      'Zero detective: build 4,053, 4,503, and 4,530 in turn and talk about how the same digits call for different cards — the five appears as a 500 card in one number and a 50 card in another, and the zero needs no card at all.',
     ],
     whatComesNext:
       'Your child is ready for the great work of the decimal system: addition with the golden beads (lesson 5 in this strand), where two families each build a number with cards and beads and combine them into one grand total.',
@@ -182,7 +182,7 @@ export const lessons: Lesson[] = [
       },
       {
         description:
-          'Secret-number notes: write a number such as 6,208 on a slip of paper; your child writes its parts (6000 + 200 + 8) underneath. Then swap — they write the secret number and you expand it, with mistakes for them to catch.',
+          'Secret-number notes: write a number such as 6,208 on a slip of paper; your child writes its parts (6,000 + 200 + 8) underneath. Then swap — they write the secret number and you expand it, with mistakes for them to catch.',
       },
       {
         description:

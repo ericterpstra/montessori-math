@@ -87,4 +87,12 @@
   .scope-strand-row {
     break-inside: avoid;
   }
+
+  /* Browsers drop background colors by default when printing — keep the
+     strand banners readable without them. */
+  .scope-strand-row th {
+    background: none;
+    color: #000;
+    border-top: 3px solid #000;
+  }
 }

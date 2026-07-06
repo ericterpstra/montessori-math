@@ -11,7 +11,7 @@ export const lessons: Lesson[] = [
     overview:
       'Division becomes a game of sharing fairly: your child deals a pile of green beads out to little skittle "people" one round at a time, then reads the answer straight off the board. Repeated over weeks, this is how the division facts up to 81 ÷ 9 are discovered and gradually memorized.',
     materialsNeeded: [
-      'Unit division board — or draw a 9×9 grid of dots on paper with 9 spots marked along the top edge',
+      'Unit division board — or draw a 9×9 grid of dots on paper with 9 spots marked along the top edge, numbered 1–9 across the top and 1–9 down the left side',
       '81 small green beads (dried beans, buttons, or cereal pieces work fine)',
       '9 green skittles — small game pawns, clothespins, or LEGO figures stand in well',
       'A small cup or dish to hold the bead supply',
@@ -32,8 +32,8 @@ export const lessons: Lesson[] = [
     ],
     presentation: [
       {
-        text: 'Sit beside your child with the board, the cup of beads, the skittles, and a problem slip. Show the board first: run a finger along the 9 slots across the top, then over the 81 holes below.',
-        say: 'This is the division board. The skittles stand up here at the top, and the beads go in the holes underneath them.',
+        text: 'Sit beside your child with the board, the cup of beads, the skittles, and a problem slip. Show the board first: run a finger along the 9 slots across the top, then over the 81 holes below. Point out the small numerals printed 1–9 above the slots and 1–9 down the left side — they will read the answer from these later.',
+        say: 'This is the division board. The skittles stand up here at the top, the beads go in the holes underneath them, and these little numbers help us read the board.',
       },
       {
         text: 'Read the problem slip together — say 27 ÷ 4 — and count 27 beads from the box into the cup. Have your child count them out loud with you.',
@@ -56,8 +56,8 @@ export const lessons: Lesson[] = [
         say: 'Can everyone get another bead? No — so we stop. Division stops when we can no longer share fairly.',
       },
       {
-        text: 'Ask your child to count the beads under one skittle. Point out that every skittle has the same number.',
-        say: 'The answer in division is what one person gets. One skittle has six beads — so twenty-seven divided by four is six.',
+        text: 'Show your child that the board tells the answer two ways. Slide a finger along the last full row of beads to the numeral at its left edge — it reads 6. Then have them count the beads under one skittle: six again. Point out that every skittle has the same number.',
+        say: 'The answer in division is what one person gets. Read the number beside the last full row — six. Count the beads under one skittle — six again. Twenty-seven divided by four is six.',
       },
       {
         text: 'Point to the 3 beads left in the cup.',
@@ -78,6 +78,7 @@ export const lessons: Lesson[] = [
       'If any skittle could still receive a bead in a full round, the child has stopped too soon — the leftover pile shows it',
       'The remainder must always be smaller than the number of skittles; if it is not, another round can be dealt',
       'Every skittle column has the same height of beads — an uneven board means a dealing mistake',
+      'The numeral beside the last full row must match the count of beads under any one skittle — the board gives the quotient two ways',
       'Counting the dealt beads plus the leftovers must give back the starting number',
     ],
     vocabulary: ['dividend', 'divisor', 'quotient', 'remainder', 'share', 'deal', 'fair'],
