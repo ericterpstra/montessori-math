@@ -66,11 +66,19 @@
 }
 
 .mat-felt {
-  background: radial-gradient(ellipse at 30% 20%, #4a7a5b, var(--felt) 70%);
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/><feColorMatrix values=%220 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22/></svg>'),
+    radial-gradient(ellipse at 30% 20%, #4a7a5b, var(--felt) 70%);
+  background-repeat: repeat, no-repeat;
+  background-size: 160px 160px, auto;
 }
 
 .mat-wood {
-  background: repeating-linear-gradient(95deg, #c19467 0 46px, #b58863 46px 47px, #bd8f68 47px 96px, #b0835e 96px 97px);
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22><filter id=%22g%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.012 0.28%22 numOctaves=%222%22/><feColorMatrix values=%220 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0%22/></filter><rect width=%22240%22 height=%22240%22 filter=%22url(%23g)%22/></svg>'),
+    repeating-linear-gradient(95deg, #c19467 0 46px, #b58863 46px 47px, #bd8f68 47px 96px, #b0835e 96px 97px);
+  background-repeat: repeat;
+  background-size: 240px 240px, auto;
 }
 
 .mat-paper {
@@ -91,7 +99,7 @@
   font-family: var(--font-body);
   border: 1px solid rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.25);
   padding: 0;
   line-height: 1;
 }
@@ -118,7 +126,7 @@ button.stamp-tile:hover {
   background: #fffdf8;
   border: 1px solid #b9b2a4;
   border-radius: 4px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), var(--shadow-sm);
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--card-color);
@@ -132,7 +140,7 @@ button.number-card {
 }
 
 button.number-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), var(--shadow-md);
 }
 
 .number-card.selected {

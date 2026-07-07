@@ -1,6 +1,6 @@
 # PRD 18 — Material Physicality Pass: texture, depth, and worksheet header art
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — every individual edit is small copy-paste CSS/TSX, but the change cuts across shared styles, a shared SVG primitive, and the worksheet pipeline, and needs broad visual QA over 19 materials and 12 generators.
 **Depends on:** nothing (PRDs 02 Materials, 03 Worksheets, and 07 QA are Done; this is pure polish on top of them).
 
@@ -481,20 +481,20 @@ Setup: `npm run dev`, open the LAN URL in Chrome. Do steps 1–6 at desktop widt
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (existing suites untouched + 3 new theme tests pass)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] `--shadow-md` in tokens.css is exactly `0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12)`
-- [ ] `.mat-felt` and `.mat-wood` each layer an feTurbulence data-URI over their original gradient; `.mat-paper` unchanged; zero network/image requests added (verify in DevTools Network)
-- [ ] `BeadShape` renders circle + black lowlight (opacity 0.14) + white highlight; `HundredSquare`/`ThousandCube` inner dots and `Skittle` are unchanged
-- [ ] `.stamp-tile` and `.number-card` have the specified inset top highlight; `.stamp-tile.selected` and `.number-card.selected` rules byte-identical to before
-- [ ] `src/worksheets/themes.tsx` exports `SHEET_THEMES` (4 values, `'none'` first), `SheetTheme`, `THEME_LABELS`, `isSheetTheme`, `ThemeContext` (default `'none'`), `useSheetTheme`, `ThemeDecoration`
-- [ ] Theme reaches `SheetPage` via context only: `SheetPageProps` unchanged, `GeneratorDef` in `src/worksheets/types.ts` unchanged, all 12 generator files unchanged (verify with `git diff --stat`)
-- [ ] `?theme=` URL param round-trips through the "Header decoration" select; invalid values fall back to `'none'`; no localStorage anywhere in the diff
-- [ ] Answer-key pages never show decorations, including when `key=1` and a theme is active
-- [ ] Decorations are `aria-hidden`, `currentColor` at group opacity 0.5, absolutely positioned in reserved 52px header corners — verified non-overlapping in print preview at US Letter, color AND `.bw`
-- [ ] No motion, no transitions, no animations added anywhere in the diff
-- [ ] Manual QA script completed, including 375px and print-preview steps
-- [ ] PRD status updated and `plan/README.md` table gains row 18 in the landing commit
+- [x] `npm test` green (existing suites untouched + 3 new theme tests pass)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] `--shadow-md` in tokens.css is exactly `0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12)`
+- [x] `.mat-felt` and `.mat-wood` each layer an feTurbulence data-URI over their original gradient; `.mat-paper` unchanged; zero network/image requests added (verify in DevTools Network)
+- [x] `BeadShape` renders circle + black lowlight (opacity 0.14) + white highlight; `HundredSquare`/`ThousandCube` inner dots and `Skittle` are unchanged
+- [x] `.stamp-tile` and `.number-card` have the specified inset top highlight; `.stamp-tile.selected` and `.number-card.selected` rules byte-identical to before
+- [x] `src/worksheets/themes.tsx` exports `SHEET_THEMES` (4 values, `'none'` first), `SheetTheme`, `THEME_LABELS`, `isSheetTheme`, `ThemeContext` (default `'none'`), `useSheetTheme`, `ThemeDecoration`
+- [x] Theme reaches `SheetPage` via context only: `SheetPageProps` unchanged, `GeneratorDef` in `src/worksheets/types.ts` unchanged, all 12 generator files unchanged (verify with `git diff --stat`)
+- [x] `?theme=` URL param round-trips through the "Header decoration" select; invalid values fall back to `'none'`; no localStorage anywhere in the diff
+- [x] Answer-key pages never show decorations, including when `key=1` and a theme is active
+- [x] Decorations are `aria-hidden`, `currentColor` at group opacity 0.5, absolutely positioned in reserved 52px header corners — verified non-overlapping in print preview at US Letter, color AND `.bw`
+- [x] No motion, no transitions, no animations added anywhere in the diff
+- [x] Manual QA script completed, including 375px and print-preview steps
+- [x] PRD status updated and `plan/README.md` table gains row 18 in the landing commit
 
 ## Out of scope
 

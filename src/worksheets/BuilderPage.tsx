@@ -6,6 +6,8 @@ import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
 import NotFound from '../pages/NotFound'
+import { SHEET_THEMES, THEME_LABELS, ThemeContext, isSheetTheme } from './themes'
+import type { SheetTheme } from './themes'
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))
@@ -95,6 +97,8 @@ export default function BuilderPage() {
   const seed = rawSeed !== null && !Number.isNaN(Number(rawSeed)) ? Number(rawSeed) : fallbackSeed
   const params = def ? resolveParams(def, searchParams) : {}
   const bw = searchParams.get('bw') === '1'
+  const rawTheme = searchParams.get('theme')
+  const theme: SheetTheme = isSheetTheme(rawTheme) ? rawTheme : 'none'
   const showKey = searchParams.get('key') !== '0'
 
   const paramsKey = JSON.stringify(params)
@@ -163,6 +167,17 @@ export default function BuilderPage() {
             <input type="checkbox" checked={bw} onChange={(e) => update({ bw: e.target.checked ? '1' : '0' })} />
             Ink-friendly black &amp; white
           </label>
+          <label className="field">
+            Header decoration
+            <select value={theme} onChange={(e) => update({ theme: e.target.value })}>
+              {SHEET_THEMES.map((t) => (
+                <option key={t} value={t}>
+                  {THEME_LABELS[t]}
+                </option>
+              ))}
+            </select>
+            <span className="field-help">Fun corner art on student pages only — the answer key stays plain.</span>
+          </label>
           <label className="field checkbox">
             <input type="checkbox" checked={showKey} onChange={(e) => update({ key: e.target.checked ? '1' : '0' })} />
             Include answer key page
@@ -181,10 +196,12 @@ export default function BuilderPage() {
         </aside>
 
         <div className="builder-preview">
-          <div className={`print-sheet${bw ? ' bw' : ''}`}>
-            <Sheet data={data} params={params} />
-            {showKey && <AnswerKey data={data} params={params} />}
-          </div>
+          <ThemeContext.Provider value={theme}>
+            <div className={`print-sheet${bw ? ' bw' : ''}`}>
+              <Sheet data={data} params={params} />
+              {showKey && <AnswerKey data={data} params={params} />}
+            </div>
+          </ThemeContext.Provider>
         </div>
       </div>
     </div>

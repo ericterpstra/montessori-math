@@ -29,11 +29,12 @@ interface BeadShapeProps {
   fill: string
 }
 
-/** Low-level bead for composing custom SVG scenes: circle + highlight. */
+/** Low-level bead for composing custom SVG scenes: circle + shading. */
 export function BeadShape({ cx, cy, r, fill }: BeadShapeProps) {
   return (
     <g>
       <circle cx={cx} cy={cy} r={r} fill={fill} stroke={BEAD_STROKE} strokeWidth={Math.max(0.6, r * 0.09)} />
+      <ellipse cx={cx + r * 0.28} cy={cy + r * 0.32} rx={r * 0.45} ry={r * 0.32} fill="#000" opacity={0.14} />
       <ellipse cx={cx - r * 0.3} cy={cy - r * 0.35} rx={r * 0.38} ry={r * 0.26} fill="#fff" opacity={0.4} />
     </g>
   )
