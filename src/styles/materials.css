@@ -181,3 +181,28 @@ button.number-card:hover {
   color: var(--ink);
   text-shadow: none;
 }
+
+/* ---------- Exchange ceremony (PRD 10) ---------- */
+
+/* Positioning context for .ceremony-ghost (appended addition to the base rule above). */
+.material-stage {
+  position: relative;
+}
+
+.ceremony-ghost {
+  position: absolute;
+  pointer-events: none;
+  z-index: 30;
+  margin: 0;
+  will-change: transform;
+}
+
+.ceremony-source {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.ceremony-hidden {
+  visibility: hidden;
+}

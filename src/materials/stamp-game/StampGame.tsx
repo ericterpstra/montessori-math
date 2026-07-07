@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
+import { runCeremony } from '../../lib/ceremony'
+import { playTap } from '../../lib/sound'
 import { StampTile } from '../../components/StampTile'
 import type { StampValue } from '../../components/StampTile'
 import { Skittle } from '../../components/beads'
@@ -63,7 +65,7 @@ function Columns({ region, onStampTap, checks, footer, compact }: ColumnsProps) 
         const n = region[place] ?? 0
         const check = checks?.find((c) => c.place === place)
         return (
-          <div key={place} className={`stamp-game-column${compact ? ' stamp-game-compact' : ''}`}>
+          <div key={place} className={`stamp-game-column${compact ? ' stamp-game-compact' : ''}`} data-place={place}>
             <div className="stamp-game-col-head">
               <span className="stamp-game-col-dot" style={{ background: info.colorVar }} aria-hidden="true" />
               <span>{info.name}</span>
@@ -115,6 +117,8 @@ export default function StampGame() {
   const [divCheck, setDivCheck] = useState<DivisionCheck | null>(null)
   const [inputA, setInputA] = useState('')
   const [inputB, setInputB] = useState('')
+  const [ceremonyActive, setCeremonyActive] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
 
   const isOp = mode !== 'free'
   const showRows = (mode === 'addition' || mode === 'multiplication') && !combined
@@ -178,6 +182,7 @@ export default function StampGame() {
       return
     }
     commit(res.value)
+    playTap()
     setMessage(null)
     clearFeedback()
   }
@@ -187,6 +192,7 @@ export default function StampGame() {
   }
 
   function onBankTap(place: StampPlace) {
+    if (ceremonyActive) return
     if (mode === 'subtraction' && taking) {
       setMessage('In subtraction you only build the starting number — take stamps away from the mat instead.')
       return
@@ -199,6 +205,7 @@ export default function StampGame() {
   }
 
   function onMatTap(place: StampPlace) {
+    if (ceremonyActive) return
     if (mode === 'subtraction' && taking) {
       const res = removeStamp(mat, removed, place)
       if (!res.ok) {
@@ -207,6 +214,7 @@ export default function StampGame() {
       }
       setMat(res.value.mat)
       setRemoved(res.value.removed)
+      playTap()
       setMessage(null)
       clearFeedback()
       return
@@ -215,6 +223,7 @@ export default function StampGame() {
   }
 
   function onRemovedTap(place: StampPlace) {
+    if (ceremonyActive) return
     const res = moveStamp(removed, mat, place)
     if (!res.ok) {
       setMessage(res.message)
@@ -222,11 +231,13 @@ export default function StampGame() {
     }
     setRemoved(res.value.from)
     setMat(res.value.to)
+    playTap()
     setMessage(null)
     clearFeedback()
   }
 
   function onRowStampTap(i: number, place: StampPlace) {
+    if (ceremonyActive) return
     if (mode === 'division') {
       // Undo a deal: the stamp goes back to the supply, not the bank.
       const res = moveStamp(rows[i], mat, place)
@@ -236,6 +247,7 @@ export default function StampGame() {
       }
       setRows((rs) => rs.map((r, j) => (j === i ? res.value.from : r)))
       setMat(res.value.to)
+      playTap()
       setMessage(null)
       clearFeedback()
       return
@@ -243,11 +255,53 @@ export default function StampGame() {
     applyRegion(returnToBank(rows[i], place), commitRow(i))
   }
 
-  function onExchange(place: StampPlace, dir: 'up' | 'down') {
-    applyRegion(dir === 'up' ? exchangeUpIn(mat, place) : exchangeDownIn(mat, place), setMat)
+  async function onExchange(place: StampPlace, dir: 'up' | 'down') {
+    if (ceremonyActive) return
+    const probe = dir === 'up' ? exchangeUpIn(mat, place) : exchangeDownIn(mat, place)
+    if (!probe.ok) {
+      setMessage(probe.message)
+      return
+    }
+    const commit = () => {
+      setMat((m) => {
+        const r = dir === 'up' ? exchangeUpIn(m, place) : exchangeDownIn(m, place)
+        return r.ok ? r.value : m
+      })
+      setMessage(null)
+      clearFeedback()
+    }
+    const stageEl = rootRef.current?.closest<HTMLElement>('.material-stage') ?? null
+    const toPlace = (dir === 'up' ? place + 1 : place - 1) as StampPlace
+    const outCount = dir === 'up' ? 10 : 1
+    const sourceEls = stageEl
+      ? Array.from(
+          stageEl.querySelectorAll<HTMLElement>(
+            `[data-region="mat"] [data-place="${place}"] .stamp-game-stamps .stamp-tile`,
+          ),
+        ).slice(-outCount)
+      : []
+    const bankEl = stageEl?.querySelector<HTMLElement>('.bank-tray') ?? null
+    const destEl = stageEl?.querySelector<HTMLElement>(
+      `[data-region="mat"] [data-place="${toPlace}"] .stamp-game-stamps`,
+    ) ?? null
+    if (!stageEl || !bankEl || !destEl || sourceEls.length < outCount) {
+      commit()
+      return
+    }
+    const makeGhost = () => {
+      const tile = stageEl.querySelector(`[data-bank-place="${toPlace}"] .stamp-tile`)
+      return (tile?.cloneNode(true) as HTMLElement | undefined) ?? document.createElement('div')
+    }
+    setCeremonyActive(true)
+    try {
+      await runCeremony({ direction: dir, stageEl, sourceEls, bankEl, destEl, makeGhost, onCommit: commit })
+    } finally {
+      setCeremonyActive(false)
+    }
   }
 
   function onDeal(place: StampPlace) {
+    if (ceremonyActive) return
     const res = dealRound(mat, rows, place)
     if (!res.ok) {
       setMessage(res.message)
@@ -255,6 +309,7 @@ export default function StampGame() {
     }
     setMat(res.value.supply)
     setRows(res.value.rows)
+    playTap()
     setMessage(null)
     clearFeedback()
   }
@@ -331,6 +386,7 @@ export default function StampGame() {
           type="button"
           className="stamp-game-xbtn"
           onClick={() => onExchange(place, 'up')}
+          disabled={ceremonyActive}
           aria-label={`trade ten ${placeInfo(place).name} for one ${placeInfo((place + 1) as StampPlace).singular}`}
         >
           10 → 1 {placeInfo((place + 1) as StampPlace).singular}
@@ -341,6 +397,7 @@ export default function StampGame() {
           type="button"
           className="stamp-game-xbtn"
           onClick={() => onExchange(place, 'down')}
+          disabled={ceremonyActive}
           aria-label={`break one ${placeInfo(place).singular} into ten ${placeInfo((place - 1) as StampPlace).name}`}
         >
           1 → 10 {placeInfo((place - 1) as StampPlace).name}
@@ -355,6 +412,7 @@ export default function StampGame() {
         type="button"
         className="stamp-game-xbtn stamp-game-deal"
         onClick={() => onDeal(place)}
+        disabled={ceremonyActive}
         aria-label={`deal one ${placeInfo(place).singular} to each skittle`}
       >
         Deal 1 each
@@ -445,7 +503,7 @@ export default function StampGame() {
 
   return (
     <MaterialShell mat="wood" help={help} controls={controls}>
-      <div className="stamp-game">
+      <div className="stamp-game" ref={rootRef}>
         {isOp && problem && (
           <p className="stamp-game-problem">
             {formatProblem(mode, problem)}
@@ -464,6 +522,7 @@ export default function StampGame() {
               key={place}
               type="button"
               className="bank-item stamp-game-bank-item"
+              data-bank-place={place}
               onClick={() => onBankTap(place)}
               aria-label={`take one ${placeInfo(place).singular} stamp`}
             >
@@ -508,7 +567,7 @@ export default function StampGame() {
         )}
 
         {showMat && (
-          <div className="stamp-game-region">
+          <div className="stamp-game-region" data-region="mat">
             <div className="stamp-game-region-head stage-note">
               <span>{matLabel}</span>
               {showValue && <span className="stamp-game-value">{formatNumber(regionValue(mat))}</span>}

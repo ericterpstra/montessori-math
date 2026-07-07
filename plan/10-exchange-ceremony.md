@@ -1,6 +1,6 @@
 # PRD 10 — The Exchange Ceremony: motion & material sounds
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — two small new `src/lib/` modules plus surgical edits to five existing components; no new dependencies, no new routes, no model changes.
 **Depends on:** nothing (wave 1 is complete; this touches only shipped materials)
 
@@ -661,18 +661,18 @@ Integration behavior (buttons disabled during the ceremony, ghost flight paths, 
 
 ## Acceptance criteria
 
-- [ ] `npm test` green, including `src/lib/ceremony.test.ts` and `src/lib/sound.test.ts` exactly as specified.
-- [ ] `npm run build` green (strict tsc + vite).
-- [ ] `ceremonySteps('up')` returns the exact 5-step vector (300/400/150/400/0 ms; counts 10/10/–/1/–); `'down'` mirrors it; both sum to 1,250 ms.
-- [ ] Golden beads and stamp game exchanges run the ceremony and commit via the **existing** model functions; the mat total is identical before and after every exchange.
-- [ ] All exchange/deal buttons and piece-tap handlers in golden beads and stamp game are inert while `ceremonyActive` is true; a ceremony can never double-commit (Reset mid-flight leaves state consistent).
-- [ ] `prefers-reduced-motion: reduce` ⇒ instant commit, no ghosts, feature fully usable.
-- [ ] Sound toggle appears at the end of the controls row on every material page, uses the changing-label pattern without `aria-pressed`, meets the 44px touch target, and is hidden in print.
-- [ ] Muting silences clink/tap/slide everywhere; preference resets on reload; `grep -rn "localStorage\|sessionStorage" src/` still returns nothing.
-- [ ] Zero new files in the repo other than the four source/test files listed; no audio assets; `package.json` dependencies unchanged; no runtime network requests during any interaction.
-- [ ] No praise/success sounds anywhere: `runCheck` (golden beads), `onCheck` (stamp game), `handleCheck` (hundred board) remain silent.
-- [ ] No hex color literals added to any `.tsx` file; new CSS lives only in `src/styles/materials.css`.
-- [ ] This PRD's Status flipped to Done in the landing commit.
+- [x] `npm test` green, including `src/lib/ceremony.test.ts` and `src/lib/sound.test.ts` exactly as specified.
+- [x] `npm run build` green (strict tsc + vite).
+- [x] `ceremonySteps('up')` returns the exact 5-step vector (300/400/150/400/0 ms; counts 10/10/–/1/–); `'down'` mirrors it; both sum to 1,250 ms.
+- [x] Golden beads and stamp game exchanges run the ceremony and commit via the **existing** model functions; the mat total is identical before and after every exchange.
+- [x] All exchange/deal buttons and piece-tap handlers in golden beads and stamp game are inert while `ceremonyActive` is true; a ceremony can never double-commit (Reset mid-flight leaves state consistent).
+- [x] `prefers-reduced-motion: reduce` ⇒ instant commit, no ghosts, feature fully usable.
+- [x] Sound toggle appears at the end of the controls row on every material page, uses the changing-label pattern without `aria-pressed`, meets the 44px touch target, and is hidden in print.
+- [x] Muting silences clink/tap/slide everywhere; preference resets on reload; `grep -rn "localStorage\|sessionStorage" src/` still returns nothing.
+- [x] Zero new files in the repo other than the four source/test files listed; no audio assets; `package.json` dependencies unchanged; no runtime network requests during any interaction.
+- [x] No praise/success sounds anywhere: `runCheck` (golden beads), `onCheck` (stamp game), `handleCheck` (hundred board) remain silent.
+- [x] No hex color literals added to any `.tsx` file; new CSS lives only in `src/styles/materials.css`.
+- [x] This PRD's Status flipped to Done in the landing commit.
 
 ## Out of scope
 

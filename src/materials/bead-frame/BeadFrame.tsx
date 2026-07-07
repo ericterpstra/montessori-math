@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { Bead } from '../../components/beads'
+import { playSlide } from '../../lib/sound'
 import { decompose, formatNumber, placeInfo } from '../../lib/placeValue'
 import type { PlaceCounts, PlacePower } from '../../lib/placeValue'
 import { createRng, randomSeed } from '../../lib/rng'
@@ -104,8 +105,10 @@ export default function BeadFrame() {
         return
       }
       setStage({ ...stage, counts: r.counts, task: r.task })
+      playSlide()
     } else {
       setStage({ ...stage, counts: setWire(stage.counts, power, nextActive) })
+      playSlide()
       setChecks(null)
     }
     setMessage(null)
@@ -119,6 +122,7 @@ export default function BeadFrame() {
       return
     }
     setStage({ ...stage, counts: r.counts, task: r.task })
+    playSlide()
     setMessage(null)
   }
 

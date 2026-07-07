@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
+import { playTap } from '../../lib/sound'
 import { randomSeed } from '../../lib/rng'
 import {
   ALL_TILES,
@@ -70,6 +71,7 @@ export default function HundredBoard() {
 
   const handleCellTap = (cell: number) => {
     if (mode === 'skip') {
+      playTap()
       const next = new Set(taps)
       if (next.has(cell)) next.delete(cell)
       else next.add(cell)
@@ -80,10 +82,12 @@ export default function HundredBoard() {
     setCheckedWrong(null)
     if (placements.has(cell)) {
       // Tap a placed tile to send it back to the tray.
+      playTap()
       setPlacements(removeTileAt(placements, cell))
       return
     }
     if (tileToPlace !== null) {
+      playTap()
       setPlacements(placeTile(placements, cell, tileToPlace))
       setSelectedTile(null)
     }

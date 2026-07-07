@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { Bead, HundredSquare, Skittle, TenBar, ThousandCube } from '../../components/beads'
 import { NumberCard } from '../../components/NumberCard'
+import { runCeremony } from '../../lib/ceremony'
+import { playTap } from '../../lib/sound'
 import { decompose, formatNumber, placeInfo, totalValue } from '../../lib/placeValue'
 import type { PlaceCounts } from '../../lib/placeValue'
 import { createRng, randomSeed } from '../../lib/rng'
@@ -110,6 +112,8 @@ export default function GoldenBeads() {
   const [status, setStatus] = useState<string | null>(null)
   const [inputX, setInputX] = useState('')
   const [inputY, setInputY] = useState('')
+  const [ceremonyActive, setCeremonyActive] = useState(false)
+  const matRef = useRef<HTMLDivElement>(null)
 
   const opMode: OpMode | null = isOpMode(mode) ? mode : null
   const problem: Operands | null = opMode ? (manual ?? makeProblem(opMode, createRng(seed))) : null
@@ -155,24 +159,64 @@ export default function GoldenBeads() {
   }
 
   function handleBank(p: GoldenPower) {
+    if (ceremonyActive) return
     if (!canAddPiece(mat, p)) return
+    playTap()
     setMat(addPiece(mat, p))
     clearFeedback()
   }
 
   function handleMatPiece(p: GoldenPower) {
+    if (ceremonyActive) return
     if (!canRemovePiece(mat, p)) return
+    playTap()
     setMat(removePiece(mat, p))
     clearFeedback()
   }
 
-  function handleExchange(p: GoldenPower, dir: 'up' | 'down') {
-    setMat(dir === 'up' ? exchangeUpGolden(mat, p) : exchangeDownGolden(mat, p))
-    clearFeedback()
+  async function handleExchange(p: GoldenPower, dir: 'up' | 'down') {
+    if (ceremonyActive) return
+    if (dir === 'up' ? !canExchangeUpGolden(mat, p) : !canExchangeDownGolden(mat, p)) return
+    const commit = () => {
+      setMat((m) => {
+        const can = dir === 'up' ? canExchangeUpGolden(m, p) : canExchangeDownGolden(m, p)
+        if (!can) return m // state changed underneath (e.g. Reset mid-ceremony): do nothing
+        return dir === 'up' ? exchangeUpGolden(m, p) : exchangeDownGolden(m, p)
+      })
+      clearFeedback()
+    }
+    const stageEl = matRef.current?.closest<HTMLElement>('.material-stage') ?? null
+    const toPower = (dir === 'up' ? p + 1 : p - 1) as GoldenPower
+    const outCount = dir === 'up' ? 10 : 1
+    const sourceEls = stageEl
+      ? Array.from(
+          stageEl.querySelectorAll<HTMLElement>(`[data-power="${p}"] .golden-beads-pieces .golden-beads-piece`),
+        ).slice(-outCount)
+      : []
+    const bankEl = stageEl?.querySelector<HTMLElement>('.golden-beads-bank') ?? null
+    const destEl = stageEl?.querySelector<HTMLElement>(`[data-power="${toPower}"] .golden-beads-pieces`) ?? null
+    if (!stageEl || !bankEl || !destEl || sourceEls.length < outCount) {
+      commit()
+      return
+    }
+    const makeGhost = () => {
+      const ghost = document.createElement('div')
+      const art = stageEl.querySelector(`[data-bank-power="${toPower}"] svg`)
+      if (art) ghost.appendChild(art.cloneNode(true))
+      return ghost
+    }
+    setCeremonyActive(true)
+    try {
+      await runCeremony({ direction: dir, stageEl, sourceEls, bankEl, destEl, makeGhost, onCommit: commit })
+    } finally {
+      setCeremonyActive(false)
+    }
   }
 
   function handleDeal(p: GoldenPower) {
+    if (ceremonyActive) return
     if (!problem || !canDeal(mat, p, problem.y)) return
+    playTap()
     const next = deal(mat, perRow, p, problem.y)
     setMat(next.mat)
     setPerRow(next.perRow)
@@ -180,7 +224,9 @@ export default function GoldenBeads() {
   }
 
   function handleTakeBack(p: GoldenPower) {
+    if (ceremonyActive) return
     if (!problem || !canTakeBack(perRow, p)) return
+    playTap()
     const next = takeBack(mat, perRow, p, problem.y)
     setMat(next.mat)
     setPerRow(next.perRow)
@@ -401,6 +447,7 @@ export default function GoldenBeads() {
             key={p}
             type="button"
             className="bank-item golden-beads-bank-item"
+            data-bank-power={p}
             onClick={() => handleBank(p)}
             disabled={!canAddPiece(mat, p)}
             aria-label={`add one ${placeInfo(p).singular} to the mat`}
@@ -430,12 +477,12 @@ export default function GoldenBeads() {
         <p className="stage-note">Tap the bank to bring golden beads onto the mat.</p>
       )}
 
-      <div className="golden-beads-mat">
+      <div className="golden-beads-mat" ref={matRef}>
         {GOLDEN_POWERS.map((p) => {
           const count = mat[p] ?? 0
           const mark = check?.places.find((pl) => pl.power === p)
           return (
-            <div key={p} className="golden-beads-col">
+            <div key={p} className="golden-beads-col" data-power={p}>
               <div className="golden-beads-col-head">
                 <span className="golden-beads-dot" style={{ background: placeInfo(p).colorVar }} aria-hidden="true" />
                 <span className="golden-beads-col-name">{placeInfo(p).name}</span>
@@ -469,7 +516,7 @@ export default function GoldenBeads() {
                     type="button"
                     className="golden-beads-action"
                     onClick={() => handleExchange(p, 'up')}
-                    disabled={!canExchangeUpGolden(mat, p)}
+                    disabled={ceremonyActive || !canExchangeUpGolden(mat, p)}
                   >
                     10 {placeInfo(p).name} → 1 {placeInfo((p + 1) as GoldenPower).singular}
                   </button>
@@ -479,7 +526,7 @@ export default function GoldenBeads() {
                     type="button"
                     className="golden-beads-action"
                     onClick={() => handleExchange(p, 'down')}
-                    disabled={!canExchangeDownGolden(mat, p)}
+                    disabled={ceremonyActive || !canExchangeDownGolden(mat, p)}
                   >
                     1 {placeInfo(p).singular} → 10 {placeInfo((p - 1) as GoldenPower).name}
                   </button>
