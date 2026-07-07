@@ -61,6 +61,12 @@ export default function UsingThisSite() {
         A surprising amount of the shelf can come from a craft store and your printer. Every material page lists the
         exact colors; here are the substitutions that actually work at a kitchen table.
       </p>
+      <p>
+        The fastest route is the <Link to="/kits">make-it-yourself kits</Link>: ready-to-print sheets of true-size
+        pieces — number cards, stamp tiles, fraction circles, strip boards, a hundred board, bead cards, and play
+        money — each with cut lines, assembly steps, and a 1-inch calibration square so you know the print came out
+        at real size. What follows are craft-store substitutions for the pieces that can&rsquo;t come out of a printer.
+      </p>
       <dl>
         <dt>Bead bars and the bead stair</dt>
         <dd>

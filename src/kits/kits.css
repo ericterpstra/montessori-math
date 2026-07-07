@@ -1,0 +1,53 @@
+/* ---------- Make-it-yourself kits (print pieces) ---------- */
+.kit-grid { display: grid; gap: 0; }
+.kit-grid-gapped { display: grid; gap: 0.08in; }
+.kit-cut { border: 1px dashed var(--ink-soft); }
+.kit-calibration { width: 1in; height: 1in; border: 2px solid #000; flex: none; }
+.kit-cal-row { display: flex; gap: 0.25in; align-items: center; margin: 0.3in 0; }
+.kit-legend { font-size: 0.9rem; font-style: italic; }
+/* Place letter shown ONLY in B&W mode. */
+.kit-bw-tag { display: none; position: absolute; top: 2px; left: 4px; font: 700 8pt var(--font-body); }
+.print-sheet.bw .kit-bw-tag { display: block; }
+
+.kit-number-card { position: relative; display: flex; align-items: center; justify-content: center;
+  height: 1.9in; font: 700 1in var(--font-heading); color: var(--card-color); background: #fff; }
+
+.kit-stamp-tile { position: relative; display: flex; align-items: center; justify-content: center;
+  width: 1in; height: 1in; border: 3px solid var(--stamp-color); color: var(--stamp-color);
+  font: 700 18pt var(--font-body); background: #fff; }
+
+.kit-hb-tile { display: flex; align-items: center; justify-content: center;
+  width: 0.75in; height: 0.75in; font: 700 20pt var(--font-heading); color: var(--ink); }
+.kit-board-cell { width: 0.8in; height: 0.8in; border: 1px solid var(--line); }
+.kit-board { display: grid; border: 2px solid var(--wood-dark); width: max-content; }
+
+.kit-strip { position: relative; display: flex; align-items: center; justify-content: flex-end;
+  height: 0.5in; border: 2px solid var(--strip-color); color: var(--strip-color);
+  font: 700 14pt var(--font-heading); padding-right: 4px; background: #fff; }
+.kit-strip-segs { position: absolute; inset: 0; display: flex; pointer-events: none; }
+.kit-strip-seg { flex: 1; }
+.kit-strip-seg + .kit-strip-seg { border-left: 2px solid var(--pv-ten); }
+.print-sheet.bw .kit-strip-natural { border-color: #000; color: #000; }
+.kit-strip-row { display: flex; flex-direction: column; gap: 0.12in; }
+.kit-board-head { display: flex; align-items: center; justify-content: center;
+  width: 0.5in; height: 0.5in; font: 700 13pt var(--font-heading); border: 1px solid var(--line); }
+.kit-board-square { width: 0.5in; height: 0.5in; border: 1px solid var(--line); }
+.kit-tenline { border-right: 3px solid var(--pv-hundred); }
+
+.kit-sector { fill: var(--fraction-shade); stroke: #000; stroke-width: 1.5; }
+.kit-sector-label { font: 700 11pt var(--font-body); fill: #000; text-anchor: middle; }
+.kit-frame-ring { fill: none; stroke: var(--inset-frame); stroke-width: 7; }
+.kit-cut-circle { fill: none; stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 6 5; }
+
+.kit-bead-card { position: relative; display: flex; align-items: center; justify-content: center; background: #fff; }
+.kit-bill { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 3.3in; height: 1.5in; border: 3px solid var(--bill-color); color: var(--bill-color);
+  font-family: var(--font-heading); background: #fff; }
+.kit-bill-corner { position: absolute; font: 700 12pt var(--font-heading); }
+.kit-bill-corner.tl { top: 3px; left: 8px; }
+.kit-bill-corner.br { bottom: 3px; right: 8px; }
+.kit-bill-value { font-size: 34pt; font-weight: 700; line-height: 1; }
+.kit-bill-words { font-size: 9pt; letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* Small italic note next to a cut/tape edge (board halves, split strips). */
+.kit-note { font-size: 0.85rem; font-style: italic; color: var(--ink-soft); margin: 0.1in 0; }

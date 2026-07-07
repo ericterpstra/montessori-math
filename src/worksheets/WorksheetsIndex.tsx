@@ -43,6 +43,20 @@ export default function WorksheetsIndex() {
           </section>
         )
       })}
+      <section>
+        <p className="section-label">Beyond worksheets</p>
+        <ul className="card-grid">
+          <li>
+            <Link className="card" to="/kits">
+              <h3>Make-It-Yourself Kits</h3>
+              <p>
+                Print, cut, and assemble real Montessori materials — number cards, stamp tiles, fraction circles,
+                strip boards, and more. True-size pieces on US Letter cardstock.
+              </p>
+            </Link>
+          </li>
+        </ul>
+      </section>
     </>
   )
 }

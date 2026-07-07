@@ -7,7 +7,7 @@ import type { CSSProperties, MouseEventHandler } from 'react'
  * in its place color (units green, tens blue, hundreds red, thousands green).
  */
 
-function cardColor(value: number): string {
+export function cardColor(value: number): string {
   const digits = String(value).length
   switch ((digits - 1) % 3) {
     case 1:

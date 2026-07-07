@@ -1,6 +1,6 @@
 # PRD 09 — Make-It-Yourself Material Kits (printable cut-out materials)
 
-**Status:** Not started
+**Status:** Done
 **Effort:** L — seven kits × multi-page true-physical-size print layouts, plus a new site section (types, registry, two routes, index + detail pages, CSS, tests) and three small cross-link edits.
 **Depends on:** nothing (wave 1 — PRDs 00–08 — is complete)
 
@@ -459,18 +459,18 @@ describe('fixed piece inventories')
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (existing 730 + new kit tests)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] No new npm dependencies; no runtime network requests; no localStorage/state
-- [ ] `/kits` index and `/kits/:slug` for all 7 slugs render; unknown slug → NotFound
-- [ ] Layout header nav unchanged (no "Kits" item)
-- [ ] Every kit's first page shows the 1-inch calibration square + 100%-scale instruction
-- [ ] Printed sizes true: stamp tile 1in, hundred-board tile 0.75in, strip n = n × 0.5in, number card = digits × 1.5in wide (verified on paper with a ruler)
-- [ ] Every kit prints correctly in color AND `.bw` with no information carried by color alone (place letters U/T/H/Th, B/R/N strip tags, `1/n` sector labels, bill words)
-- [ ] Cut lines are `1px dashed var(--ink-soft)` (or the piece's colored frame); ✂ legend on every cover page
-- [ ] All colors via `tokens.css` variables — zero hex literals in `.tsx` files
-- [ ] Material pages for all 9 `forMaterials` targets show the "Make the real thing" card; `/worksheets` card and using-this-site paragraph link to `/kits`
-- [ ] `plan/README.md` row added and this PRD's Status updated in the landing commit
+- [x] `npm test` green (existing 730 + new kit tests)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] No new npm dependencies; no runtime network requests; no localStorage/state
+- [x] `/kits` index and `/kits/:slug` for all 7 slugs render; unknown slug → NotFound
+- [x] Layout header nav unchanged (no "Kits" item)
+- [x] Every kit's first page shows the 1-inch calibration square + 100%-scale instruction
+- [x] Printed sizes true: stamp tile 1in, hundred-board tile 0.75in, strip n = n × 0.5in, number card = digits × 1.5in wide (verified on paper with a ruler)
+- [x] Every kit prints correctly in color AND `.bw` with no information carried by color alone (place letters U/T/H/Th, B/R/N strip tags, `1/n` sector labels, bill words)
+- [x] Cut lines are `1px dashed var(--ink-soft)` (or the piece's colored frame); ✂ legend on every cover page
+- [x] All colors via `tokens.css` variables — zero hex literals in `.tsx` files
+- [x] Material pages for all 9 `forMaterials` targets show the "Make the real thing" card; `/worksheets` card and using-this-site paragraph link to `/kits`
+- [x] `plan/README.md` row added and this PRD's Status updated in the landing commit
 
 ## Out of scope
 

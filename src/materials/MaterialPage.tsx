@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { materialBySlug } from './registry'
 import { lessonBySlug } from '../lessons/registry'
 import { generatorBySlug } from '../worksheets/registry'
+import { kitsForMaterial } from '../kits/registry'
 import { strandInfo } from '../lib/strands'
 import NotFound from '../pages/NotFound'
 
@@ -14,6 +15,7 @@ export default function MaterialPage() {
   const Component = material.component
   const lessons = material.lessonSlugs.map((s) => lessonBySlug(s)).filter((l) => l !== undefined)
   const generators = material.worksheetSlugs.map((s) => generatorBySlug(s)).filter((g) => g !== undefined)
+  const kits = kitsForMaterial(material.slug)
 
   return (
     <>
@@ -33,6 +35,17 @@ export default function MaterialPage() {
         <h2>For parents</h2>
         <p style={{ marginBottom: 0 }}>{material.parentNote}</p>
       </section>
+
+      {kits.length > 0 && (
+        <section className="card" style={{ marginTop: '1.5rem', maxWidth: '46rem' }}>
+          <h2>Make the real thing</h2>
+          {kits.map((k) => (
+            <p key={k.slug} style={{ marginBottom: 0 }}>
+              <Link to={`/kits/${k.slug}`}>{k.name}</Link> — {k.description} ({k.pieces})
+            </p>
+          ))}
+        </section>
+      )}
 
       {(lessons.length > 0 || generators.length > 0) && (
         <section style={{ marginTop: '1.5rem' }}>
