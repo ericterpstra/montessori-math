@@ -32,7 +32,7 @@ npm run dev        # dev server (LAN-accessible; Vite prints the Network URL)
 | Command | What it does |
 |---|---|
 | `npm run dev` | Dev server with hot reload, bound to all interfaces |
-| `npm run build` | Type-check (strict) + production build to `dist/` |
+| `npm run build` | Type-check (strict) + production build to `dist/` + offline service worker |
 | `npm run preview` | Serve the production build on port 4173, LAN-accessible |
 | `npm test` | Run the Vitest suite (math models, generators, content schema) |
 | `npm run test:watch` | Vitest in watch mode |
@@ -40,6 +40,32 @@ npm run dev        # dev server (LAN-accessible; Vite prints the Network URL)
 ### Viewing from other devices on your network
 
 `npm run preview` serves the production build on `http://<your-LAN-IP>:4173` (e.g. `http://192.168.1.208:4173`) — usable from tablets and other computers on the same network.
+
+## Offline & install
+
+The production build is a PWA: after one visit, everything — materials, lessons,
+worksheet builders, guides — works with no network at all.
+
+- **How it works.** `npm run build` generates `dist/sw.js` (see
+  `scripts/generate-sw.mjs`), a dependency-free service worker that precaches
+  every built file. First visit downloads the site; after that it loads from
+  the device, and the worker silently picks up new builds on later visits.
+- **Install to a home screen (Android/Chrome, Edge):** open the site, browser
+  menu → "Add to Home screen" / "Install". It launches standalone with the
+  golden-bead icon.
+- **iOS caveat:** Safari ignores SVG manifest icons, so an iOS home-screen tile
+  shows a page snapshot instead of the bead icon. The site still works offline
+  once loaded.
+- **Secure context required:** browsers only enable service workers on HTTPS or
+  `localhost`. `npm run preview` + `http://localhost:4173` gives the full
+  offline experience on the dev machine. Over plain-HTTP LAN
+  (`http://192.168.1.208:4173`) the site works but stays online-only — for
+  tablet testing, allow the origin in
+  `chrome://flags/#unsafely-treat-insecure-origin-as-secure` on the tablet.
+- **Developer escape hatch:** a stale worker can serve old files while you test
+  builds. DevTools → Application → Service workers → "Unregister" (or tick
+  "Update on reload"), then hard-refresh. `npm run dev` never registers a
+  worker, so development is unaffected.
 
 ## Printing
 

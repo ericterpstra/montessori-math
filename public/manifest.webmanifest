@@ -1,0 +1,14 @@
+{
+  "name": "Montessori Math",
+  "short_name": "Montessori Math",
+  "description": "Free Montessori math for ages 4-12: virtual materials, printable worksheets, and album-style lessons for parents.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf7f0",
+  "theme_color": "#faf7f0",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

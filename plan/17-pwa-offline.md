@@ -1,6 +1,6 @@
 # PRD 17 — Install-to-Tablet PWA: full offline, zero dependencies
 
-**Status:** Not started
+**Status:** Done
 **Effort:** S — no UI work, four small files touched plus one ~80-line build script; the only care point is the service-worker fetch handler, which is fully specified below.
 **Depends on:** nothing (wave 1 is complete; this wraps the existing static build)
 
@@ -379,23 +379,23 @@ Steps 1–10 on the dev machine (Chrome); 11–13 on the Android tablet (optiona
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (all existing tests, none added/removed/modified)
-- [ ] `npm run build` green, ending with the `generate-sw: wrote dist/sw.js ...` line
-- [ ] `git diff package.json` shows only the one-line `build` script change; `dependencies` and `devDependencies` byte-identical (hard rule 5)
-- [ ] `scripts/generate-sw.mjs` imports only `node:fs`, `node:path`, `node:crypto`, `node:url`
-- [ ] BA-1 passes: two consecutive builds produce byte-identical `dist/sw.js`
-- [ ] BA-2 passes: content edit changes the `mm-*` version; revert restores it
-- [ ] BA-3 passes: `find dist -type f ! -name sw.js | wc -l` equals `grep -c '^  "' dist/sw.js`
-- [ ] BA-4 passes: script exits 1 with the "run `vite build` first" message when `dist/` is missing
-- [ ] `public/manifest.webmanifest` matches the Step 1 JSON exactly (field-for-field)
-- [ ] DevTools Manifest pane at `http://localhost:4173` shows no installability errors (or Lighthouse reports installable on older Chrome)
-- [ ] Offline reload of `/` works in preview; offline deep links `/materials/golden-beads` and `/lessons` render (QA 6–7)
-- [ ] Offline print preview of a worksheet works in color **and** `.bw` (QA 8)
-- [ ] After a rebuild + two reloads, exactly one `mm-*` cache remains and it is the new version (QA 9)
-- [ ] `npm run dev` registers no service worker; `dist/sw.js` is not committed to git
-- [ ] No new UI elements, no localStorage/sessionStorage writes, no toasts/banners/badges (hard rule 1); Cache API contains only files from `dist/`
-- [ ] README "Offline & install" section present with the iOS icon caveat, the secure-context/LAN note, and the unregister escape hatch
-- [ ] `plan/README.md` table row added; this PRD's Status updated when landing
+- [x] `npm test` green (all existing tests, none added/removed/modified)
+- [x] `npm run build` green, ending with the `generate-sw: wrote dist/sw.js ...` line
+- [x] `git diff package.json` shows only the one-line `build` script change; `dependencies` and `devDependencies` byte-identical (hard rule 5)
+- [x] `scripts/generate-sw.mjs` imports only `node:fs`, `node:path`, `node:crypto`, `node:url`
+- [x] BA-1 passes: two consecutive builds produce byte-identical `dist/sw.js`
+- [x] BA-2 passes: content edit changes the `mm-*` version; revert restores it
+- [x] BA-3 passes: `find dist -type f ! -name sw.js | wc -l` equals `grep -c '^  "' dist/sw.js`
+- [x] BA-4 passes: script exits 1 with the "run `vite build` first" message when `dist/` is missing
+- [x] `public/manifest.webmanifest` matches the Step 1 JSON exactly (field-for-field)
+- [x] DevTools Manifest pane at `http://localhost:4173` shows no installability errors (or Lighthouse reports installable on older Chrome)
+- [x] Offline reload of `/` works in preview; offline deep links `/materials/golden-beads` and `/lessons` render (QA 6–7)
+- [x] Offline print preview of a worksheet works in color **and** `.bw` (QA 8)
+- [x] After a rebuild + two reloads, exactly one `mm-*` cache remains and it is the new version (QA 9)
+- [x] `npm run dev` registers no service worker; `dist/sw.js` is not committed to git
+- [x] No new UI elements, no localStorage/sessionStorage writes, no toasts/banners/badges (hard rule 1); Cache API contains only files from `dist/`
+- [x] README "Offline & install" section present with the iOS icon caveat, the secure-context/LAN note, and the unregister escape hatch
+- [x] `plan/README.md` table row added; this PRD's Status updated when landing
 
 ## Out of scope
 
