@@ -13,5 +13,5 @@ export const def: MaterialDef = {
     'The checkerboard turns long multiplication into something a child can see and touch. Each crossing of a multiplicand digit and a multiplier digit gets its own bead bars, whose value comes from the colored square they sit on; the bars then slide down equal-value diagonals, and anything over nine on a square is exchanged one square to the left. Working the board over and over, a child discovers partial products and carrying for themselves — exactly the moves of the written algorithm they will use next. It follows the multiplication bead board and bead frames, and prepares for long multiplication on paper and for long division with the racks and tubes.',
   component: lazy(() => import('./Checkerboard')),
   lessonSlugs: ['checkerboard-intro', 'checkerboard-multiplication'],
-  worksheetSlugs: ['long-multiplication'],
+  worksheetSlugs: ['long-multiplication', 'command-cards'],
 }

@@ -1,6 +1,6 @@
 # PRD 12 — Command Cards: printable task-card decks
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — one self-contained generator module following the proven `GeneratorDef` contract; the work is breadth (11 task templates across 6 materials), not new architecture. No new pages, routes, or shared systems beyond a 3-line `SheetPage` prop addition.
 **Depends on:** nothing (PRDs 00–08 are Done; this builds on the existing worksheet system from PRD 03)
 
@@ -310,9 +310,7 @@ function AnswerKey({ data, params }: SheetProps<CommandCardsParams, CommandCards
     <AnswerKeyPage title={`Command Cards — ${MATERIAL_LABEL[params.material]}`}>
       <ol className="answer-list command-cards-key">
         {data.cards.map((c) => (
-          <li key={c.id}>
-            <span className="problem-number">{c.id}.</span> {c.answer}
-          </li>
+          <li key={c.id}><span className="problem-number">{c.id}.</span> {c.answer}</li>
         ))}
       </ol>
     </AnswerKeyPage>
@@ -514,18 +512,18 @@ Also keep green (no edits needed): `src/lessons/content.test.ts` — it will aut
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (including the new `command-cards.test.ts` and the untouched `content.test.ts`)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] `/worksheets/command-cards` renders decks for all 6 materials × 3 difficulties × counts 8–24 with no runtime errors
-- [ ] Cards per page fixed at 8 (2×4); card size 3.4in × 2.2in; 1px dashed `var(--ink-soft)` cut borders; ✂ on each card page; card number + glyph + ≥ 1.05rem task text on every card
-- [ ] Answer key renders on its own `.sheet-page` via `AnswerKeyPage` using `.answer-list`, numbered to match the printed card numbers
-- [ ] Every template's answer verified by independent recomputation in tests across 5 seeds × 6 materials × 3 difficulties
-- [ ] Deterministic: same seed + params ⇒ deep-equal deck; count always honored; no duplicate texts within a deck (fraction-circles: whenever count ≤ pool size)
-- [ ] Difficulty contracts hold in tests: gentle golden-beads < 1,000 everywhere; challenge adds force a units carry; stamp-game take-away borrows per difficulty; hundred-board stays on the 1–100 board; fraction equivalence uses only the 8 exact-integer pairs; bead-frame gentle/steady = small frame, challenge = large
-- [ ] US Letter print: no clipping in color mode; `.bw` mode loses zero information (text carries everything; glyphs decorative)
-- [ ] No accounts, tracking, localStorage, analytics, gamification, external requests, or new npm dependencies introduced
-- [ ] Registered in `src/worksheets/registry.ts`; `'command-cards'` present in all six materials' `worksheetSlugs`; the three presets work from `?preset=` links
-- [ ] This PRD's Status flipped to Done with the landing commit hash
+- [x] `npm test` green (including the new `command-cards.test.ts` and the untouched `content.test.ts`)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] `/worksheets/command-cards` renders decks for all 6 materials × 3 difficulties × counts 8–24 with no runtime errors
+- [x] Cards per page fixed at 8 (2×4); card size 3.4in × 2.2in; 1px dashed `var(--ink-soft)` cut borders; ✂ on each card page; card number + glyph + ≥ 1.05rem task text on every card
+- [x] Answer key renders on its own `.sheet-page` via `AnswerKeyPage` using `.answer-list`, numbered to match the printed card numbers
+- [x] Every template's answer verified by independent recomputation in tests across 5 seeds × 6 materials × 3 difficulties
+- [x] Deterministic: same seed + params ⇒ deep-equal deck; count always honored; no duplicate texts within a deck (fraction-circles: whenever count ≤ pool size)
+- [x] Difficulty contracts hold in tests: gentle golden-beads < 1,000 everywhere; challenge adds force a units carry; stamp-game take-away borrows per difficulty; hundred-board stays on the 1–100 board; fraction equivalence uses only the 8 exact-integer pairs; bead-frame gentle/steady = small frame, challenge = large
+- [x] US Letter print: no clipping in color mode; `.bw` mode loses zero information (text carries everything; glyphs decorative)
+- [x] No accounts, tracking, localStorage, analytics, gamification, external requests, or new npm dependencies introduced
+- [x] Registered in `src/worksheets/registry.ts`; `'command-cards'` present in all six materials' `worksheetSlugs`; the three presets work from `?preset=` links
+- [x] This PRD's Status flipped to Done with the landing commit hash
 
 ## Out of scope
 

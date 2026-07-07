@@ -13,5 +13,5 @@ export const def: MaterialDef = {
     'The bead frame is a Montessori abacus: one bead is worth one, ten, a hundred, or a million depending on its wire, so value comes from position — the key idea behind written arithmetic. Your child slides beads to build numbers, then adds and subtracts place by place, trading ten beads for one when a wire fills, and one for ten when it runs empty. The small frame works to 9,999; the large frame extends the same rules to one million. It is the direct bridge from the stamp game to column arithmetic done entirely on paper.',
   component: lazy(() => import('./BeadFrame')),
   lessonSlugs: ['small-bead-frame-intro', 'small-bead-frame-addition', 'large-bead-frame'],
-  worksheetSlugs: ['multi-digit-ops', 'place-value'],
+  worksheetSlugs: ['multi-digit-ops', 'place-value', 'command-cards'],
 }

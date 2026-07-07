@@ -1,0 +1,19 @@
+/* Command cards — generator-specific styles (all classes prefixed command-card). */
+
+.command-cards-page { position: relative; }
+/* Tighter chrome so 4 × 2.2in card rows + header fit inside 10in of printable height. */
+.command-cards-page .sheet-header { margin-bottom: 0.15in; }
+.command-cards-page .sheet-instructions { margin-bottom: 0.15in; }
+
+.command-cards-scissors { position: absolute; top: 0.05in; right: 0.05in; font-size: 1.1rem; color: var(--ink-soft); }
+
+.command-cards-grid { display: grid; grid-template-columns: repeat(2, 3.4in); grid-auto-rows: 2.2in; justify-content: center; }
+
+/* Cut lines; adjacent 1px dashed borders double up into one visible cut guide. */
+.command-card { border: 1px dashed var(--ink-soft); padding: 0.1in 0.14in; display: flex; flex-direction: column; gap: 0.05in; overflow: hidden; }
+.command-card-top { display: flex; justify-content: space-between; align-items: center; min-height: 0.28in; }
+.command-card-number { font-size: 0.72rem; color: var(--ink-soft); }
+.command-card-text { font-size: 1.05rem; line-height: 1.3; margin: 0; }
+
+/* Prose answers ('2 thousands, 4 hundreds…') need wider columns than the 4-col default. */
+.answer-list.command-cards-key { columns: 2; }

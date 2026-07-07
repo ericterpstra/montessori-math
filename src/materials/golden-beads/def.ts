@@ -20,5 +20,5 @@ export const def: MaterialDef = {
     'golden-beads-multiplication',
     'golden-beads-division',
   ],
-  worksheetSlugs: ['golden-bead-pictures', 'place-value', 'multi-digit-ops'],
+  worksheetSlugs: ['golden-bead-pictures', 'place-value', 'multi-digit-ops', 'command-cards'],
 }

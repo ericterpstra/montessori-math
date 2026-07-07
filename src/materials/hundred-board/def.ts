@@ -12,5 +12,5 @@ export const def: MaterialDef = {
     'The hundred board consolidates counting to 100: the child places number tiles one by one onto a ten-by-ten grid, first in order and later from a shuffled pile, and the emerging rows and columns reveal any tile that is out of place. A skip-counting mode fills the board and lets the child tap the multiples of any number from 2 to 10, with an honest Check that marks misses and mistakes. This work makes the structure of the numbers to one hundred visible and prepares the child for the bead chains and the multiplication tables.',
   component: lazy(() => import('./HundredBoard')),
   lessonSlugs: ['hundred-board-intro', 'hundred-board-skip-counting'],
-  worksheetSlugs: ['hundred-chart', 'skip-counting'],
+  worksheetSlugs: ['hundred-chart', 'skip-counting', 'command-cards'],
 }

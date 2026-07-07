@@ -11,6 +11,7 @@ import { def as longMultiplication } from './generators/long-multiplication'
 import { def as longDivision } from './generators/long-division'
 import { def as fractions } from './generators/fractions'
 import { def as decimals } from './generators/decimals'
+import { def as commandCards } from './generators/command-cards'
 
 /** Every worksheet generator on the site, roughly in curriculum order. */
 export const GENERATORS: AnyGeneratorDef[] = [
@@ -26,6 +27,7 @@ export const GENERATORS: AnyGeneratorDef[] = [
   longDivision,
   fractions,
   decimals,
+  commandCards,
 ]
 
 export function generatorBySlug(slug: string): AnyGeneratorDef | undefined {

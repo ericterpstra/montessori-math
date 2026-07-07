@@ -19,5 +19,5 @@ export const def: MaterialDef = {
     'stamp-game-multiplication',
     'stamp-game-division',
   ],
-  worksheetSlugs: ['multi-digit-ops'],
+  worksheetSlugs: ['multi-digit-ops', 'command-cards'],
 }
