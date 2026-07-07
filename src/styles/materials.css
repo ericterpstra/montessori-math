@@ -190,6 +190,43 @@ button.number-card:hover {
   text-shadow: none;
 }
 
+/* ---------- Focus mode (issue #5) ----------
+   The material fills the screen and every written instruction disappears —
+   a wordless presentation surface for pre-readers. */
+
+.material-shell.focus-mode {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--paper);
+  padding: 0.5rem 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  margin: 0;
+}
+
+.material-shell.focus-mode .material-help {
+  display: none;
+}
+
+.material-shell.focus-mode .material-controls {
+  margin: 0 0 0.5rem;
+}
+
+.material-shell.focus-mode .material-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.material-shell.focus-mode .stage-note {
+  display: none;
+}
+
+body.has-focus-mode {
+  overflow: hidden;
+}
+
 /* ---------- Exchange ceremony (PRD 10) ---------- */
 
 /* Positioning context for .ceremony-ghost (appended addition to the base rule above). */
