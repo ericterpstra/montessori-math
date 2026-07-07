@@ -7,8 +7,7 @@
 import type { RNG } from '../../lib/rng'
 import type { GeneratorDef, SheetProps } from '../types'
 import { SheetPage, AnswerKeyPage } from '../SheetPage'
-import { Bead, BeadBar } from '../../components/beads'
-import { BookletFrame } from '../BookletFrame'
+import { Bead } from '../../components/beads'
 import './numeral-tracing.css'
 
 /* ---------- Params & data ---------- */
@@ -20,8 +19,6 @@ export type NumeralTracingParams = {
   rowsPerNumeral: number
   /** End each row with that many golden beads to count. */
   counting: boolean
-  /** 'sheets' (default, one worksheet page per group) or 'booklet' (fold-and-staple book). */
-  layout: string
 }
 
 export interface TracingRow {
@@ -41,23 +38,9 @@ export interface TracingPage {
   rows: TracingRow[]
 }
 
-export interface BookletNumeralPage {
-  kind: 'numeral'
-  /** The numeral 0–9 this book page practices. */
-  numeral: number
-  /** Tracing rows sized for the half-letter page (glyphCount 5, beadCount 0, jitter []). */
-  rows: TracingRow[]
-  /** Jitter offsets (−3…3 px) for the page's single counting-bead row; length = numeral when counting, else 0. */
-  beadJitter: number[]
-}
-
-export type BookletPage = { kind: 'cover' } | BookletNumeralPage | { kind: 'back-cover' }
-
 export interface NumeralTracingData {
   counting: boolean
   pages: TracingPage[]
-  /** Present ONLY when params.layout === 'booklet' (pages is then []). Absent in sheets layout. */
-  booklet?: { pages: BookletPage[] }
 }
 
 /* ---------- Generation (pure) ---------- */
@@ -68,8 +51,6 @@ const MAX_ROWS_PER_PAGE = 10
 /** With beads at the row's end there is room for 8 glyphs; without, 10. */
 const GLYPHS_WITH_BEADS = 8
 const GLYPHS_WITHOUT_BEADS = 10
-/** Booklet rows: 1 solid model + 4 dashed. At the 72px wide slot this is 360px = 3.75in, fitting the half page. */
-const BOOKLET_GLYPHS = 5
 
 function clampInt(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, Math.round(n)))
@@ -84,19 +65,6 @@ function focusNumerals(focus: string): number[] {
 export function generate(params: NumeralTracingParams, rng: RNG): NumeralTracingData {
   const rowsPerNumeral = clampInt(params.rowsPerNumeral, 1, 3)
   const counting = params.counting === true
-  if (params.layout === 'booklet') {
-    const bookletPages: BookletPage[] = [{ kind: 'cover' }]
-    for (const numeral of ALL_NUMERALS) {
-      const rows: TracingRow[] = []
-      for (let r = 0; r < rowsPerNumeral; r++) {
-        rows.push({ numeral, glyphCount: BOOKLET_GLYPHS, beadCount: 0, jitter: [] })
-      }
-      const beadJitter = counting ? Array.from({ length: numeral }, () => rng.int(-3, 3)) : []
-      bookletPages.push({ kind: 'numeral', numeral, rows, beadJitter })
-    }
-    bookletPages.push({ kind: 'back-cover' })
-    return { counting, pages: [], booklet: { pages: bookletPages } }
-  }
   const numerals = focusNumerals(params.focus)
   const numeralsPerPage = Math.max(1, Math.floor(MAX_ROWS_PER_PAGE / rowsPerNumeral))
 
@@ -174,64 +142,7 @@ function TracingRowView({ row, counting }: { row: TracingRow; counting: boolean 
   )
 }
 
-/* ---------- Booklet ('My Book of Numbers') pages ---------- */
-
-function BookletCover() {
-  return (
-    <div className="nt-booklet-cover">
-      <div className="nt-booklet-cover-beads" aria-hidden="true">
-        {Array.from({ length: 10 }, (_, i) => (
-          <Bead key={i} size={22} />
-        ))}
-      </div>
-      <h2 className="nt-booklet-cover-title">My Book of Numbers</h2>
-      <p className="nt-booklet-name-line">
-        This book belongs to <span className="nt-blank" />
-      </p>
-    </div>
-  )
-}
-
-function BookletNumeralPageView({ page, counting }: { page: BookletNumeralPage; counting: boolean }) {
-  return (
-    <div className="nt-booklet-page">
-      {page.rows.map((row, i) => (
-        <TracingRowView key={i} row={row} counting={false} />
-      ))}
-      {counting && (
-        <div
-          className="numeral-tracing-beadframe"
-          role="img"
-          aria-label={`${page.numeral} ${page.numeral === 1 ? 'bead' : 'beads'} to count`}
-        >
-          {page.beadJitter.map((j, i) => (
-            <span key={i} className="numeral-tracing-bead" style={{ transform: `translateY(${j}px)` }}>
-              <Bead size={BEAD_SIZE} />
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function BookletBackCover() {
-  return (
-    <div className="nt-booklet-backcover">
-      <BeadBar n={10} beadSize={22} title="a golden ten-bar — ten!" />
-    </div>
-  )
-}
-
 function Sheet({ data }: SheetProps<NumeralTracingParams, NumeralTracingData>) {
-  if (data.booklet) {
-    const nodes = data.booklet.pages.map((p, i) => {
-      if (p.kind === 'cover') return <BookletCover key={i} />
-      if (p.kind === 'back-cover') return <BookletBackCover key={i} />
-      return <BookletNumeralPageView key={i} page={p} counting={data.counting} />
-    })
-    return <BookletFrame pages={nodes} title="My Book of Numbers" />
-  }
   const instructions = data.counting
     ? 'Trace each number with a pencil, starting with the solid one. Then count the golden beads in the box at the end of the row.'
     : 'Trace each number with a pencil, starting with the solid one.'
@@ -251,9 +162,6 @@ function Sheet({ data }: SheetProps<NumeralTracingParams, NumeralTracingData>) {
 }
 
 function AnswerKey({ data }: SheetProps<NumeralTracingParams, NumeralTracingData>) {
-  // A tracing book has no answers, and landscape booklet sheets cannot share
-  // a print job with a portrait key page (see BookletFrame's LandscapePage).
-  if (data.booklet) return null
   const hasZeroRow = data.counting && data.pages.some((p) => p.rows.some((r) => r.numeral === 0))
   return (
     <AnswerKeyPage title="Numeral Tracing">
@@ -310,20 +218,8 @@ export const def: GeneratorDef<NumeralTracingParams, NumeralTracingData> = {
       label: 'Count-and-trace beads',
       help: 'End each row with that many golden beads to count. Zero gets an empty frame — a point of interest!',
     },
-    {
-      kind: 'select',
-      key: 'layout',
-      label: 'Layout',
-      options: [
-        { value: 'sheets', label: 'Worksheet pages' },
-        { value: 'booklet', label: 'Foldable booklet — My Book of Numbers' },
-      ],
-      help:
-        'Booklet makes a 12-page book: print double-sided (flip on short edge), fold, staple on the fold. ' +
-        'It always covers 0–9 (the Numerals choice is ignored) and prints landscape with no answer key.',
-    },
   ],
-  defaults: { focus: 'all', rowsPerNumeral: 2, counting: true, layout: 'sheets' },
+  defaults: { focus: 'all', rowsPerNumeral: 2, counting: true },
   generate,
   Sheet,
   AnswerKey,
@@ -340,13 +236,6 @@ export const def: GeneratorDef<NumeralTracingParams, NumeralTracingData> = {
       name: 'Focus on one numeral',
       description: 'Three rows of a single numeral (4) for a child polishing one figure that gives them trouble.',
       params: { focus: '4', rowsPerNumeral: 3, counting: true },
-    },
-    {
-      id: 'number-book',
-      name: 'My Book of Numbers',
-      description:
-        'A fold-and-staple 12-page book: trace each numeral, count the golden beads, and keep the book you made.',
-      params: { focus: 'all', rowsPerNumeral: 2, counting: true, layout: 'booklet' },
     },
   ],
 }

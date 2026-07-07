@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createRng } from '../../lib/rng'
 import { def } from './numeral-tracing'
-import type { BookletNumeralPage, NumeralTracingData, NumeralTracingParams, TracingRow } from './numeral-tracing'
+import type { NumeralTracingData, NumeralTracingParams, TracingRow } from './numeral-tracing'
 
 const SEEDS = [1, 7, 42, 999, 123456]
 
@@ -11,10 +11,6 @@ function gen(overrides: Partial<NumeralTracingParams> = {}, seed = 42): NumeralT
 
 function allRows(data: NumeralTracingData): TracingRow[] {
   return data.pages.flatMap((p) => p.rows)
-}
-
-function numeralPages(data: NumeralTracingData): BookletNumeralPage[] {
-  return (data.booklet?.pages ?? []).filter((p): p is BookletNumeralPage => p.kind === 'numeral')
 }
 
 describe('numeral-tracing: answer-key correctness', () => {
@@ -146,93 +142,9 @@ describe('numeral-tracing: row count honored exactly', () => {
   })
 })
 
-describe('numeral-tracing: booklet layout', () => {
-  it('booklet data has exactly 12 logical pages: cover, numerals 0-9 in order, back cover', () => {
-    const data = gen({ layout: 'booklet' })
-    expect(data.pages).toEqual([])
-    expect(data.booklet).toBeDefined()
-    expect(data.booklet!.pages).toHaveLength(12)
-    expect(data.booklet!.pages[0].kind).toBe('cover')
-    expect(data.booklet!.pages[11].kind).toBe('back-cover')
-    for (let n = 0; n <= 9; n++) {
-      const page = data.booklet!.pages[n + 1]
-      expect(page.kind).toBe('numeral')
-      if (page.kind === 'numeral') expect(page.numeral).toBe(n)
-    }
-  })
-
-  it('numeral pages honor rowsPerNumeral with 5-glyph half-page rows and no per-row beads', () => {
-    for (const rowsPerNumeral of [1, 2, 3]) {
-      for (const page of numeralPages(gen({ layout: 'booklet', rowsPerNumeral }))) {
-        expect(page.rows).toHaveLength(rowsPerNumeral)
-        for (const row of page.rows) {
-          expect(row.glyphCount).toBe(5)
-          expect(row.beadCount).toBe(0)
-          expect(row.jitter).toEqual([])
-        }
-      }
-    }
-  })
-
-  it('counting=true: beadJitter length equals the numeral (0 stays empty), integer offsets within ±3', () => {
-    for (const seed of SEEDS) {
-      for (const page of numeralPages(gen({ layout: 'booklet', counting: true }, seed))) {
-        expect(page.beadJitter).toHaveLength(page.numeral)
-        for (const j of page.beadJitter) {
-          expect(Number.isInteger(j)).toBe(true)
-          expect(j).toBeGreaterThanOrEqual(-3)
-          expect(j).toBeLessThanOrEqual(3)
-        }
-      }
-    }
-  })
-
-  it('counting=false: every beadJitter is empty', () => {
-    const pages = numeralPages(gen({ layout: 'booklet', counting: false }))
-    expect(pages).toHaveLength(10)
-    for (const page of pages) expect(page.beadJitter).toEqual([])
-  })
-
-  it('focus is ignored in booklet layout — the book always covers 0-9', () => {
-    const focused = gen({ layout: 'booklet', focus: '4' }, 7)
-    expect(focused.booklet!.pages).toHaveLength(12)
-    expect(numeralPages(focused).map((p) => p.numeral)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    expect(JSON.stringify(gen({ layout: 'booklet', focus: '4' }, 7))).toBe(
-      JSON.stringify(gen({ layout: 'booklet', focus: 'all' }, 7)),
-    )
-  })
-
-  it('booklet generation is deterministic per seed and differs across seeds', () => {
-    const a = gen({ layout: 'booklet', counting: true }, 42)
-    const b = gen({ layout: 'booklet', counting: true }, 42)
-    expect(JSON.stringify(b)).toBe(JSON.stringify(a))
-    expect(gen({ layout: 'booklet', counting: true }, 1)).not.toEqual(gen({ layout: 'booklet', counting: true }, 2))
-  })
-})
-
-describe('numeral-tracing: sheets layout regression (byte-identical to wave 1)', () => {
-  it('sheets data carries exactly the wave-1 keys, no booklet field', () => {
-    expect(Object.keys(gen({ layout: 'sheets' }))).toEqual(['counting', 'pages'])
-    expect(gen({ layout: 'sheets' }).booklet).toBeUndefined()
-  })
-
-  it('sheets output for the default params matches the known-good wave-1 shape', () => {
-    const data = gen({ layout: 'sheets' }, 42)
-    expect(data.pages).toHaveLength(2)
-    expect(data.pages[0].label).toBe('0 to 4')
-    expect(data.pages[1].label).toBe('5 to 9')
-    expect(data.pages[0].rows.map((r) => r.numeral)).toEqual([0, 0, 1, 1, 2, 2, 3, 3, 4, 4])
-    for (const row of allRows(data)) {
-      expect(row.glyphCount).toBe(8)
-      expect(row.jitter).toHaveLength(row.numeral)
-    }
-    expect(JSON.stringify(gen({ layout: 'sheets' }, 42))).toBe(JSON.stringify(gen({}, 42)))
-  })
-})
-
 describe('numeral-tracing: presets', () => {
-  it('ships the three presets and all generate valid output', () => {
-    expect(def.presets.map((p) => p.id)).toEqual(['first-numerals', 'focus-practice', 'number-book'])
+  it('ships the two lesson presets and both generate valid sheets', () => {
+    expect(def.presets.map((p) => p.id)).toEqual(['first-numerals', 'focus-practice'])
 
     const first = def.generate(
       { ...def.defaults, ...def.presets[0].params } as NumeralTracingParams,
@@ -251,16 +163,5 @@ describe('numeral-tracing: presets', () => {
       expect(row.numeral).toBe(4)
       expect(row.beadCount).toBe(4)
     }
-
-    const numberBook = def.generate(
-      { ...def.defaults, ...def.presets[2].params } as NumeralTracingParams,
-      createRng(5),
-    )
-    expect(numberBook.booklet).toBeDefined()
-    expect(numberBook.booklet!.pages).toHaveLength(12)
-    expect(numberBook.counting).toBe(true)
-    const nine = numeralPages(numberBook).find((p) => p.numeral === 9)
-    expect(nine).toBeDefined()
-    expect(nine!.beadJitter).toHaveLength(9)
   })
 })

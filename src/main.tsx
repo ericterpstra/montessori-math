@@ -11,7 +11,6 @@ import './styles/worksheets.css'
 import './styles/guides.css'
 import './styles/planner.css'
 import './styles/presentation.css'
-import './styles/booklet.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
