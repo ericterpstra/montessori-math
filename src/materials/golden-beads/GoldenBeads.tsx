@@ -1,9 +1,12 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { Bead, HundredSquare, Skittle, TenBar, ThousandCube } from '../../components/beads'
 import { NumberCard } from '../../components/NumberCard'
 import { runCeremony } from '../../lib/ceremony'
 import { playTap } from '../../lib/sound'
+import { useDemo } from '../../lessons/DemoContext'
+import { GOLDEN_DEMO_INITIAL, applyGoldenDemoActions, planReplay } from '../../lessons/demo'
+import type { GoldenDemoView } from '../../lessons/demo'
 import { decompose, formatNumber, placeInfo, totalValue } from '../../lib/placeValue'
 import type { PlaceCounts } from '../../lib/placeValue'
 import { createRng, randomSeed } from '../../lib/rng'
@@ -114,6 +117,45 @@ export default function GoldenBeads() {
   const [inputY, setInputY] = useState('')
   const [ceremonyActive, setCeremonyActive] = useState(false)
   const matRef = useRef<HTMLDivElement>(null)
+
+  // Presentation mode: the scripted view lives in a ref, not in state — stray
+  // taps between steps are snapped back to the scripted state on Prev/Next.
+  // Demo exchanges commit instantly (no ceremony, no sound): deterministic replay.
+  const demo = useDemo()
+  const demoRef = useRef<{ lessonSlug: string; lastApplied: number; view: GoldenDemoView }>({
+    lessonSlug: '',
+    lastApplied: -1,
+    view: GOLDEN_DEMO_INITIAL,
+  })
+
+  useEffect(() => {
+    const r = demoRef.current
+    if (!demo) {
+      r.lessonSlug = ''
+      r.lastApplied = -1
+      r.view = GOLDEN_DEMO_INITIAL
+      return
+    }
+    if (demo.lessonSlug !== r.lessonSlug) {
+      r.lessonSlug = demo.lessonSlug
+      r.lastApplied = -1
+      r.view = GOLDEN_DEMO_INITIAL
+    }
+    const plan = planReplay(r.lastApplied, demo.stepIndex)
+    let view = plan.reset ? GOLDEN_DEMO_INITIAL : r.view
+    for (const i of plan.apply) view = applyGoldenDemoActions(view, demo.script[i] ?? [])
+    r.view = view
+    r.lastApplied = demo.stepIndex
+    setMode(view.mode)
+    setMat(view.mat)
+    setCheck(view.check)
+    setStatus(view.status)
+    setPerRow({})
+    setStep(0)
+    setDivCheck(null)
+    setManual(null)
+    setManualTarget(null)
+  }, [demo])
 
   const opMode: OpMode | null = isOpMode(mode) ? mode : null
   const problem: Operands | null = opMode ? (manual ?? makeProblem(opMode, createRng(seed))) : null

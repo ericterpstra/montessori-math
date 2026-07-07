@@ -1,21 +1,53 @@
-import { Suspense } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Suspense, useMemo, useState } from 'react'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { materialBySlug } from './registry'
 import { lessonBySlug } from '../lessons/registry'
 import { generatorBySlug } from '../worksheets/registry'
 import { kitsForMaterial } from '../kits/registry'
 import { strandInfo } from '../lib/strands'
+import { DemoContext } from '../lessons/DemoContext'
+import { PresentationOverlay } from '../lessons/PresentationOverlay'
 import NotFound from '../pages/NotFound'
 
 export default function MaterialPage() {
   const { slug } = useParams()
   const material = slug ? materialBySlug(slug) : undefined
+
+  // Presentation mode (?present=<lessonSlug>). Hooks stay above the early
+  // return; the current step lives only in this useState — nothing persists.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [stepIndex, setStepIndex] = useState(0)
+
+  const presentSlug = searchParams.get('present')
+  const script = presentSlug ? material?.demos?.[presentSlug] : undefined
+  const demoLesson = presentSlug ? lessonBySlug(presentSlug) : undefined
+  const demoActive = script !== undefined && demoLesson !== undefined
+
+  const demoValue = useMemo(
+    () => (demoActive && presentSlug && script ? { lessonSlug: presentSlug, stepIndex, script } : null),
+    [demoActive, presentSlug, script, stepIndex],
+  )
+
   if (!material) return <NotFound />
 
   const Component = material.component
   const lessons = material.lessonSlugs.map((s) => lessonBySlug(s)).filter((l) => l !== undefined)
   const generators = material.worksheetSlugs.map((s) => generatorBySlug(s)).filter((g) => g !== undefined)
   const kits = kitsForMaterial(material.slug)
+
+  const demoLessons = Object.keys(material.demos ?? {})
+    .map((s) => lessonBySlug(s))
+    .filter((l) => l !== undefined)
+
+  function openDemo(lessonSlug: string) {
+    setStepIndex(0)
+    setSearchParams({ present: lessonSlug })
+  }
+
+  function closeDemo() {
+    setStepIndex(0)
+    setSearchParams({})
+  }
 
   return (
     <>
@@ -27,9 +59,27 @@ export default function MaterialPage() {
       </p>
       <p className="page-intro">{material.summary}</p>
 
-      <Suspense fallback={<p>Loading material…</p>}>
-        <Component />
-      </Suspense>
+      {demoLessons.length > 0 && (
+        <div className="presentation-launch no-print">
+          {demoLessons.map((l) => (
+            <button
+              key={l.slug}
+              type="button"
+              className="btn"
+              onClick={() => openDemo(l.slug)}
+              aria-pressed={presentSlug === l.slug}
+            >
+              Walk through: {l.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <DemoContext.Provider value={demoValue}>
+        <Suspense fallback={<p>Loading material…</p>}>
+          <Component />
+        </Suspense>
+      </DemoContext.Provider>
 
       <section className="card" style={{ marginTop: '1.5rem', maxWidth: '46rem' }}>
         <h2>For parents</h2>
@@ -75,6 +125,19 @@ export default function MaterialPage() {
             </>
           )}
         </section>
+      )}
+
+      {demoActive && demoLesson && (
+        <>
+          <div className="presentation-spacer no-print" aria-hidden="true" />
+          <PresentationOverlay
+            lesson={demoLesson}
+            stepIndex={stepIndex}
+            onPrev={() => setStepIndex((i) => Math.max(0, i - 1))}
+            onNext={() => setStepIndex((i) => Math.min(demoLesson.presentation.length - 1, i + 1))}
+            onClose={closeDemo}
+          />
+        </>
       )}
     </>
   )

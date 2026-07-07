@@ -1,6 +1,6 @@
 # PRD 11 — Presentation Mode: walk a lesson through the material
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — one new overlay component, a small context bridge, pure demo interpreters in two existing material models, and two data scripts; no new routes, no new dependencies, bounded to 2 of 19 materials.
 **Depends on:** nothing (wave 1 is complete: materials, lessons, and registries all exist)
 
@@ -784,20 +784,20 @@ describe('presentation-mode demo actions', () => {
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (all pre-existing tests plus the new `demo.test.ts`, content-contract, and both model-test additions)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] `MaterialDef.demos` is optional; zero changes were needed in the 17 non-demo material folders
-- [ ] `planReplay` satisfies the four locked vectors: `(-1,3)→{reset:false,apply:[0,1,2,3]}`, `(3,5)→{…[4,5]}`, `(5,2)→{reset:true,apply:[0,1,2]}`, `(2,2)→{…[]}`
-- [ ] `golden-beads-addition` script has 9 entries and `stamp-game-addition` has 8, matching their lessons' `presentation.length` (enforced by the new content test)
-- [ ] Walking the golden-beads demo forward shows 1,234 → 3,579 (✓) → 17-unit overflow → three trades → 3,247 (✓); Previous from any step reproduces that step's exact mat
-- [ ] Stray user taps between steps are overwritten by the next Prev/Next (scripted state lives in a ref)
-- [ ] Overlay: "Step k of n", step text, say line in italics **and** quotes, Prev/Next/Close all ≥ 44px via `.btn`; Prev disabled at step 1, Next disabled at step n; manual navigation only — no autoplay, no timers, no persisted progress
-- [ ] `?present=<slug>` deep-links work; unknown slugs are ignored gracefully; Close removes the param and the material keeps its normal controls
-- [ ] LessonPage link appears only for lessons that have a demo on one of their virtual materials, and is `.no-print`
-- [ ] Overlay and launch buttons absent from print preview; lesson and material pages print exactly as before
-- [ ] 375px: overlay full-width, no horizontal scroll, page content reachable behind the overlay via the spacer
-- [ ] No new npm dependencies; no network requests; no hex colors outside `tokens.css`; no localStorage
-- [ ] `plan/README.md` row added and this PRD's Status updated when landing
+- [x] `npm test` green (all pre-existing tests plus the new `demo.test.ts`, content-contract, and both model-test additions)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] `MaterialDef.demos` is optional; zero changes were needed in the 17 non-demo material folders
+- [x] `planReplay` satisfies the four locked vectors: `(-1,3)→{reset:false,apply:[0,1,2,3]}`, `(3,5)→{…[4,5]}`, `(5,2)→{reset:true,apply:[0,1,2]}`, `(2,2)→{…[]}`
+- [x] `golden-beads-addition` script has 9 entries and `stamp-game-addition` has 8, matching their lessons' `presentation.length` (enforced by the new content test)
+- [x] Walking the golden-beads demo forward shows 1,234 → 3,579 (✓) → 17-unit overflow → three trades → 3,247 (✓); Previous from any step reproduces that step's exact mat
+- [x] Stray user taps between steps are overwritten by the next Prev/Next (scripted state lives in a ref)
+- [x] Overlay: "Step k of n", step text, say line in italics **and** quotes, Prev/Next/Close all ≥ 44px via `.btn`; Prev disabled at step 1, Next disabled at step n; manual navigation only — no autoplay, no timers, no persisted progress
+- [x] `?present=<slug>` deep-links work; unknown slugs are ignored gracefully; Close removes the param and the material keeps its normal controls
+- [x] LessonPage link appears only for lessons that have a demo on one of their virtual materials, and is `.no-print`
+- [x] Overlay and launch buttons absent from print preview; lesson and material pages print exactly as before
+- [x] 375px: overlay full-width, no horizontal scroll, page content reachable behind the overlay via the spacer
+- [x] No new npm dependencies; no network requests; no hex colors outside `tokens.css`; no localStorage
+- [x] `plan/README.md` row added and this PRD's Status updated when landing
 
 ## Out of scope
 

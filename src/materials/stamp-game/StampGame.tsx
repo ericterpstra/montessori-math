@@ -1,8 +1,11 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { runCeremony } from '../../lib/ceremony'
 import { playTap } from '../../lib/sound'
+import { useDemo } from '../../lessons/DemoContext'
+import { STAMP_DEMO_INITIAL, applyStampDemoActions, planReplay } from '../../lessons/demo'
+import type { StampDemoView } from '../../lessons/demo'
 import { StampTile } from '../../components/StampTile'
 import type { StampValue } from '../../components/StampTile'
 import { Skittle } from '../../components/beads'
@@ -119,6 +122,48 @@ export default function StampGame() {
   const [inputB, setInputB] = useState('')
   const [ceremonyActive, setCeremonyActive] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+
+  // Presentation mode: the scripted view lives in a ref, not in state — stray
+  // taps between steps are snapped back to the scripted state on Prev/Next.
+  // Demo exchanges commit instantly (no ceremony, no sound): deterministic replay.
+  const demo = useDemo()
+  const demoRef = useRef<{ lessonSlug: string; lastApplied: number; view: StampDemoView }>({
+    lessonSlug: '',
+    lastApplied: -1,
+    view: STAMP_DEMO_INITIAL,
+  })
+
+  useEffect(() => {
+    const r = demoRef.current
+    if (!demo) {
+      r.lessonSlug = ''
+      r.lastApplied = -1
+      r.view = STAMP_DEMO_INITIAL
+      return
+    }
+    if (demo.lessonSlug !== r.lessonSlug) {
+      r.lessonSlug = demo.lessonSlug
+      r.lastApplied = -1
+      r.view = STAMP_DEMO_INITIAL
+    }
+    const plan = planReplay(r.lastApplied, demo.stepIndex)
+    let view = plan.reset ? STAMP_DEMO_INITIAL : r.view
+    for (const i of plan.apply) view = applyStampDemoActions(view, demo.script[i] ?? [])
+    r.view = view
+    r.lastApplied = demo.stepIndex
+    setMode(view.mode)
+    setMat(view.mat)
+    setChecks(view.checks)
+    setMessage(view.message)
+    setProblem(null)
+    setRows([])
+    setRemoved({})
+    setActiveRow(0)
+    setCombined(false)
+    setTaking(false)
+    setRemovedChecks(null)
+    setDivCheck(null)
+  }, [demo])
 
   const isOp = mode !== 'free'
   const showRows = (mode === 'addition' || mode === 'multiplication') && !combined

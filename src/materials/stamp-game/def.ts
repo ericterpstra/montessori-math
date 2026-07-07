@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { stampGameDemos } from '../../lessons/demo'
 import type { MaterialDef } from '../types'
 
 export const def: MaterialDef = {
@@ -20,4 +21,5 @@ export const def: MaterialDef = {
     'stamp-game-division',
   ],
   worksheetSlugs: ['multi-digit-ops', 'command-cards'],
+  demos: stampGameDemos,
 }

@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { goldenBeadsDemos } from '../../lessons/demo'
 import type { MaterialDef } from '../types'
 
 export const def: MaterialDef = {
@@ -21,4 +22,5 @@ export const def: MaterialDef = {
     'golden-beads-division',
   ],
   worksheetSlugs: ['golden-bead-pictures', 'place-value', 'multi-digit-ops', 'command-cards'],
+  demos: goldenBeadsDemos,
 }

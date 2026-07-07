@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { LESSONS, lessonBySlug } from './registry'
 import { materialBySlug } from '../materials/registry'
+import type { MaterialDef } from '../materials/types'
 import { generatorBySlug } from '../worksheets/registry'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
@@ -51,6 +52,18 @@ export default function LessonPage() {
                 )
               )
             })}
+          </p>
+        )}
+        {lesson.virtualMaterials.some((s) => materialBySlug(s)?.demos?.[lesson.slug] !== undefined) && (
+          <p className="no-print">
+            {lesson.virtualMaterials
+              .map((s) => materialBySlug(s))
+              .filter((m): m is MaterialDef => m !== undefined && m.demos?.[lesson.slug] !== undefined)
+              .map((m) => (
+                <Link key={m.slug} className="btn" to={`/materials/${m.slug}?present=${lesson.slug}`}>
+                  See this presented on the virtual material ({m.name})
+                </Link>
+              ))}
           </p>
         )}
       </section>

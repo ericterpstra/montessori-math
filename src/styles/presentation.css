@@ -1,0 +1,86 @@
+/* ---------- Presentation mode: lesson walk-through overlay ---------- */
+
+.presentation-launch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.presentation-overlay {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: min(46rem, 100vw - 1rem);
+  max-height: 45vh;
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  box-shadow: var(--shadow-md);
+  padding: 0.9rem 1.2rem;
+  z-index: 50;
+}
+
+.presentation-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.presentation-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--wood-dark);
+}
+
+.presentation-progress {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.presentation-close {
+  margin-left: auto;
+}
+
+.presentation-text {
+  margin: 0.6rem 0 0;
+}
+
+/* Mirrors .album .say (src/styles/album.css): italics + quotes, never color alone. */
+.presentation-overlay .say {
+  display: block;
+  font-style: italic;
+  color: var(--accent-dark);
+  margin: 0.25rem 0 0;
+}
+
+.presentation-overlay .say::before {
+  content: '“';
+}
+
+.presentation-overlay .say::after {
+  content: '”';
+}
+
+.presentation-nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+/* Room at the page bottom so the fixed overlay never hides content for good. */
+.presentation-spacer {
+  height: 14rem;
+}
+
+@media (max-width: 640px) {
+  .presentation-overlay {
+    width: 100vw;
+    max-height: 50vh;
+    padding: 0.7rem 0.8rem;
+  }
+}

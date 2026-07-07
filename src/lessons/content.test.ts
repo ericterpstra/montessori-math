@@ -157,3 +157,26 @@ describe('every generator meets its contract', () => {
     })
   }
 })
+
+describe('every demo script aligns with its lesson', () => {
+  const withDemos = MATERIALS.filter((m) => m.demos !== undefined)
+
+  it('the golden beads and stamp game ship presentation demos', () => {
+    expect(withDemos.map((m) => m.slug)).toEqual(expect.arrayContaining(['golden-beads', 'stamp-game']))
+  })
+
+  for (const m of withDemos) {
+    for (const [lessonSlug, script] of Object.entries(m.demos!)) {
+      describe(`${m.slug} → ${lessonSlug}`, () => {
+        it('targets a lesson that exists and belongs to this material', () => {
+          expect(lessonSlugs, `lesson ${lessonSlug}`).toContain(lessonSlug)
+          expect(m.lessonSlugs).toContain(lessonSlug)
+        })
+        it('has exactly one action list per presentation step', () => {
+          const lesson = LESSONS.find((l) => l.slug === lessonSlug)!
+          expect(script.length).toBe(lesson.presentation.length)
+        })
+      })
+    }
+  }
+})

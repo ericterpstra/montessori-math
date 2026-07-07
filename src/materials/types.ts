@@ -1,4 +1,5 @@
 import type { ComponentType, LazyExoticComponent } from 'react'
+import type { DemoScript } from '../lessons/demo'
 import type { StrandId } from '../lib/strands'
 
 export interface MaterialDef {
@@ -23,4 +24,6 @@ export interface MaterialDef {
   lessonSlugs: string[]
   /** Related worksheet generators (slugs into the worksheet registry). */
   worksheetSlugs: string[]
+  /** Presentation-mode scripts, keyed by lesson slug (see src/lessons/demo.ts). */
+  demos?: Record<string, DemoScript>
 }
