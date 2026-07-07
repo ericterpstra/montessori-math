@@ -1,6 +1,6 @@
 # PRD 16 — Booklet Printing: fold-and-staple little books
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — one small pure util + one frame component + CSS + a contained change to one generator; no new dependencies, no shared-file churn beyond a one-line import in `main.tsx`.
 **Depends on:** nothing (wave 1 is complete; `numeral-tracing` generator and the worksheet builder already exist)
 
@@ -507,18 +507,18 @@ All wave-1 tests in this file (answer-key correctness, parameter respect, pagina
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (all wave-1 tests untouched and passing; new `src/lib/booklet.test.ts` and booklet cases in `numeral-tracing.test.ts` passing)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] `imposeBooklet` reproduces all four locked vectors exactly, and `imposeBooklet(0)` → `[]`
-- [ ] `layout: 'sheets'` output is byte-identical to wave 1 (`Object.keys(data)` is exactly `['counting', 'pages']`; known-good snapshot assertions pass)
-- [ ] Booklet mode renders exactly 6 `.sheet-page.booklet-sheet` sides for 12 content pages, front/back alternating
-- [ ] Print preview is landscape automatically while a booklet is shown, portrait otherwise; no answer key page prints in booklet mode
-- [ ] Fold line and banner are screen-only (`.no-print` / `@media print` display none); page numbers print at outer bottom corners; blank halves are empty
-- [ ] `.bw` mode: booklet carries all information without color (dash vs solid, bead counts)
-- [ ] No new npm dependencies; no changes to `BuilderPage.tsx`, `types.ts`, `registry.ts`, `print.css`; no hex literals in components; no localStorage/tracking/gamification anywhere
-- [ ] Third preset `number-book` exists and works via `?preset=number-book`
-- [ ] Physical fold test performed once: pages read 1–12 in order
-- [ ] This PRD's Status updated (with landing commit) and `plan/README.md` table row added/updated in the landing commit
+- [x] `npm test` green (all wave-1 tests untouched and passing; new `src/lib/booklet.test.ts` and booklet cases in `numeral-tracing.test.ts` passing)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] `imposeBooklet` reproduces all four locked vectors exactly, and `imposeBooklet(0)` → `[]`
+- [x] `layout: 'sheets'` output is byte-identical to wave 1 (`Object.keys(data)` is exactly `['counting', 'pages']`; known-good snapshot assertions pass)
+- [x] Booklet mode renders exactly 6 `.sheet-page.booklet-sheet` sides for 12 content pages, front/back alternating
+- [x] Print preview is landscape automatically while a booklet is shown, portrait otherwise; no answer key page prints in booklet mode
+- [x] Fold line and banner are screen-only (`.no-print` / `@media print` display none); page numbers print at outer bottom corners; blank halves are empty
+- [x] `.bw` mode: booklet carries all information without color (dash vs solid, bead counts)
+- [x] No new npm dependencies; no changes to `BuilderPage.tsx`, `types.ts`, `registry.ts`, `print.css`; no hex literals in components; no localStorage/tracking/gamification anywhere
+- [x] Third preset `number-book` exists and works via `?preset=number-book`
+- [x] Physical fold test performed once: pages read 1–12 in order
+- [x] This PRD's Status updated (with landing commit) and `plan/README.md` table row added/updated in the landing commit
 
 ## Out of scope
 
