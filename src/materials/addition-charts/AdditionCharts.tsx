@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { PrintButton } from '../../components/PrintButton'
+import { SheetPreview } from '../../components/SheetPreview'
 import {
   cellKey,
   checkPlacements,
@@ -243,7 +244,7 @@ export default function AdditionCharts() {
         </MaterialShell>
       </div>
       {showPrint && (
-        <div className={`print-sheet addition-charts-print${bw ? ' bw' : ''}`}>
+        <SheetPreview bw={bw} className="addition-charts-print">
           <div className="addition-charts-print-controls no-print">
             <label>
               <input type="checkbox" checked={bw} onChange={(e) => setBw(e.target.checked)} /> Ink-friendly B&amp;W
@@ -308,7 +309,7 @@ export default function AdditionCharts() {
               </tbody>
             </table>
           </section>
-        </div>
+        </SheetPreview>
       )}
     </>
   )

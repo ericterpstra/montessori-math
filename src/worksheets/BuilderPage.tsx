@@ -5,9 +5,8 @@ import type { AnyGeneratorDef, ParamField, ParamValues } from './types'
 import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
+import { SheetPreview } from '../components/SheetPreview'
 import NotFound from '../pages/NotFound'
-import { SHEET_THEMES, THEME_LABELS, ThemeContext, isSheetTheme } from './themes'
-import type { SheetTheme } from './themes'
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n))
@@ -97,8 +96,6 @@ export default function BuilderPage() {
   const seed = rawSeed !== null && !Number.isNaN(Number(rawSeed)) ? Number(rawSeed) : fallbackSeed
   const params = def ? resolveParams(def, searchParams) : {}
   const bw = searchParams.get('bw') === '1'
-  const rawTheme = searchParams.get('theme')
-  const theme: SheetTheme = isSheetTheme(rawTheme) ? rawTheme : 'none'
   const showKey = searchParams.get('key') !== '0'
 
   const paramsKey = JSON.stringify(params)
@@ -109,6 +106,13 @@ export default function BuilderPage() {
   )
 
   if (!def) return <NotFound />
+
+  // The select reflects the ?preset= param only until any individual field is
+  // changed on top of it (at which point the sheet is custom again).
+  const presetParam = searchParams.get('preset')
+  const overridden = def.schema.some((f) => searchParams.get(f.key) !== null)
+  const activePreset = !overridden && presetParam && def.presets.some((p) => p.id === presetParam) ? presetParam : ''
+  const activePresetDescription = def.presets.find((p) => p.id === activePreset)?.description
 
   const update = (patch: Record<string, string>) => {
     const next = new URLSearchParams(searchParams)
@@ -133,25 +137,27 @@ export default function BuilderPage() {
       <div className="builder-layout">
         <aside className="builder-form card no-print">
           {def.presets.length > 0 && (
-            <div className="preset-row">
-              <span className="section-label" style={{ margin: 0 }}>Presets</span>
-              {def.presets.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  className="btn"
-                  title={p.description}
-                  onClick={() => {
-                    const next = new URLSearchParams()
-                    next.set('preset', p.id)
-                    next.set('seed', String(seed))
-                    setSearchParams(next, { replace: true })
-                  }}
-                >
-                  {p.name}
-                </button>
-              ))}
-            </div>
+            <label className="field">
+              Preset
+              <select
+                value={activePreset}
+                onChange={(e) => {
+                  if (e.target.value === '') return
+                  const next = new URLSearchParams()
+                  next.set('preset', e.target.value)
+                  next.set('seed', String(seed))
+                  setSearchParams(next, { replace: true })
+                }}
+              >
+                <option value="">Choose a preset…</option>
+                {def.presets.map((p) => (
+                  <option key={p.id} value={p.id} title={p.description}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+              {activePresetDescription && <span className="field-help">{activePresetDescription}</span>}
+            </label>
           )}
 
           {def.schema.map((field) => (
@@ -166,17 +172,6 @@ export default function BuilderPage() {
           <label className="field checkbox">
             <input type="checkbox" checked={bw} onChange={(e) => update({ bw: e.target.checked ? '1' : '0' })} />
             Ink-friendly black &amp; white
-          </label>
-          <label className="field">
-            Header decoration
-            <select value={theme} onChange={(e) => update({ theme: e.target.value })}>
-              {SHEET_THEMES.map((t) => (
-                <option key={t} value={t}>
-                  {THEME_LABELS[t]}
-                </option>
-              ))}
-            </select>
-            <span className="field-help">Fun corner art on student pages only — the answer key stays plain.</span>
           </label>
           <label className="field checkbox">
             <input type="checkbox" checked={showKey} onChange={(e) => update({ key: e.target.checked ? '1' : '0' })} />
@@ -196,12 +191,10 @@ export default function BuilderPage() {
         </aside>
 
         <div className="builder-preview">
-          <ThemeContext.Provider value={theme}>
-            <div className={`print-sheet${bw ? ' bw' : ''}`}>
-              <Sheet data={data} params={params} />
-              {showKey && <AnswerKey data={data} params={params} />}
-            </div>
-          </ThemeContext.Provider>
+          <SheetPreview bw={bw}>
+            <Sheet data={data} params={params} />
+            {showKey && <AnswerKey data={data} params={params} />}
+          </SheetPreview>
         </div>
       </div>
     </div>

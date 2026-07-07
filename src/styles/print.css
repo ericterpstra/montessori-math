@@ -46,6 +46,11 @@
     border: none;
   }
 
+  /* Screen previews scale sheets to fit (SheetPreview); paper never does. */
+  .print-sheet {
+    zoom: 1 !important;
+  }
+
   .sheet-page {
     break-after: page;
   }
@@ -100,28 +105,6 @@
 .sheet-header .name-date {
   font-size: 0.9rem;
   white-space: nowrap;
-}
-
-/* Optional decorative header art (src/worksheets/themes.tsx). Student pages
-   only; drawn in currentColor at 50% opacity — carries no information. */
-.sheet-header.themed {
-  position: relative;
-  padding-left: 52px;
-  padding-right: 52px;
-}
-
-.sheet-theme-art {
-  position: absolute;
-  bottom: 0.25rem;
-  pointer-events: none;
-}
-
-.sheet-theme-left {
-  left: 0;
-}
-
-.sheet-theme-right {
-  right: 0;
 }
 
 .sheet-instructions {

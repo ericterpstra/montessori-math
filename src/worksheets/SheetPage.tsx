@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { ThemeContext, ThemeDecoration, useSheetTheme } from './themes'
 
 export interface SheetPageProps {
   title: string
@@ -12,23 +11,18 @@ export interface SheetPageProps {
 
 /**
  * One printed page (US Letter). Every worksheet generator wraps each of its
- * pages in this so headers and page breaks are consistent. An optional
- * decorative theme arrives via ThemeContext (default 'none').
+ * pages in this so headers and page breaks are consistent.
  */
 export function SheetPage({ title, instructions, nameDate = true, children }: SheetPageProps) {
-  const theme = useSheetTheme()
-  const themed = theme !== 'none'
   return (
     <section className="sheet-page">
-      <header className={`sheet-header${themed ? ' themed' : ''}`}>
-        {themed && <ThemeDecoration theme={theme} side="left" />}
+      <header className="sheet-header">
         <h2 className="sheet-title">{title}</h2>
         {nameDate && (
           <div className="name-date">
             Name <span className="blank" /> Date <span className="blank short" />
           </div>
         )}
-        {themed && <ThemeDecoration theme={theme} side="right" />}
       </header>
       {instructions && <p className="sheet-instructions">{instructions}</p>}
       {children}
@@ -36,13 +30,10 @@ export function SheetPage({ title, instructions, nameDate = true, children }: Sh
   )
 }
 
-/** Answer keys are NEVER themed: a nested provider forces 'none'. */
 export function AnswerKeyPage({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <ThemeContext.Provider value="none">
-      <SheetPage title={`${title} — Answer Key`} nameDate={false}>
-        {children}
-      </SheetPage>
-    </ThemeContext.Provider>
+    <SheetPage title={`${title} — Answer Key`} nameDate={false}>
+      {children}
+    </SheetPage>
   )
 }

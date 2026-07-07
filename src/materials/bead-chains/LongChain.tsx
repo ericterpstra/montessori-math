@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { TenBar, HundredSquare, ThousandCube } from '../../components/beads'
 import { PrintButton } from '../../components/PrintButton'
+import { SheetPreview } from '../../components/SheetPreview'
 import { SheetPage } from '../../worksheets/SheetPage'
 import { formatNumber } from '../../lib/placeValue'
 import {
@@ -226,7 +227,7 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
             </label>
             <PrintButton label="Print arrow labels" />
           </div>
-          <div className={`print-sheet${bw ? ' bw' : ''}`}>
+          <SheetPreview bw={bw}>
             {pages.map((pageValues, p) => (
               <SheetPage
                 key={p}
@@ -254,7 +255,7 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
                 </div>
               </SheetPage>
             ))}
-          </div>
+          </SheetPreview>
         </section>
       )}
     </div>

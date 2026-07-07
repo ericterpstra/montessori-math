@@ -6,6 +6,7 @@ import { GENERATORS, generatorBySlug } from '../worksheets/registry'
 import { MATERIALS, materialBySlug } from '../materials/registry'
 import { STRANDS } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
+import { SheetPreview } from '../components/SheetPreview'
 import { BeadBar } from '../components/beads'
 import { DAYS, DAY_LABELS, chunkJournal, parsePlan, serializePlan } from './state'
 import type { Day, Plan, PlanItem, PlanValidity } from './state'
@@ -337,12 +338,12 @@ export default function PlannerPage() {
 
       <div className="planner-preview">
         {plan.items.length > 0 ? (
-          <div className={`print-sheet${bw ? ' bw' : ''}`}>
+          <SheetPreview bw={bw}>
             <ParentPlanPage plan={plan} />
             {journalPages.map((page, pageIndex) => (
               <JournalPage key={pageIndex} page={page} pageIndex={pageIndex} />
             ))}
-          </div>
+          </SheetPreview>
         ) : (
           <p className="no-print">Check a few items above and the printable plan and journal will preview here.</p>
         )}

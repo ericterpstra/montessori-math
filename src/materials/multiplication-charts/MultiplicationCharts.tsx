@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { PrintButton } from '../../components/PrintButton'
+import { SheetPreview } from '../../components/SheetPreview'
 import {
   cellKey,
   checkPlacements,
@@ -247,7 +248,7 @@ export default function MultiplicationCharts() {
         </MaterialShell>
       </div>
       {showPrint && (
-        <div className={`print-sheet multiplication-charts-print${bw ? ' bw' : ''}`}>
+        <SheetPreview bw={bw} className="multiplication-charts-print">
           <div className="multiplication-charts-print-controls no-print">
             <label>
               <input type="checkbox" checked={bw} onChange={(e) => setBw(e.target.checked)} /> Ink-friendly B&amp;W
@@ -312,7 +313,7 @@ export default function MultiplicationCharts() {
               </tbody>
             </table>
           </section>
-        </div>
+        </SheetPreview>
       )}
     </>
   )

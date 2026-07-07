@@ -2,6 +2,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { kitBySlug } from './registry'
 import { materialBySlug } from '../materials/registry'
 import { PrintButton } from '../components/PrintButton'
+import { SheetPreview } from '../components/SheetPreview'
 import NotFound from '../pages/NotFound'
 import './kits.css'
 
@@ -68,9 +69,9 @@ export default function KitPage() {
         </aside>
 
         <div className="builder-preview">
-          <div className={`print-sheet${bw ? ' bw' : ''}`}>
+          <SheetPreview bw={bw}>
             <Pages />
-          </div>
+          </SheetPreview>
         </div>
       </div>
     </div>
