@@ -1,6 +1,6 @@
 # PRD 15 — The Long Chains: 100 chain and 1,000 chain
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — ~120 lines of new pure model code, one new windowed-scroll component, one CSS block, one album lesson; no shared-file edits and no new dependencies, but the virtualized scroller and the 4-page printable need careful QA.
 **Depends on:** nothing (wave 1 is complete; builds only on the existing `src/materials/bead-chains/` folder)
 
@@ -811,18 +811,18 @@ Add `longChain`, `createLongChain`, `longCorrectValue`, `placeLongTicket`, `remo
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (all existing 730 tests plus the 10 new model cases and the auto-derived `content.test.ts` cases)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] Chain select offers Chain of 2–10 plus Hundred chain and Thousand chain; short-chain behavior byte-for-byte unchanged
-- [ ] Thousand chain renders only the windowed bars (`visibleBarRange`, buffer 5) and scrolls smoothly through all 100 ten-bars at `BAR_WIDTH` 130px
-- [ ] "You are near ___" chip is sticky, updates on scroll, formatted with commas, `role="status"`
-- [ ] Ticket → slot tap interaction with ascending tray (12-ticket preview + "more in the box" count); Check flags wrong tickets only on press; Reset restores everything including scroll position
-- [ ] Milestone slots at every 100 are larger with a `HundredSquare` glyph; `ThousandCube` at the 1,000 finale
-- [ ] Arrow-label printable: 1 page for the hundred chain, 4 pages for the thousand chain; 1.4in × 0.9in dashed-border tickets; printing emits only the label pages; `.bw` mode carries hundreds/thousand emphasis without color
-- [ ] No localStorage, no timers, no scores, no praise animations, no network requests, no new dependencies
-- [ ] Colors only via tokens (`--golden`, `--pv-ten`, `--pv-hundred`, `--pv-thousand`, `--line`, `--ink`, …); no hex literals in TSX
-- [ ] `long-chains` lesson complete per album schema, sequence 8 in linear-counting; `bead-chains-skip-counting`'s `whatComesNext` corrected; `def.ts` lists both lessons
-- [ ] Only files inside `src/materials/bead-chains/` (plus this PRD) are touched
+- [x] `npm test` green (all existing 730 tests plus the 10 new model cases and the auto-derived `content.test.ts` cases)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] Chain select offers Chain of 2–10 plus Hundred chain and Thousand chain; short-chain behavior byte-for-byte unchanged
+- [x] Thousand chain renders only the windowed bars (`visibleBarRange`, buffer 5) and scrolls smoothly through all 100 ten-bars at `BAR_WIDTH` 130px
+- [x] "You are near ___" chip is sticky, updates on scroll, formatted with commas, `role="status"`
+- [x] Ticket → slot tap interaction with ascending tray (12-ticket preview + "more in the box" count); Check flags wrong tickets only on press; Reset restores everything including scroll position
+- [x] Milestone slots at every 100 are larger with a `HundredSquare` glyph; `ThousandCube` at the 1,000 finale
+- [x] Arrow-label printable: 1 page for the hundred chain, 4 pages for the thousand chain; 1.4in × 0.9in dashed-border tickets; printing emits only the label pages; `.bw` mode carries hundreds/thousand emphasis without color
+- [x] No localStorage, no timers, no scores, no praise animations, no network requests, no new dependencies
+- [x] Colors only via tokens (`--golden`, `--pv-ten`, `--pv-hundred`, `--pv-thousand`, `--line`, `--ink`, …); no hex literals in TSX
+- [x] `long-chains` lesson complete per album schema, sequence 8 in linear-counting; `bead-chains-skip-counting`'s `whatComesNext` corrected; `def.ts` lists both lessons
+- [x] Only files inside `src/materials/bead-chains/` (plus this PRD) are touched
 
 ## Out of scope
 

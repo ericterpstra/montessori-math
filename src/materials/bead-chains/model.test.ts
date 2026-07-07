@@ -6,12 +6,21 @@ import {
   chainTotal,
   correctValue,
   createChain,
+  createLongChain,
   evaluate,
+  evaluateLong,
   isComplete,
+  isLongComplete,
+  longChain,
+  longCorrectValue,
+  placeLongTicket,
   placeTicket,
+  removeLongTicket,
   removeTicket,
   slotValues,
+  visibleBarRange,
 } from './model'
+import type { LongChainKind } from './model'
 
 describe('chain structure', () => {
   it('chain n has exactly n bars of n beads, n² beads in all', () => {
@@ -143,5 +152,102 @@ describe('evaluation (control of error)', () => {
     expect(isComplete(withPlacements([5, 10, 15, 20, null]))).toBe(false)
     expect(isComplete(withPlacements([10, 5, 15, 20, 25]))).toBe(false)
     expect(isComplete(createChain(5, 1))).toBe(false)
+  })
+})
+
+describe('long chain structure', () => {
+  it('longChain(100) is 10 ten-bars labeled 10…100 with one milestone at 100', () => {
+    const spec = longChain(100)
+    expect(spec.bars).toBe(10)
+    expect(spec.labelValues).toEqual([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    expect(spec.milestones).toEqual([100])
+  })
+
+  it('longChain(1000) is 100 ten-bars, 100 labels ending at 1000, milestones 100…1000', () => {
+    const spec = longChain(1000)
+    expect(spec.bars).toBe(100)
+    expect(spec.labelValues).toHaveLength(100)
+    expect(spec.labelValues[0]).toBe(10)
+    expect(spec.labelValues[99]).toBe(1000)
+    expect(spec.milestones).toEqual([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])
+  })
+
+  it('rejects long-chain kinds other than 100 and 1000', () => {
+    expect(() => longChain(50 as LongChainKind)).toThrow()
+    expect(() => longCorrectValue(10 as LongChainKind, 0)).toThrow()
+  })
+
+  it('long slot k takes (k+1)·10 and out-of-range slots throw', () => {
+    expect(longCorrectValue(100, 0)).toBe(10)
+    expect(longCorrectValue(100, 9)).toBe(100)
+    expect(longCorrectValue(1000, 42)).toBe(430)
+    expect(longCorrectValue(1000, 99)).toBe(1000)
+    expect(() => longCorrectValue(100, 10)).toThrow()
+    expect(() => longCorrectValue(1000, -1)).toThrow()
+  })
+})
+
+describe('long chain tickets', () => {
+  it('createLongChain starts with an ascending tray and all slots empty', () => {
+    const s = createLongChain(1000)
+    expect(s.tray).toHaveLength(100)
+    expect(s.tray).toEqual(longChain(1000).labelValues)
+    expect(s.placements).toHaveLength(100)
+    expect(s.placements.every((p) => p === null)).toBe(true)
+  })
+
+  it('placing and displacing long tickets keeps the tray ascending', () => {
+    const s0 = createLongChain(100)
+    const s1 = placeLongTicket(s0, 1, 0) // 20 onto slot 0 (wrong)
+    expect(s1.placements[0]).toBe(20)
+    expect(s1.tray).toEqual([10, 30, 40, 50, 60, 70, 80, 90, 100])
+    const s2 = placeLongTicket(s1, 0, 0) // 10 displaces 20; 20 re-sorts to the front
+    expect(s2.placements[0]).toBe(10)
+    expect(s2.tray[0]).toBe(20)
+    const s3 = removeLongTicket(s2, 0)
+    expect(s3.tray).toEqual([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+  })
+
+  it('evaluateLong flags a misplaced ticket and nothing else', () => {
+    const s0 = createLongChain(100)
+    const s1 = placeLongTicket(s0, 0, 0) // 10 at slot 0 — correct
+    const s2 = placeLongTicket(s1, 1, 1) // tray is now [20,30,…]; index 1 = 30 at slot 1 — wrong
+    expect(evaluateLong(s2)).toEqual([
+      'correct', 'wrong', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty',
+    ])
+    expect(isLongComplete(s2)).toBe(false)
+  })
+
+  it('a fully labeled hundred chain is complete', () => {
+    let s = createLongChain(100)
+    for (let k = 0; k < 10; k++) s = placeLongTicket(s, 0, k) // tray is ascending: front ticket is always next
+    expect(evaluateLong(s).every((r) => r === 'correct')).toBe(true)
+    expect(isLongComplete(s)).toBe(true)
+  })
+})
+
+describe('windowing (visibleBarRange)', () => {
+  it('windows the start, the middle, and a small viewport', () => {
+    // start: first = ⌊0/130⌋ = 0, last = ⌊900/130⌋ = 6 → [0−5→0, 6+5=11]
+    expect(visibleBarRange(0, 900, 130, 100, 5)).toEqual([0, 11])
+    // middle: first = ⌊6500/130⌋ = 50, last = ⌊7400/130⌋ = 56 → [45, 61]
+    expect(visibleBarRange(6500, 900, 130, 100, 5)).toEqual([45, 61])
+    // 375px mobile viewport: first = 0, last = ⌊375/130⌋ = 2 → [0, 7]
+    expect(visibleBarRange(0, 375, 130, 100, 5)).toEqual([0, 7])
+  })
+
+  it('clamps at both ends', () => {
+    // far end: first = ⌊12800/130⌋ = 98, last = ⌊13700/130⌋ = 105 → [93, min(99,110)=99]
+    expect(visibleBarRange(12800, 900, 130, 100, 5)).toEqual([93, 99])
+    // elastic overscroll: first = ⌊−50/130⌋ = −1 → start clamps to 0
+    expect(visibleBarRange(-50, 900, 130, 100, 5)).toEqual([0, 11])
+    // short chain, wide window: everything → [0, 9]
+    expect(visibleBarRange(0, 900, 130, 10, 5)).toEqual([0, 9])
+  })
+
+  it('defaults the buffer to 5 and rejects nonsense geometry', () => {
+    expect(visibleBarRange(6500, 900, 130, 100)).toEqual([45, 61])
+    expect(() => visibleBarRange(0, 900, 0, 100)).toThrow()
+    expect(() => visibleBarRange(0, 900, 130, 0)).toThrow()
   })
 })

@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import { MaterialShell } from '../../components/MaterialShell'
 import { BeadBar, BEAD_STAIR_VARS } from '../../components/beads'
 import { randomSeed } from '../../lib/rng'
+import LongChain from './LongChain'
 import {
   CHAIN_MAX,
   CHAIN_MIN,
@@ -13,7 +14,7 @@ import {
   placeTicket,
   removeTicket,
 } from './model'
-import type { ChainState } from './model'
+import type { ChainState, LongChainKind } from './model'
 import './bead-chains.css'
 
 const CHAIN_CHOICES = Array.from({ length: CHAIN_MAX - CHAIN_MIN + 1 }, (_, i) => CHAIN_MIN + i)
@@ -22,6 +23,7 @@ export default function BeadChains() {
   const [state, setState] = useState<ChainState>(() => createChain(5, randomSeed()))
   const [selected, setSelected] = useState<number | null>(null)
   const [checked, setChecked] = useState(false)
+  const [longKind, setLongKind] = useState<LongChainKind | null>(null)
 
   const { n, tray, placements } = state
   const chainColor = BEAD_STAIR_VARS[n]
@@ -51,18 +53,35 @@ export default function BeadChains() {
     }
   }
 
+  const selectValue = longKind === null ? String(n) : `long-${longKind}`
+
+  function onModeChange(value: string) {
+    if (value === 'long-100') setLongKind(100)
+    else if (value === 'long-1000') setLongKind(1000)
+    else {
+      setLongKind(null)
+      startChain(Number(value))
+    }
+  }
+
+  const chainSelect = (
+    <label>
+      Chain
+      <select value={selectValue} onChange={(e) => onModeChange(e.target.value)}>
+        {CHAIN_CHOICES.map((c) => (
+          <option key={c} value={String(c)}>
+            Chain of {c}
+          </option>
+        ))}
+        <option value="long-100">Hundred chain</option>
+        <option value="long-1000">Thousand chain</option>
+      </select>
+    </label>
+  )
+
   const controls = (
     <>
-      <label>
-        Chain
-        <select value={n} onChange={(e) => startChain(Number(e.target.value))}>
-          {CHAIN_CHOICES.map((c) => (
-            <option key={c} value={c}>
-              Chain of {c}
-            </option>
-          ))}
-        </select>
-      </label>
+      {chainSelect}
       <button type="button" className="bead-chains-btn" onClick={() => setChecked(true)} disabled={placements.every((p) => p === null)}>
         Check
       </button>
@@ -80,6 +99,8 @@ export default function BeadChains() {
       doubt, count the beads again.
     </p>
   )
+
+  if (longKind !== null) return <LongChain key={longKind} kind={longKind} chainSelect={chainSelect} />
 
   return (
     <MaterialShell controls={controls} help={help} mat="felt">

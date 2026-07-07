@@ -86,7 +86,7 @@ export const lessons: Lesson[] = [
       'Skip count past the square on paper: keep the sequence going — 30, 35, 40 — as far as your child can',
     ],
     whatComesNext:
-      'This is the last lesson in the Linear & Skip Counting strand, and the sequences your child can now chant are the multiplication tables in disguise. From here the path leads into the Memorization strand: the Snake Game turns counting into addition facts, and later the Multiplication Bead Board turns these skip-counted sequences into remembered products.',
+      'One grand adventure remains in this strand: the long chains. The hundred chain and the great thousand chain stretch skip counting by tens all the way to 1,000 — see the next lesson, The Long Chains. After that, the path leads into the Memorization strand, where the Snake Game turns counting into addition facts.',
     followUpWork: [
       {
         description:
@@ -100,6 +100,117 @@ export const lessons: Lesson[] = [
       {
         description:
           'Count real things in groups and write the running totals down: eggs by twos or sixes in a carton, muffin-tin cups by threes or fours, fingers by fives and tens.',
+      },
+    ],
+  },
+  {
+    slug: 'long-chains',
+    name: 'The Long Chains: 100 and 1,000',
+    strand: 'linear-counting',
+    sequence: 8,
+    ages: [5, 8],
+    grades: 'K–2',
+    overview:
+      'The long chains are the longest count in the primary classroom: one golden line of ten-bars that your child counts by tens, labeling every bar along the way. The hundred chain comes first — ten ten-bars ending at 100 — and then the thousand chain turns counting into a true expedition, one hundred ten-bars long with a milestone waiting at every hundred.',
+    materialsNeeded: [
+      'Real golden hundred and thousand chains with their arrow labels, or the virtual Bead Chains material on this site set to Hundred chain or Thousand chain',
+      'The printable arrow labels from the material page (tap "Show arrow labels", then print) — cut them out to label a real or homemade chain',
+      'Household substitute: 10 strings of 10 beads each, or 100 paper clips chained in tens, joined end to end',
+      'A long runway for the count: a hallway, a long rug, or a painter’s-tape line down the floor',
+    ],
+    virtualMaterials: ['bead-chains'],
+    prerequisites: ['bead-chains-skip-counting'],
+    directAims: [
+      'Count by tens to 100, and then all the way to 1,000, labeling the end of every ten-bar',
+      'Meet the hundred square at every milestone and the thousand cube at the finale as counted proof that 100 is 10 tens and 1,000 is 100 tens — 10 hundreds',
+      'Sustain one long count from beginning to end, checking the work honestly along the way',
+    ],
+    indirectAims: [
+      'Preparation for the decimal system and the powers of 10',
+      'Concentration and stamina built across one long, continuous piece of work',
+      'A bodily, walked-and-counted sense of how big 1,000 really is',
+    ],
+    presentation: [
+      {
+        text: 'Choose the Hundred chain on screen, or lay a real hundred chain out straight on a long rug with its arrow labels nearby. Sit beside your child at the very start of the chain.',
+        say: 'This is the hundred chain. It is made of ten-bars — let us count them.',
+      },
+      {
+        text: 'Count the first bar bead by bead, touching each bead, and when you reach ten, place the 10 arrow at the end of the bar. On screen: tap the 10 ticket in the tray, then tap the empty spot at the end of the first bar.',
+        say: 'Ten.',
+      },
+      {
+        text: 'Count on by tens from there, placing an arrow at the end of each bar. Invite your child to take over the counting and the arrows as soon as they reach for them.',
+        say: 'Ten, twenty, thirty…',
+      },
+      {
+        text: 'At the end of the chain comes the larger ticket, 100, and beside it the hundred square. Let your child set the ticket, then pause to look back down the whole labeled chain.',
+        say: 'Ten tens make one hundred. The chain is the hundred square, unrolled.',
+      },
+      {
+        text: 'Another day, present the thousand chain. Before any counting, travel its whole length together — scroll from one end to the other on screen, or walk beside a real chain from start to finish.',
+        say: 'This chain has one hundred ten-bars. Today we count all the way to one thousand.',
+      },
+      {
+        text: 'Count and label by tens, your child leading. At every hundred, pause: the milestone earns its bigger ticket and a hundred square appears beside it. Greet each one before counting on.',
+        say: 'One hundred!',
+      },
+      {
+        text: 'Breaks are part of this work — a count to 1,000 can span snack time or even a day. On screen, the "You are near" sign shows where you left off when you scroll back; on a real chain, the last placed arrow does the same.',
+      },
+      {
+        text: 'At the very end of the chain waits the finale: the 1,000 ticket, the largest of all, with the thousand cube beside it.',
+        say: 'One thousand. One hundred tens — ten hundreds — make one thousand.',
+      },
+      {
+        text: 'Walk back down the chain and read only the milestones aloud together — one hundred, two hundred, three hundred… one thousand. If your child wants certainty, tap Check: every placed ticket is marked right or wrong, and a wrong one just means it is time to recount that bar.',
+      },
+    ],
+    pointsOfInterest: [
+      'The sheer length of it — a real thousand chain runs about 7 meters, longer than most rooms',
+      'A hundred square appearing at every milestone, and the thousand cube waiting at the very end',
+      'The "You are near" sign that tells you where you are when you scroll back after a break',
+      'The same golden beads as the decimal-system material, laid out here in one single line',
+    ],
+    controlOfError: [
+      'The tickets form one fixed, ordered set — if the next arrow in the box does not match the count, something needs a recount',
+      'Recounting any bar’s beads confirms the label at its end',
+      'On screen, the Check button marks each placed ticket right or wrong without revealing the answer',
+    ],
+    vocabulary: [
+      'hundred chain',
+      'thousand chain',
+      'ten-bar',
+      'hundred square',
+      'thousand cube',
+      'arrow label',
+      'milestone',
+    ],
+    variations: [
+      'Read only the milestone numbers aloud and whisper all the tens in between',
+      'Count backward from 100 down the hundred chain: one hundred, ninety, eighty…',
+      'Walk a real chain heel-to-toe, counting the bars as you step past them',
+    ],
+    extensions: [
+      'Fold a real thousand chain into hundreds and stack the ten hundred squares next to the thousand cube — the same quantity, three shapes',
+      'Find every milestone on the hundred board and notice the pattern the multiples of ten make',
+      'Estimate first: guess where 500 will fall down the hallway, mark the guess with tape, then count to check',
+    ],
+    whatComesNext:
+      'The Long Chains close the Linear & Skip Counting strand — your child can now count anything, in any step, to 1,000. Two paths open from here. The Memorization strand begins with the Snake Game, which turns all that counting into addition facts. And the Decimal System strand’s golden beads take the very same units, ten-bars, hundred squares, and thousand cubes your child just counted and build numbers into the thousands with them.',
+    followUpWork: [
+      {
+        description:
+          'Print a skip-counting worksheet of tens and let your child fill in the missing multiples in pencil.',
+        worksheetSlug: 'skip-counting',
+      },
+      {
+        description:
+          'Print the arrow labels from the material page, cut them out together, and use them to label a homemade chain — or a tens number line taped down the hallway.',
+      },
+      {
+        description:
+          'Ask your child to write the milestones 100, 200, 300 … 1,000 from memory on paper, then check them against the chain’s big tickets.',
       },
     ],
   },
