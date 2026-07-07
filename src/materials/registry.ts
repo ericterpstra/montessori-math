@@ -12,6 +12,8 @@ import { def as additionStripBoard } from './addition-strip-board/def'
 import { def as subtractionStripBoard } from './subtraction-strip-board/def'
 import { def as multiplicationBeadBoard } from './multiplication-bead-board/def'
 import { def as divisionBoard } from './division-board/def'
+import { def as additionCharts } from './addition-charts/def'
+import { def as multiplicationCharts } from './multiplication-charts/def'
 import { def as stampGame } from './stamp-game/def'
 import { def as beadFrame } from './bead-frame/def'
 import { def as checkerboard } from './checkerboard/def'
@@ -37,6 +39,8 @@ export const MATERIALS: MaterialDef[] = [
   subtractionStripBoard,
   multiplicationBeadBoard,
   divisionBoard,
+  additionCharts,
+  multiplicationCharts,
   stampGame,
   beadFrame,
   checkerboard,

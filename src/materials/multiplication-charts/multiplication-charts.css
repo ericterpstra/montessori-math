@@ -1,0 +1,231 @@
+/* Multiplication Charts — all classes prefixed multiplication-charts- */
+/* Supplier traditions disagree on multiplication chart color (red vs yellow);
+   neutral headers avoid inventing a claim and keep red meaning 'addition
+   charts' on this site. */
+
+/* The grid scrolls inside its own container on narrow screens */
+.multiplication-charts-grid-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.multiplication-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(10, var(--touch-target));
+  gap: 2px;
+  width: max-content;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Body cell: <div> in chart modes, <button> in working mode */
+.multiplication-charts-cell {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0;
+}
+
+button.multiplication-charts-cell {
+  cursor: pointer;
+}
+
+button.multiplication-charts-cell:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Header cell — neutral warm paper (see color note at top of file) */
+.multiplication-charts-header {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border-radius: 4px;
+  padding: 0;
+  background: var(--paper-warm);
+  color: var(--ink);
+  font-weight: 700;
+  border: none;
+}
+
+button.multiplication-charts-header {
+  cursor: pointer;
+}
+
+button.multiplication-charts-header:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Corner cell shows the operation sign; warm paper so ink reads on the felt */
+.multiplication-charts-corner {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-warm);
+  border-radius: 4px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.multiplication-charts-cell.gap {
+  visibility: hidden;
+}
+
+.multiplication-charts-cell.hi {
+  background: var(--paper-warm);
+}
+
+.multiplication-charts-cell.meet {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+.multiplication-charts-cell.wrong {
+  outline: 3px dashed var(--error);
+  outline-offset: -3px;
+}
+
+/* Tile bank under the working chart */
+.multiplication-charts-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-height: 9.5rem;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin: 0.75rem 0;
+}
+
+.multiplication-charts-tile {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.multiplication-charts-tile.selected {
+  outline: 3px solid var(--focus);
+  outline-offset: -1px;
+}
+
+.multiplication-charts-tile:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Buttons (same recipe as the other memorization boards) */
+.multiplication-charts-btn {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.multiplication-charts-btn:hover:not(:disabled) {
+  background: var(--paper-warm);
+}
+
+.multiplication-charts-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.multiplication-charts-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* --- Printable control charts (inside .print-sheet) --- */
+.multiplication-charts-print-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 0.25in auto 0;
+}
+
+.multiplication-charts-print-table th,
+.multiplication-charts-print-table td {
+  width: 0.55in;
+  height: 0.55in;
+  border: 1px solid #000;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: 13pt;
+}
+
+.multiplication-charts-print-table th {
+  background: var(--paper-warm);
+  color: #000;
+  font-weight: 700;
+  font-size: 14pt;
+  border-width: 2px; /* header identity survives without color (.bw) */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.multiplication-charts-print-table td.gap {
+  border: none;
+}
+
+/* .bw: white headers, black bold numerals — ink-friendly, no info lost */
+.multiplication-charts-print.bw .multiplication-charts-print-table th {
+  background: #fff;
+  color: #000;
+}
+
+.multiplication-charts-print-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0 0 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Print isolation: while the control-chart sheet is open, only it prints */
+@media print {
+  body.multiplication-charts-print-mode main.site-main > * {
+    display: none !important;
+  }
+  body.multiplication-charts-print-mode main.site-main > .multiplication-charts-print {
+    display: block !important;
+  }
+}

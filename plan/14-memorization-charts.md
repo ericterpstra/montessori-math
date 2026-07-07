@@ -1,6 +1,6 @@
 # PRD 14 — Addition & Multiplication Working Charts (Charts 1–3) + printable control charts
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — two new material folders, but they share one fully specified model shape, reuse existing shell/CSS conventions, and touch no shared logic beyond two registry entries.
 **Depends on:** nothing (wave 1 is complete; `math-facts` generator and its `first-facts` / `times-tables` presets already exist).
 
@@ -477,20 +477,20 @@ Also: after step 9 wiring, the existing `src/lessons/content.test.ts` must stay 
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (existing 730 tests plus ≥18 new model tests; `content.test.ts` untouched and passing)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] Two new material folders exist with the full house file set; no files outside them changed except the two registries (wired by session lead) and this PRD
-- [ ] `additionChart1()`/`multiplicationChart1()` return 81 row-major cells; `…Chart2()` return the 45 `a ≤ b` cells
-- [ ] Working-chart bank starts with exactly 81 tiles whose multiset equals the fact-table answers, sorted ascending
-- [ ] `placeTile` refuses occupied cells and absent tiles by returning the state unchanged; `removeTile` restores the bank sorted
-- [ ] Check marks wrong placements only, only on press, with honest counts; marks clear on the next change; completion shows one plain sentence, no animation
-- [ ] Chart 1/2 finger-highlight works (row + column + meeting cell + fact note) and is view-only
-- [ ] Print section renders Chart 1 and Chart 2 as two `.sheet-page` tables with 0.55in cells; printing while open emits exactly those 2 pages with no site chrome or interactive UI
-- [ ] `.bw` print: headers white with bold black numerals and 2px borders — no information carried by color alone; color print keeps red headers (addition) / warm-neutral headers (multiplication)
-- [ ] All interactive targets ≥ 44px; at 375px the grid scrolls in its own container without page-level horizontal scroll
-- [ ] Lessons registered at memorization sequences 6 and 7 with prerequisites `['addition-strip-board']` / `['multiplication-bead-board']` and follow-up `math-facts` presets `first-facts` / `times-tables`
-- [ ] No localStorage, no analytics, no new dependencies, no runtime network requests
-- [ ] Both material pages and both lesson pages render on the LAN dev server; QA script above passes end to end
+- [x] `npm test` green (existing 730 tests plus ≥18 new model tests; `content.test.ts` untouched and passing)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] Two new material folders exist with the full house file set; no files outside them changed except the two registries (wired by session lead) and this PRD
+- [x] `additionChart1()`/`multiplicationChart1()` return 81 row-major cells; `…Chart2()` return the 45 `a ≤ b` cells
+- [x] Working-chart bank starts with exactly 81 tiles whose multiset equals the fact-table answers, sorted ascending
+- [x] `placeTile` refuses occupied cells and absent tiles by returning the state unchanged; `removeTile` restores the bank sorted
+- [x] Check marks wrong placements only, only on press, with honest counts; marks clear on the next change; completion shows one plain sentence, no animation
+- [x] Chart 1/2 finger-highlight works (row + column + meeting cell + fact note) and is view-only
+- [x] Print section renders Chart 1 and Chart 2 as two `.sheet-page` tables with 0.55in cells; printing while open emits exactly those 2 pages with no site chrome or interactive UI
+- [x] `.bw` print: headers white with bold black numerals and 2px borders — no information carried by color alone; color print keeps red headers (addition) / warm-neutral headers (multiplication)
+- [x] All interactive targets ≥ 44px; at 375px the grid scrolls in its own container without page-level horizontal scroll
+- [x] Lessons registered at memorization sequences 6 and 7 with prerequisites `['addition-strip-board']` / `['multiplication-bead-board']` and follow-up `math-facts` presets `first-facts` / `times-tables`
+- [x] No localStorage, no analytics, no new dependencies, no runtime network requests
+- [x] Both material pages and both lesson pages render on the LAN dev server; QA script above passes end to end
 
 ## Out of scope
 

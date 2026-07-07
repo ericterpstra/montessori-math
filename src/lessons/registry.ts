@@ -12,6 +12,8 @@ import { lessons as additionStripBoard } from '../materials/addition-strip-board
 import { lessons as subtractionStripBoard } from '../materials/subtraction-strip-board/lessons'
 import { lessons as multiplicationBeadBoard } from '../materials/multiplication-bead-board/lessons'
 import { lessons as divisionBoard } from '../materials/division-board/lessons'
+import { lessons as additionCharts } from '../materials/addition-charts/lessons'
+import { lessons as multiplicationCharts } from '../materials/multiplication-charts/lessons'
 import { lessons as stampGame } from '../materials/stamp-game/lessons'
 import { lessons as beadFrame } from '../materials/bead-frame/lessons'
 import { lessons as checkerboard } from '../materials/checkerboard/lessons'
@@ -34,6 +36,8 @@ export const LESSONS: Lesson[] = [
   ...subtractionStripBoard,
   ...multiplicationBeadBoard,
   ...divisionBoard,
+  ...additionCharts,
+  ...multiplicationCharts,
   ...stampGame,
   ...beadFrame,
   ...checkerboard,

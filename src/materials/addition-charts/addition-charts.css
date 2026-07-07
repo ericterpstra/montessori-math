@@ -1,0 +1,227 @@
+/* Addition Charts — all classes prefixed addition-charts- */
+
+/* The grid scrolls inside its own container on narrow screens */
+.addition-charts-grid-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.addition-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(10, var(--touch-target));
+  gap: 2px;
+  width: max-content;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Body cell: <div> in chart modes, <button> in working mode */
+.addition-charts-cell {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0;
+}
+
+button.addition-charts-cell {
+  cursor: pointer;
+}
+
+button.addition-charts-cell:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Header cell — red carries the memorization-work color on this site */
+.addition-charts-header {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border-radius: 4px;
+  padding: 0;
+  background: var(--bead-1);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+}
+
+button.addition-charts-header {
+  cursor: pointer;
+}
+
+button.addition-charts-header:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Corner cell shows the operation sign; stage is felt, white reads fine */
+.addition-charts-corner {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.addition-charts-cell.gap {
+  visibility: hidden;
+}
+
+.addition-charts-cell.hi {
+  background: var(--paper-warm);
+}
+
+.addition-charts-cell.meet {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+.addition-charts-cell.wrong {
+  outline: 3px dashed var(--error);
+  outline-offset: -3px;
+}
+
+/* Tile bank under the working chart */
+.addition-charts-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-height: 9.5rem;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin: 0.75rem 0;
+}
+
+.addition-charts-tile {
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.addition-charts-tile.selected {
+  outline: 3px solid var(--focus);
+  outline-offset: -1px;
+}
+
+.addition-charts-tile:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Buttons (same recipe as the other memorization boards) */
+.addition-charts-btn {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.addition-charts-btn:hover:not(:disabled) {
+  background: var(--paper-warm);
+}
+
+.addition-charts-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.addition-charts-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* --- Printable control charts (inside .print-sheet) --- */
+.addition-charts-print-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 0.25in auto 0;
+}
+
+.addition-charts-print-table th,
+.addition-charts-print-table td {
+  width: 0.55in;
+  height: 0.55in;
+  border: 1px solid #000;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: 13pt;
+}
+
+.addition-charts-print-table th {
+  background: var(--bead-1);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14pt;
+  border-width: 2px; /* header identity survives without color (.bw) */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.addition-charts-print-table td.gap {
+  border: none;
+}
+
+/* .bw: white headers, black bold numerals — ink-friendly, no info lost */
+.addition-charts-print.bw .addition-charts-print-table th {
+  background: #fff;
+  color: #000;
+}
+
+.addition-charts-print-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0 0 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Print isolation: while the control-chart sheet is open, only it prints */
+@media print {
+  body.addition-charts-print-mode main.site-main > * {
+    display: none !important;
+  }
+  body.addition-charts-print-mode main.site-main > .addition-charts-print {
+    display: block !important;
+  }
+}
