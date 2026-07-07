@@ -1,6 +1,6 @@
 # PRD 18 — Material Physicality Pass: texture, depth, and worksheet header art
 
-**Status:** Done
+**Status:** Done (textures/bead depth/shadows); the worksheet header-decoration feature was later removed per issue #2
 **Effort:** M — every individual edit is small copy-paste CSS/TSX, but the change cuts across shared styles, a shared SVG primitive, and the worksheet pipeline, and needs broad visual QA over 19 materials and 12 generators.
 **Depends on:** nothing (PRDs 02 Materials, 03 Worksheets, and 07 QA are Done; this is pure polish on top of them).
 

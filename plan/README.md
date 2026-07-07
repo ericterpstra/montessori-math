@@ -33,6 +33,6 @@ Ten features chosen to make the site delightful for parents and kids, not just u
 | 13 | [Weekly work plan & child's journal (URL-state)](13-work-planner.md) | M | Done |
 | 14 | [Addition & multiplication working charts](14-memorization-charts.md) | M | Done |
 | 15 | [The long chains — 100 & 1,000](15-long-chains.md) | M | Done |
-| 16 | [Booklet printing — fold-and-staple books](16-booklet-printing.md) | M | Done |
+| 16 | [Booklet printing — fold-and-staple books](16-booklet-printing.md) | M | Removed (issue #4) |
 | 17 | [Install-to-tablet PWA, full offline](17-pwa-offline.md) | S | Done |
-| 18 | [Material physicality pass + sheet themes](18-physicality-pass.md) | S | Done |
+| 18 | [Material physicality pass + sheet themes](18-physicality-pass.md) | S | Done (header art removed, issue #2) |

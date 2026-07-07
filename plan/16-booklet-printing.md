@@ -1,6 +1,6 @@
 # PRD 16 — Booklet Printing: fold-and-staple little books
 
-**Status:** Done
+**Status:** Removed — shipped, then deleted per issue #4 (too confusing to print); the numeral-tracing generator reverted to sheets-only
 **Effort:** M — one small pure util + one frame component + CSS + a contained change to one generator; no new dependencies, no shared-file churn beyond a one-line import in `main.tsx`.
 **Depends on:** nothing (wave 1 is complete; `numeral-tracing` generator and the worksheet builder already exist)
 

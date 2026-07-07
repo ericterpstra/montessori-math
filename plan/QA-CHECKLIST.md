@@ -49,10 +49,9 @@ Everything below shipped last night and passed automated tests (871) plus in-bro
 2. Glance at `/materials/multiplication-charts` Chart 1 and Chart 2.
 - [ ] Chart 2 (the half chart) shows each fact once — the commutativity "aha" is visible
 
-### 6. Worksheet themes (PRD 18)
-1. Open `/worksheets/math-facts`, set **Header decoration** to each of space / baking / dinosaurs.
-- [ ] Small corner art appears on the student page header only — subtle, never on the answer key
-2. Look at `/materials/golden-beads` and `/materials/addition-strip-board` mats.
+### 6. Material textures (PRD 18)
+*(The worksheet header-decoration feature was removed per issue #2.)*
+1. Look at `/materials/golden-beads` and `/materials/addition-strip-board` mats.
 - [ ] Felt and wood now have faint texture; beads have a touch of depth — should read as "nicer," not "busy." If anything looks noisy, note which mat.
 
 ## Part 2 — Printer batch (~15 min)
@@ -76,9 +75,8 @@ Print these six things in one session (Ctrl+P; **100% scale / "Actual size" — 
 - [ ] Page 1: parent plan grouped by day. Page 2: "My Work" journal — big type, empty checkbox squares a child can pencil
 - [ ] Try the **Ink-friendly black & white** toggle in print preview — nothing lost
 
-### 10. Booklet ⭐ the fun one (PRD 16)
-1. `/worksheets/numeral-tracing` → set **Layout** to the booklet option → Print **double-sided, flip on SHORT edge** (3 sheets).
-- [ ] Fold the stack in half → a 12-page "My Book of Numbers": cover, 0–9 in order, back cover — pages right-side-up and in order (this verifies the imposition math on real paper)
+### 10. Numeral tracing (PRD 16 booklet was removed per issue #4)
+1. `/worksheets/numeral-tracing` → Print.
 - [ ] Dashed numerals are traceable; counting beads match each numeral
 
 ### 11. Control charts + B&W fractions (PRDs 14, 18-regression)
