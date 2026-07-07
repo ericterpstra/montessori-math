@@ -167,20 +167,35 @@ export interface SkittleProps {
   title?: string
 }
 
-/** A skittle (the little wooden pin that stands for one share in division). */
+/**
+ * A skittle (the little wooden pin that stands for one share in division),
+ * drawn as a simple peg-doll: round head, waisted body, wide steady base —
+ * a silhouette that stays readable even at very small sizes.
+ */
 export function Skittle({ height = 48, fill = 'var(--pv-unit)', className, title }: SkittleProps) {
   const width = (height * 24) / 48
   return (
     <svg width={width} height={height} viewBox="0 0 24 48" className={className} role={title ? 'img' : undefined} aria-hidden={title ? undefined : true}>
       {title && <title>{title}</title>}
-      <circle cx={12} cy={7} r={6} fill={fill} stroke={BEAD_STROKE} strokeWidth={0.8} />
       <path
-        d="M12 12 C 8 14, 7.5 18, 9 22 C 5.5 27, 4.5 36, 7 43 C 8 46, 16 46, 17 43 C 19.5 36, 18.5 27, 15 22 C 16.5 18, 16 14, 12 12 Z"
+        d="M12 14.5
+           C 9.6 14.5, 8.4 16.2, 8.7 18.6
+           C 8.95 20.6, 8.9 22.3, 8 24.6
+           C 6.3 28.9, 5.4 33.6, 5.4 38.4
+           L 5.4 41.2
+           C 5.4 44.3, 7.8 45.8, 12 45.8
+           C 16.2 45.8, 18.6 44.3, 18.6 41.2
+           L 18.6 38.4
+           C 18.6 33.6, 17.7 28.9, 16 24.6
+           C 15.1 22.3, 15.05 20.6, 15.3 18.6
+           C 15.6 16.2, 14.4 14.5, 12 14.5 Z"
         fill={fill}
         stroke={BEAD_STROKE}
-        strokeWidth={0.8}
+        strokeWidth={0.9}
+        strokeLinejoin="round"
       />
-      <ellipse cx={10} cy={5.5} rx={2.2} ry={1.6} fill="#fff" opacity={0.4} />
+      <circle cx={12} cy={8.6} r={6.4} fill={fill} stroke={BEAD_STROKE} strokeWidth={0.9} />
+      <ellipse cx={9.8} cy={6.6} rx={2.4} ry={1.8} fill="#fff" opacity={0.45} />
     </svg>
   )
 }
