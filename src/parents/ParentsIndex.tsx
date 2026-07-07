@@ -23,6 +23,14 @@ export default function ParentsIndex() {
           </li>
         ))}
       </ul>
+      <section className="card" style={{ maxWidth: '46rem', marginTop: '2rem' }}>
+        <h2>Plan the week</h2>
+        <p style={{ marginBottom: 0 }}>
+          Pick lessons, worksheets, and materials for the week, then print a parent plan and a "My Work"
+          journal your child checks off in pencil. The whole plan lives in the page's URL — bookmark it to
+          keep it; nothing is stored anywhere. <Link to="/planner">Open the planner</Link>
+        </p>
+      </section>
     </>
   )
 }

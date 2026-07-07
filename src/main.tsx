@@ -9,6 +9,7 @@ import './styles/materials.css'
 import './styles/album.css'
 import './styles/worksheets.css'
 import './styles/guides.css'
+import './styles/planner.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

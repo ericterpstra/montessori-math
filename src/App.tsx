@@ -11,6 +11,9 @@ import WorksheetsIndex from './worksheets/WorksheetsIndex'
 import BuilderPage from './worksheets/BuilderPage'
 import ParentsIndex from './parents/ParentsIndex'
 import GuidePage from './parents/GuidePage'
+import KitsIndex from './kits/KitsIndex'
+import KitPage from './kits/KitPage'
+import PlannerPage from './planner/PlannerPage'
 
 export default function App() {
   return (
@@ -23,6 +26,9 @@ export default function App() {
         <Route path="lessons/:slug" element={<LessonPage />} />
         <Route path="worksheets" element={<WorksheetsIndex />} />
         <Route path="worksheets/:slug" element={<BuilderPage />} />
+        <Route path="kits" element={<KitsIndex />} />
+        <Route path="kits/:slug" element={<KitPage />} />
+        <Route path="planner" element={<PlannerPage />} />
         <Route path="parents" element={<ParentsIndex />} />
         <Route path="parents/:slug" element={<GuidePage />} />
         <Route path="ages" element={<AgesPage />} />

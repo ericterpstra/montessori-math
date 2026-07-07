@@ -26,12 +26,12 @@ Ten features chosen to make the site delightful for parents and kids, not just u
 
 | # | PRD | Effort | Status |
 |---|---|---|---|
-| 09 | [Make-it-yourself material kits (printable)](09-material-kits.md) | M | Not started |
-| 10 | [Exchange ceremony — motion & material sounds](10-exchange-ceremony.md) | M | Not started |
+| 09 | [Make-it-yourself material kits (printable)](09-material-kits.md) | M | Done |
+| 10 | [Exchange ceremony — motion & material sounds](10-exchange-ceremony.md) | M | Done |
 | 11 | [Presentation mode — lessons walk the material](11-presentation-mode.md) | L | Not started |
-| 12 | [Command cards — printable task decks](12-command-cards.md) | M | Not started |
-| 13 | [Weekly work plan & child's journal (URL-state)](13-work-planner.md) | M | Not started |
-| 14 | [Addition & multiplication working charts](14-memorization-charts.md) | M | Not started |
+| 12 | [Command cards — printable task decks](12-command-cards.md) | M | Done |
+| 13 | [Weekly work plan & child's journal (URL-state)](13-work-planner.md) | M | Done |
+| 14 | [Addition & multiplication working charts](14-memorization-charts.md) | M | Done |
 | 15 | [The long chains — 100 & 1,000](15-long-chains.md) | M | Not started |
 | 16 | [Booklet printing — fold-and-staple books](16-booklet-printing.md) | M | Not started |
 | 17 | [Install-to-tablet PWA, full offline](17-pwa-offline.md) | S | Not started |

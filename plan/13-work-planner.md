@@ -1,6 +1,6 @@
 # PRD 13 — Weekly Work Plan & Child's Work Journal (URL-state, zero storage)
 
-**Status:** Not started
+**Status:** Done
 **Effort:** M — one new route with a pure state module and print CSS; touches three existing files with one-line-scale edits; no new logic in `src/lib/`.
 **Depends on:** nothing (wave 1 is complete: 19 materials, 12 generators, 38 lessons all registered).
 
@@ -441,19 +441,19 @@ const parse = (q: string) => parsePlan(new URLSearchParams(q), VALID)
 
 ## Acceptance criteria
 
-- [ ] `npm test` green (including new `src/planner/state.test.ts`)
-- [ ] `npm run build` green (strict tsc + vite)
-- [ ] `/planner` route renders inside `Layout`; entry links exist on `/` (`.home-cta`) and `/parents`
-- [ ] Full plan state round-trips through the URL: reload and incognito reproduce the plan; no `localStorage`/`sessionStorage`/cookie usage anywhere in `src/planner/` (grep clean)
-- [ ] `PlannerPage` holds no React state for the plan — only the transient `copied` flag (code-review check)
-- [ ] URL grammar honored exactly: `l=`/`s=`/`m=` with optional `.preset` (sheets) and `:day` suffixes, `w=YYYY-MM-DD`; invalid slug drops item, invalid day/preset drops only that part; order preserved
-- [ ] `serializePlan(parsePlan(x)) === x` for the three canonical fixtures
-- [ ] Print output: parent plan page + journal page(s) as separate `.sheet-page`s inside one `.print-sheet`; journal chunks at 12 items/page; footnote text exact
-- [ ] `.bw` print carries all information without color: outline badges/chips, black bead bar (checked in print preview both modes)
-- [ ] Journal check squares are 1.5 cm, `2px solid var(--ink)`; item names ≥ 1.3 rem; title in `--font-heading`
-- [ ] All picker rows and buttons ≥ 44 px tall; checkboxes 1.25 rem; day selects have per-item `aria-label`s
-- [ ] No new npm dependencies; no network requests; no hex colors in `PlannerPage.tsx`
-- [ ] `plan/README.md` table updated; this PRD's Status set to Done with the landing commit
+- [x] `npm test` green (including new `src/planner/state.test.ts`)
+- [x] `npm run build` green (strict tsc + vite)
+- [x] `/planner` route renders inside `Layout`; entry links exist on `/` (`.home-cta`) and `/parents`
+- [x] Full plan state round-trips through the URL: reload and incognito reproduce the plan; no `localStorage`/`sessionStorage`/cookie usage anywhere in `src/planner/` (grep clean)
+- [x] `PlannerPage` holds no React state for the plan — only the transient `copied` flag (code-review check)
+- [x] URL grammar honored exactly: `l=`/`s=`/`m=` with optional `.preset` (sheets) and `:day` suffixes, `w=YYYY-MM-DD`; invalid slug drops item, invalid day/preset drops only that part; order preserved
+- [x] `serializePlan(parsePlan(x)) === x` for the three canonical fixtures
+- [x] Print output: parent plan page + journal page(s) as separate `.sheet-page`s inside one `.print-sheet`; journal chunks at 12 items/page; footnote text exact
+- [x] `.bw` print carries all information without color: outline badges/chips, black bead bar (checked in print preview both modes)
+- [x] Journal check squares are 1.5 cm, `2px solid var(--ink)`; item names ≥ 1.3 rem; title in `--font-heading`
+- [x] All picker rows and buttons ≥ 44 px tall; checkboxes 1.25 rem; day selects have per-item `aria-label`s
+- [x] No new npm dependencies; no network requests; no hex colors in `PlannerPage.tsx`
+- [x] `plan/README.md` table updated; this PRD's Status set to Done with the landing commit
 
 ## Out of scope
 

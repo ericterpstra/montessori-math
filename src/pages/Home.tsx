@@ -38,6 +38,9 @@ export default function Home() {
             <Link className="btn" to="/parents/scope-and-sequence">
               See the full PK–6 path
             </Link>
+            <Link className="btn" to="/planner">
+              Plan a week of work
+            </Link>
           </p>
         </div>
         <div className="home-hero-beads" aria-hidden="true">

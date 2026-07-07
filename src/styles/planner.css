@@ -1,0 +1,42 @@
+/* ---------- Planner screen UI ---------- */
+
+.planner-layout { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 1.5rem; align-items: start; }
+@media (max-width: 900px) {
+  .planner-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Picker rows: intentionally larger than the worksheet-builder form fields. */
+.planner-row { display: flex; align-items: center; gap: 0.6rem; min-height: var(--touch-target); padding: 0.15rem 0; font-size: 0.95rem; }
+.planner-row label { display: flex; align-items: center; gap: 0.6rem; flex: 1 1 auto; min-height: var(--touch-target); cursor: pointer; }
+.planner-row input[type='checkbox'] { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+.planner-row .planner-row-name { flex: 1 1 auto; }
+.planner-row select { font: inherit; padding: 0.35rem 0.4rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); min-height: 2.4rem; }
+.planner-row select:disabled { opacity: 0.45; }
+
+.planner-shelf { position: sticky; top: 1rem; }
+.planner-shelf ul { list-style: none; padding: 0; margin: 0 0 1rem; }
+.planner-shelf li { display: flex; align-items: center; gap: 0.5rem; min-height: var(--touch-target); border-bottom: 1px solid var(--line); }
+.planner-remove { margin-left: auto; min-width: var(--touch-target); min-height: var(--touch-target); border: none; background: none; color: var(--ink-soft); font-size: 1.2rem; cursor: pointer; }
+.planner-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0 0.75rem; }
+.planner-preview { overflow-x: auto; margin-top: 2rem; }
+
+/* ---------- Printed pages ---------- */
+
+.plan-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+.plan-table td { padding: 0.14in 0.1in; border-bottom: 1px solid #000; vertical-align: baseline; }
+.plan-day-heading { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; padding-top: 0.22in; }
+
+/* Outline badge: information carried by text + border, never color (bw-safe). */
+.plan-badge { display: inline-block; border: 1px solid #000; border-radius: 4px; padding: 0 0.35rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.plan-preset { font-size: 0.85rem; font-style: italic; }
+.plan-footnote { margin-top: 0.3in; font-size: 0.85rem; font-style: italic; }
+
+.journal-title { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 700; text-align: center; margin: 0 0 0.2in; }
+.journal-name-line { font-size: 1.1rem; margin-bottom: 0.35in; }
+.journal-continued { text-align: center; font-size: 0.9rem; font-style: italic; margin-bottom: 0.35in; }
+.journal-row { display: flex; align-items: center; gap: 0.25in; min-height: 0.75in; break-inside: avoid; }
+.journal-check { width: 1.5cm; height: 1.5cm; flex-shrink: 0; border: 2px solid var(--ink); border-radius: 2px; }
+.journal-item-name { font-size: 1.35rem; }
+/* Outline chip, bw-safe. */
+.journal-day { margin-left: auto; border: 1.5px solid var(--ink); border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.85rem; white-space: nowrap; }
+.journal-footer { margin-top: 0.5in; text-align: center; }
