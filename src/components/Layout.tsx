@@ -13,6 +13,8 @@ const NAV = [
   { to: '/materials', label: 'Materials' },
   { to: '/lessons', label: 'Lessons' },
   { to: '/worksheets', label: 'Worksheets' },
+  { to: '/kits', label: 'Kits' },
+  { to: '/planner', label: 'Planner' },
   { to: '/parents', label: 'For Parents' },
   { to: '/ages', label: 'By Age' },
 ]

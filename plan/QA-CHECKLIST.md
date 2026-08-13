@@ -1,6 +1,7 @@
 # Morning QA — wave 2 (all ten features)
 
-Everything below shipped last night and passed automated tests (871) plus in-browser smoke checks. What's left is what only a human can judge: paper, ears, hands, and taste. **~40 minutes total.**
+Everything below shipped last night and passed automated tests (872 as of the
+review pass) plus in-browser smoke checks. What's left is what only a human can judge: paper, ears, hands, and taste. **~40 minutes total.**
 
 - Site: **http://192.168.1.208:4173** (Tailscale: `http://100.86.225.124:4173`)
 - If the server is down: `cd ~/Dev/montessori-math && npm run preview`
@@ -110,4 +111,4 @@ Honest limitation: install/offline needs HTTPS or localhost — the plain LAN IP
 
 ---
 
-**When you're done:** tell Claude what failed (a screenshot or one line per ✗ is plenty). Anything that passed here plus the 871 automated tests is considered shipped.
+**When you're done:** tell Claude what failed (a screenshot or one line per ✗ is plenty). Anything that passed here plus the 872 automated tests is considered shipped.

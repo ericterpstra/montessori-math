@@ -23,7 +23,6 @@ export type MathFactsParams = {
   missing: MissingParam
   layout: LayoutParam
   columns: number
-  timed: boolean
 }
 
 export interface MathFactProblem {
@@ -193,11 +192,6 @@ function Sheet({ data, params }: SheetProps<MathFactsParams, MathFactsData>) {
           title={pages.length > 1 ? `${title} (page ${pageIndex + 1} of ${pages.length})` : title}
           instructions={sheetInstructions(params)}
         >
-          {params.timed && pageIndex === 0 && (
-            <div className="math-facts-timed">
-              Time: <span className="math-facts-time-blank" />
-            </div>
-          )}
           <div className="problems-grid" style={gridStyle}>
             {page.map((p, i) => {
               const number = pageIndex * perPage + i + 1
@@ -241,7 +235,7 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
   slug: 'math-facts',
   name: 'Math Facts Drill',
   description:
-    'Drill sheets for the addition, subtraction, multiplication, and division facts — horizontal or stacked, with optional missing numbers and a timed-test box.',
+    'Drill sheets for the addition, subtraction, multiplication, and division facts — horizontal or stacked, with optional missing numbers.',
   strand: 'memorization',
   ages: [5, 9],
   schema: [
@@ -287,12 +281,6 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
       ],
     },
     { kind: 'number', key: 'columns', label: 'Columns', min: 2, max: 5 },
-    {
-      kind: 'boolean',
-      key: 'timed',
-      label: 'Timed test',
-      help: 'Adds a "Time:" box to fill in by hand — use any kitchen timer or watch.',
-    },
   ],
   defaults: {
     operation: 'add',
@@ -301,7 +289,6 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
     missing: 'answer',
     layout: 'horizontal',
     columns: 4,
-    timed: false,
   },
   generate,
   Sheet,
@@ -318,7 +305,6 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
         missing: 'answer',
         layout: 'horizontal',
         columns: 4,
-        timed: false,
       },
     },
     {
@@ -332,13 +318,12 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
         missing: 'answer',
         layout: 'vertical',
         columns: 5,
-        timed: false,
       },
     },
     {
       id: 'mixed-review',
-      name: 'Mixed timed review',
-      description: 'All four operations shuffled, with a time box — for a child who has met all the fact boards.',
+      name: 'Mixed fact review',
+      description: 'All four operations shuffled — for a child who has met all the fact boards.',
       params: {
         operation: 'mixed',
         count: 40,
@@ -346,7 +331,6 @@ export const def: GeneratorDef<MathFactsParams, MathFactsData> = {
         missing: 'answer',
         layout: 'horizontal',
         columns: 4,
-        timed: true,
       },
     },
   ],

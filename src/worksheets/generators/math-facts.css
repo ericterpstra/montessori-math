@@ -1,22 +1,5 @@
 /* Math facts drill — generator-specific styles (all classes prefixed math-facts-). */
 
-.math-facts-timed {
-  display: inline-block;
-  border: 1.5px solid currentColor;
-  border-radius: 4px;
-  padding: 0.1in 0.2in;
-  margin-bottom: 0.2in;
-  font-size: 1rem;
-}
-
-.math-facts-time-blank {
-  display: inline-block;
-  width: 1.2in;
-  border-bottom: 1.5px solid currentColor;
-  height: 1em;
-  vertical-align: baseline;
-}
-
 /* Vertical (stacked) problems: number sits beside the stack. */
 .math-facts-vproblem {
   display: flex;

@@ -507,6 +507,11 @@ All wave-1 tests in this file (answer-key correctness, parameter respect, pagina
 
 ## Acceptance criteria
 
+> **Historical.** These boxes record the state when the feature shipped. The
+> feature was later deleted per issue #4, so none of them describes the site
+> today — every file listed above is gone, and `numeral-tracing` is sheets-only.
+> They are left un-edited as a record of what was built and verified at the time.
+
 - [x] `npm test` green (all wave-1 tests untouched and passing; new `src/lib/booklet.test.ts` and booklet cases in `numeral-tracing.test.ts` passing)
 - [x] `npm run build` green (strict tsc + vite)
 - [x] `imposeBooklet` reproduces all four locked vectors exactly, and `imposeBooklet(0)` → `[]`

@@ -20,7 +20,7 @@ export const BEAD_STAIR_VARS: readonly string[] = [
 ]
 
 /* Strong enough that light beads (the white 7-bar) keep a visible rim in print. */
-const BEAD_STROKE = 'rgba(0,0,0,0.55)'
+const BEAD_STROKE = 'var(--bead-outline)'
 
 interface BeadShapeProps {
   cx: number
@@ -34,8 +34,8 @@ export function BeadShape({ cx, cy, r, fill }: BeadShapeProps) {
   return (
     <g>
       <circle cx={cx} cy={cy} r={r} fill={fill} stroke={BEAD_STROKE} strokeWidth={Math.max(0.6, r * 0.09)} />
-      <ellipse cx={cx + r * 0.28} cy={cy + r * 0.32} rx={r * 0.45} ry={r * 0.32} fill="#000" opacity={0.14} />
-      <ellipse cx={cx - r * 0.3} cy={cy - r * 0.35} rx={r * 0.38} ry={r * 0.26} fill="#fff" opacity={0.4} />
+      <ellipse cx={cx + r * 0.28} cy={cy + r * 0.32} rx={r * 0.45} ry={r * 0.32} fill="var(--bead-shade)" opacity={0.14} />
+      <ellipse cx={cx - r * 0.3} cy={cy - r * 0.35} rx={r * 0.38} ry={r * 0.26} fill="var(--bead-sheen)" opacity={0.4} />
     </g>
   )
 }
@@ -82,9 +82,9 @@ export function BeadBar({ n, fill, beadSize = 18, vertical = false, className, t
     <svg width={width} height={height} viewBox={viewBox} className={className} role={title ? 'img' : undefined} aria-hidden={title ? undefined : true}>
       {title && <title>{title}</title>}
       {vertical ? (
-        <line x1={u / 2} y1={4} x2={u / 2} y2={length - 4} stroke="#9a9a9a" strokeWidth={1.5} />
+        <line x1={u / 2} y1={4} x2={u / 2} y2={length - 4} stroke="var(--bead-wire)" strokeWidth={1.5} />
       ) : (
-        <line x1={4} y1={u / 2} x2={length - 4} y2={u / 2} stroke="#9a9a9a" strokeWidth={1.5} />
+        <line x1={4} y1={u / 2} x2={length - 4} y2={u / 2} stroke="var(--bead-wire)" strokeWidth={1.5} />
       )}
       {Array.from({ length: n }, (_, i) =>
         vertical ? (
@@ -195,7 +195,7 @@ export function Skittle({ height = 48, fill = 'var(--pv-unit)', className, title
         strokeLinejoin="round"
       />
       <circle cx={12} cy={8.6} r={6.4} fill={fill} stroke={BEAD_STROKE} strokeWidth={0.9} />
-      <ellipse cx={9.8} cy={6.6} rx={2.4} ry={1.8} fill="#fff" opacity={0.45} />
+      <ellipse cx={9.8} cy={6.6} rx={2.4} ry={1.8} fill="var(--bead-sheen)" opacity={0.45} />
     </svg>
   )
 }

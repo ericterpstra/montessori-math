@@ -2,13 +2,17 @@
 
 A complete, free Montessori mathematics resource for parents and students ages 4–12 (PK–6th grade): interactive virtual materials, a printable worksheet generator, and full album-style lessons that guide children from concrete manipulatives to abstract pencil-and-paper work.
 
-> **Status: under construction.** The scaffold is in place; materials, worksheets, and lessons are being built. See [plan/](plan/) for per-feature progress.
+> **Status: feature-complete and in use.** Every planned feature has shipped; work
+> now is refinement rather than construction. See [plan/](plan/) for per-feature
+> history.
 
 ## What this is
 
-- **Virtual Montessori materials (19 planned)** — golden beads, stamp game, bead frames, racks & tubes, checkerboard, Seguin boards, strip boards, fraction circles, and more. For families who don't own the physical materials: real beads are always better when you have them.
-- **Worksheet generator (12 generators planned)** — parameterized math-facts drills, multi-digit operations with regrouping control, place value, skip counting, fractions, long division, and more. Reproducible via seeds, with answer keys, in authentic Montessori color **or** ink-friendly B&W.
-- **Album-style lessons (~34 planned)** — complete presentations written for parents with no Montessori training: aims, materials, step-by-step presentation with suggested language, points of interest, control of error, variations, extensions, and what comes next.
+- **Virtual Montessori materials (21)** — golden beads, stamp game, bead frames, racks & tubes, checkerboard, Seguin boards, strip boards, fraction circles, and more. For families who don't own the physical materials: real beads are always better when you have them. Every material has a Reset, a wordless full-screen focus mode, and the physical material's own control of error.
+- **Worksheet generator (13 generators)** — parameterized math-facts drills, multi-digit operations with regrouping control, place value, skip counting, fractions, long division, command cards, and more. Reproducible via seeds, with answer keys, in authentic Montessori color **or** ink-friendly B&W.
+- **Album-style lessons (41)** — complete presentations written for parents with no Montessori training: aims, materials, step-by-step presentation with suggested language, points of interest, control of error, variations, extensions, and what comes next.
+- **Make-it-yourself kits (7)** — printable paper stand-ins for the physical materials (number cards, stamp tiles, fraction circles, play money, strip boards), each with a 1-inch calibration square so the pieces come out true to size.
+- **Weekly work planner** — pick lessons, sheets, and materials into a printable week. The whole plan lives in the page URL, so it is shareable and bookmarkable while nothing is ever stored.
 - **Parent guides** — why Montessori math works, how to give a three-period lesson, a printable PK–6 scope & sequence, glossary, and FAQ.
 
 ## What this is not
@@ -90,6 +94,8 @@ src/
   materials/     One folder per virtual material (model + tests + UI + lessons)
   worksheets/    Generator modules (pure generate() + tests) and builder UI
   lessons/       Album lesson types, registry, and pages
+  kits/          Printable make-it-yourself paper materials
+  planner/       Weekly work planner (plan state lives in the URL)
   parents/       Parent guide pages
   styles/        Design tokens, global, print, materials, album CSS
 ```

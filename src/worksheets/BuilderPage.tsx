@@ -1,39 +1,13 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { generatorBySlug } from './registry'
-import type { AnyGeneratorDef, ParamField, ParamValues } from './types'
+import type { ParamField } from './types'
+import { clamp, resolveParams } from './params'
 import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
 import { SheetPreview } from '../components/SheetPreview'
 import NotFound from '../pages/NotFound'
-
-function clamp(n: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, n))
-}
-
-/** Defaults ← preset (?preset=) ← individual URL params. */
-function resolveParams(def: AnyGeneratorDef, searchParams: URLSearchParams): ParamValues {
-  let params: ParamValues = { ...def.defaults }
-  const presetId = searchParams.get('preset')
-  if (presetId) {
-    const preset = def.presets.find((p) => p.id === presetId)
-    if (preset) params = { ...params, ...preset.params }
-  }
-  for (const field of def.schema) {
-    const raw = searchParams.get(field.key)
-    if (raw === null) continue
-    if (field.kind === 'number') {
-      const n = Number(raw)
-      if (!Number.isNaN(n)) params[field.key] = clamp(n, field.min, field.max)
-    } else if (field.kind === 'boolean') {
-      params[field.key] = raw === '1' || raw === 'true'
-    } else if (field.options.some((o) => o.value === raw)) {
-      params[field.key] = raw
-    }
-  }
-  return params
-}
 
 function Field({
   field,
@@ -105,6 +79,16 @@ export default function BuilderPage() {
     [def, paramsKey, seed],
   )
 
+  // Pin the seed into the URL on the first visit. Without this the page's own
+  // promise — that this exact sheet reprints from its URL — is false until some
+  // control is touched, and a reload or a shared link gives different problems.
+  useEffect(() => {
+    if (!def || rawSeed !== null) return
+    const next = new URLSearchParams(searchParams)
+    next.set('seed', String(seed))
+    setSearchParams(next, { replace: true })
+  }, [def, rawSeed, seed, searchParams, setSearchParams])
+
   if (!def) return <NotFound />
 
   // The select reflects the ?preset= param only until any individual field is
@@ -143,7 +127,11 @@ export default function BuilderPage() {
                 value={activePreset}
                 onChange={(e) => {
                   if (e.target.value === '') return
-                  const next = new URLSearchParams()
+                  // Drop the per-field overrides so the preset's params win, but
+                  // keep the view toggles — picking a preset must not silently
+                  // undo an ink-friendly or hide-the-key choice.
+                  const next = new URLSearchParams(searchParams)
+                  for (const f of def.schema) next.delete(f.key)
                   next.set('preset', e.target.value)
                   next.set('seed', String(seed))
                   setSearchParams(next, { replace: true })

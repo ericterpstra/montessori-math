@@ -54,6 +54,13 @@
   --ok: #2e8b57;
   --error: #c0392b;
 
+  /* Bead rendering — the shading and hardware of a glass bead, not palette.
+     Used by src/components/beads.tsx so no component carries color literals. */
+  --bead-shade: #000000; /* drawn at low opacity for the underside */
+  --bead-sheen: #ffffff; /* the highlight catching the light */
+  --bead-wire: #9a9a9a; /* the wire a bar is threaded on */
+  --bead-outline: rgba(0, 0, 0, 0.55); /* keeps the white 7-bar visible in print */
+
   /* Shape & depth */
   --radius: 10px;
   --radius-sm: 6px;

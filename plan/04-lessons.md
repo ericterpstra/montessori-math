@@ -1,10 +1,11 @@
-# PRD 04 — Album-style lessons (~34)
+# PRD 04 — Album-style lessons
 
-**Status:** Done — 38 lessons across 7 strands
+**Status:** Done — 41 lessons across 7 strands (38 at landing; 3 added with the
+wave-2 materials)
 
 ## Overview
 
-Full Montessori album lessons written for parents with no training, stored as typed `Lesson` objects (schema in `src/lessons/types.ts`) and rendered by `LessonPage` as printable album pages. Material-specific lessons live in their material's folder (`src/materials/<slug>/lessons.ts`); strand-level lessons without a virtual material (e.g. golden bead intro tray presentation variants) live in `src/lessons/content/`.
+Full Montessori album lessons written for parents with no training, stored as typed `Lesson` objects (schema in `src/lessons/types.ts`) and rendered by `LessonPage` as printable album pages. Lessons live in their material's folder (`src/materials/<slug>/lessons.ts`) and are gathered by `src/lessons/registry.ts`. (The PRD originally reserved `src/lessons/content/` for strand-level lessons with no virtual material; every lesson ended up belonging to a material, so that directory was never created.)
 
 ## Album schema (every field required)
 

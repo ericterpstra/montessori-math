@@ -21,7 +21,7 @@ A parameterized, printable worksheet system. Each generator is a module in `src/
 
 | Done | Slug | Generator | Key parameters (beyond count/seed/color/answer-key) |
 |---|---|---|---|
-| ☑ | `math-facts` | Math facts drill (+ − × ÷) | operand ranges, missing-number position, layout (horizontal/vertical/grid), timed-test header |
+| ☑ | `math-facts` | Math facts drill (+ − × ÷) | operand ranges, missing-number position, layout (horizontal/vertical/grid) |
 | ☑ | `multi-digit-ops` | Multi-digit operations | digits 2–4, operation, **regrouping on/off**, stamp-game color columns |
 | ☑ | `place-value` | Place value | compose/decompose, expanded notation, range to 9,999 |
 | ☑ | `golden-bead-pictures` | Golden bead pictures | draw-the-quantity vs read-the-quantity, ranges |

@@ -4,6 +4,16 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 
 > This document is the overview. Per-feature PRDs with live status and acceptance checklists are tracked in [plan/](plan/). Conventions for coding agents live in [CLAUDE.md](CLAUDE.md).
 
+> **Status: all features below have shipped**, plus ten later ones (kits, planner,
+> presentation mode, command cards, memorization charts, long chains, focus mode,
+> exchange ceremony, PWA/offline, physicality pass) — see
+> [plan/README.md](plan/README.md) for the full list and per-PRD status. The
+> unticked "verifiable goals" in this document are the *original* acceptance
+> criteria: automated coverage for them lives in the test suite (43 files, 872
+> tests, green) and per-feature sign-off in each PRD, while the checks only a
+> human can make — paper, ears, hands — are tracked in
+> [plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md).
+
 ## Product principles (agreed with owner)
 
 1. **Resource site, not an LMS.** No login, no accounts, no lesson tracking, no progress storage.
@@ -37,18 +47,22 @@ No backend, no database, no analytics, no external CDNs (works offline once load
 
 ```
 /                     Home: pathways by age, how to use the site
-/materials            Index of virtual materials (16)
+/materials            Index of virtual materials (21)
 /materials/:slug      One interactive material + links to its lessons/worksheets
 /lessons              Album index, filterable by strand and age
 /lessons/:slug        Full album lesson (printable)
 /worksheets           Generator index + ready-made presets
 /worksheets/:slug     Parameterized worksheet builder with live preview + print
+/kits                 Index of printable make-it-yourself paper materials (7)
+/kits/:slug           One kit: cover with calibration square + cut-out pieces
+/planner              Weekly work planner; the plan lives entirely in the URL
 /parents              Parent guide index
 /parents/:slug        Guide pages (philosophy, three-period lesson, scope & sequence…)
 /ages                 Browse everything by age band / grade
+*                     Not found
 ```
 
-## Feature 1 — Interactive Montessori materials (19)
+## Feature 1 — Interactive Montessori materials (21 shipped)
 
 Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (pure logic), `model.test.ts`, `<Name>.tsx` (UI), and its album lesson content. Registered in `src/materials/registry.ts`.
 
@@ -73,6 +87,8 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 | 17 | Snake Game | 5–7 | Colored bead snake counted into golden ten-bars with black-and-white bridge beads; total always preserved |
 | 18 | Checkerboard | 7–11 | Multi-digit multiplication (up to 4×4 digits): bead bars as partial products, diagonal slide to sum |
 | 19 | Decimal Board | 9–12 | Decimal fraction material to thousandths (pale blue/pink/pale green mirror colors); build, compare, add/subtract decimals |
+| 20 | Addition Charts | 5–8 | Memorization charts 1–6: finger-trace the addition tables, then the blank chart for recall |
+| 21 | Multiplication Charts | 6–9 | Memorization charts 1–5 for the times tables, ending in the blank chart |
 
 **Verifiable goals (every material):**
 - [ ] Pure model with unit tests (≥5 assertions) covering the math: place-value decomposition, exchange rules, operation results, error states.
@@ -89,13 +105,13 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 - Checkerboard: 4,357 × 23 = 100,211 via partial products and diagonal slide.
 - Snake game: any snake's total is preserved through golden-bead exchange.
 
-## Feature 2 — Worksheet generator (12 generators + presets)
+## Feature 2 — Worksheet generator (13 generators + presets)
 
 `src/worksheets/generators/<slug>.ts` exports `generate(params, rng)` (pure, tested) + a Sheet renderer. Builder UI auto-renders a form from each generator's parameter schema, live preview, seed control, color/B&W toggle, answer-key toggle, then `window.print()`.
 
 | # | Generator | Parameters (beyond count/seed/color/answer-key) |
 |---|---|---|
-| 1 | Math facts drill (+ − × ÷) | operand ranges, missing-number position, layout (horizontal/vertical/grid), timed-test header |
+| 1 | Math facts drill (+ − × ÷) | operand ranges, missing-number position, layout (horizontal/vertical/grid) |
 | 2 | Multi-digit operations | digits (2–4), operation, **regrouping on/off**, stamp-game color columns |
 | 3 | Place value | compose/decompose, expanded notation, ranges to 9,999 |
 | 4 | Golden bead pictures | draw-the-quantity vs read-the-quantity, ranges |
@@ -107,6 +123,7 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 | 10 | Long multiplication | digits, partial-products scaffold on/off |
 | 11 | Numeral tracing (PK) | numerals 0–9 as dashed SVG strokes, count-and-trace rows |
 | 12 | Decimals | place value to thousandths, compare/order, +/−, decimal-board recording format |
+| 13 | Command cards | cut-apart task cards sending the child to a material or to the floor; deck theme, difficulty, card count |
 
 **Verifiable goals (every generator):**
 - [ ] Unit tests: answer key is mathematically correct for every generated problem; parameters respected (e.g. regrouping=off ⇒ no column exceeds 9 in addition); same seed ⇒ identical sheet; count honored.
@@ -114,15 +131,16 @@ Each material = self-contained folder `src/materials/<slug>/` with `model.ts` (p
 - [ ] B&W mode contains no color-dependent information.
 - [ ] ≥ 2 ready-made presets linked from relevant lessons ("follow-up work").
 
-## Feature 3 — Album-style lessons (~34)
+## Feature 3 — Album-style lessons (41 shipped)
 
-Typed `Lesson` objects in `src/lessons/content/`, rendered as printable album pages. Every lesson includes: name, ages/grade, strand, prerequisites (linked), materials (physical + virtual link), **direct & indirect aims, step-by-step presentation with suggested language, points of interest, control of error, vocabulary, variations, extensions, what comes next**, and pencil-and-paper follow-up work linking to worksheet presets.
+Typed `Lesson` objects colocated with their material in `src/materials/<slug>/lessons.ts`
+and gathered by `src/lessons/registry.ts`, rendered as printable album pages. Every lesson includes: name, ages/grade, strand, prerequisites (linked), materials (physical + virtual link), **direct & indirect aims, step-by-step presentation with suggested language, points of interest, control of error, vocabulary, variations, extensions, what comes next**, and pencil-and-paper follow-up work linking to worksheet presets.
 
 Strands: Numbers to 10 · Linear counting · Decimal system · Memorization of facts · Passage to abstraction · Fractions · Decimals.
 
 **Verifiable goals:**
 - [ ] Schema test iterates all lessons: every required album field non-empty; every prerequisite/material/worksheet link resolves.
-- [ ] Each of the 19 materials has ≥ 1 lesson; each strand has an ordered sequence forming a coherent PK→6 path.
+- [ ] Each of the 21 materials has ≥ 1 lesson; each strand has an ordered sequence forming a coherent PK→6 path.
 - [ ] Lesson pages print cleanly (album header, numbered presentation steps, no cut-off content).
 - [ ] Follow-up work sections reference only printable/pencil-paper activities (validated in schema test where machine-checkable).
 

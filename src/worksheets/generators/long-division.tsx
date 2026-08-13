@@ -205,7 +205,7 @@ function Sheet({ data, params }: SheetProps<LongDivisionParams, LongDivisionData
   )
 }
 
-function AnswerKey({ data }: SheetProps<LongDivisionParams, LongDivisionData>) {
+function AnswerKey({ data, params }: SheetProps<LongDivisionParams, LongDivisionData>) {
   return (
     <AnswerKeyPage title="Long Division">
       <ol className="answer-list" style={{ columns: 2 }}>
@@ -213,7 +213,9 @@ function AnswerKey({ data }: SheetProps<LongDivisionParams, LongDivisionData>) {
           <li key={i}>
             <span className="problem-number">{i + 1}.</span> {formatNumber(p.dividend)} ÷ {formatNumber(p.divisor)} ={' '}
             {formatNumber(p.quotient)}
-            {p.remainder > 0 && <> R {p.remainder}</>}
+            {/* The sheet prints an "R ___" blank for every problem when remainders
+                are on, so the key must answer every one — including "R 0". */}
+            {params.remainders && <> R {p.remainder}</>}
           </li>
         ))}
       </ol>
