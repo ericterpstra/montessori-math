@@ -1,0 +1,17 @@
+# Cloudflare serves these headers with the matching assets.
+# Copied verbatim into dist/ by Vite; excluded from the service-worker
+# precache list by scripts/generate-sw.mjs (it is config, not an asset).
+
+# The service worker must never be served stale, or a device can keep an old
+# build indefinitely: the browser only picks up a new build when it sees new
+# bytes here. The worker itself precaches everything else, so this costs one
+# small revalidation per visit.
+/sw.js
+  Cache-Control: no-cache
+
+# Same reasoning for the app shell — it names the current hashed bundles.
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache

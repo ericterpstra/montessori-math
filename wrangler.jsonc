@@ -1,0 +1,17 @@
+{
+  // Static-asset Worker: the whole site is prebuilt into dist/ and served from
+  // Cloudflare's edge. There is no server code — `main` is deliberately absent,
+  // which keeps this a pure static deploy and costs nothing per request.
+  //
+  // Deploy with:  CLOUDFLARE_API_TOKEN=... npm run deploy
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "montessori-math",
+  "compatibility_date": "2026-08-14",
+  "assets": {
+    "directory": "./dist",
+    // Deep links (/materials/golden-beads, /lessons/…) are client-side routes
+    // that exist in no file, so unmatched paths must return index.html and let
+    // React Router resolve them. Without this every shared link 404s.
+    "not_found_handling": "single-page-application"
+  }
+}

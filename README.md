@@ -38,6 +38,7 @@ npm run dev        # dev server (LAN-accessible; Vite prints the Network URL)
 | `npm run dev` | Dev server with hot reload, bound to all interfaces |
 | `npm run build` | Type-check (strict) + production build to `dist/` + offline service worker |
 | `npm run preview` | Serve the production build on port 4173, LAN-accessible |
+| `npm run deploy` | Build, then publish to Cloudflare (needs `CLOUDFLARE_API_TOKEN`) |
 | `npm test` | Run the Vitest suite (math models, generators, content schema) |
 | `npm run test:watch` | Vitest in watch mode |
 
@@ -70,6 +71,32 @@ worksheet builders, guides — works with no network at all.
   builds. DevTools → Application → Service workers → "Unregister" (or tick
   "Update on reload"), then hard-refresh. `npm run dev` never registers a
   worker, so development is unaffected.
+
+## Deploying
+
+The site is published to **Cloudflare Workers static assets** — the whole build
+is uploaded to Cloudflare's edge and served as files. There is no server code,
+no bindings, and no runtime network calls, so the site stays as static in
+production as it is locally.
+
+```bash
+CLOUDFLARE_API_TOKEN=<token> npm run deploy
+```
+
+Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Two details matter:
+
+- **`not_found_handling: "single-page-application"`** — deep links like
+  `/materials/golden-beads` are client-side routes that exist in no file, so
+  unmatched paths return `index.html` and React Router resolves them. Without
+  it every shared link would 404.
+- **[`public/_headers`](public/_headers)** — serves `sw.js` and the app shell
+  with `Cache-Control: no-cache`. The browser only adopts a new build when it
+  sees new bytes in `sw.js`, so caching it would strand devices on an old
+  version. Cloudflare consumes this file as configuration; it is never served,
+  and `scripts/generate-sw.mjs` keeps it out of the precache list.
+
+`wrangler` is intentionally **not** a dependency — `npm run deploy` fetches it
+via `npx` so the project keeps its three-package runtime footprint.
 
 ## Printing
 

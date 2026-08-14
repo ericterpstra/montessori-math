@@ -33,8 +33,13 @@ function walk(dir) {
   return files
 }
 
+// Host config files that Cloudflare consumes and never serves. Precaching them
+// would put 404s in the install list, and cache.addAll rejects as a unit — one
+// bad entry means the worker never installs and the site loses offline support.
+const NOT_ASSETS = new Set(['sw.js', '_headers', '_redirects', '.assetsignore'])
+
 const entries = walk(distDir)
-  .filter((file) => path.relative(distDir, file) !== 'sw.js') // never precache the worker itself
+  .filter((file) => !NOT_ASSETS.has(path.relative(distDir, file)))
   .map((file) => {
     const rel = path.relative(distDir, file).split(path.sep).join('/')
     return {

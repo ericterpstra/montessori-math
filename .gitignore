@@ -2,3 +2,7 @@ node_modules/
 dist/
 *.local
 .DS_Store
+
+# Wrangler's local state and any secrets it writes
+.wrangler/
+.dev.vars

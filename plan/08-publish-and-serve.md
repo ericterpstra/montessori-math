@@ -4,7 +4,10 @@
 
 ## Overview
 
-Public GitHub repo + LAN test URL. No public web hosting for now (owner decision); GitHub Pages is a documented future option.
+Public GitHub repo + LAN/Tailscale test URL. Public web hosting was initially
+deferred (owner decision); the site now also deploys to **Cloudflare Workers
+static assets** — see `wrangler.jsonc` and `npm run deploy`. GitHub Pages was
+the documented alternative and was not used.
 
 ## Steps
 

@@ -21,7 +21,7 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 3. **Screens only where they substitute for materials.** Virtual manipulatives exist for families who don't own the physical materials. *All other child work is printable or pencil-and-paper* — no on-screen quizzes or drill apps.
 4. **Printing is a first-class feature.** Every worksheet and lesson prints cleanly on US Letter; every sheet offers authentic Montessori color **and** an ink-friendly B&W variant (toggle).
 5. **Full album-style lessons** — aims, prerequisites, presentation steps, control of error, extensions — written for parents with no Montessori training.
-6. **Public repo** (`ericterpstra/montessori-math`), served locally over LAN (no public deployment for now).
+6. **Public repo** (`ericterpstra/montessori-math`), served locally over LAN/Tailscale for testing and published to Cloudflare Workers static assets.
 
 ## Tech stack
 
