@@ -42,4 +42,5 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 - Commit per completed phase with a clear message; the owner wants git history to tell the project's story. Repo will be public at `ericterpstra/montessori-math`.
 - The owner values being asked before scope changes and expects "stop" to mean stop immediately.
 - Serve for testing on the LAN (dev machine IP e.g. 192.168.1.208) or over Tailscale.
-- Public hosting is Cloudflare Workers static assets (`wrangler.jsonc`, `npm run deploy`). The site stays fully static — no server code, no bindings, no runtime network calls; adding any would break hard rule 4.
+- Public hosting is Cloudflare Workers static assets (`wrangler.jsonc`), deployed automatically by Workers Builds on every push to `main` — `npm run deploy` is only a manual escape hatch. The site stays fully static — no server code, no bindings, no runtime network calls; adding any would break hard rule 4.
+- The Worker name in Cloudflare must stay in sync with `name` in `wrangler.jsonc`, or Git builds fail.

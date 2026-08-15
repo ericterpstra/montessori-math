@@ -79,6 +79,27 @@ is uploaded to Cloudflare's edge and served as files. There is no server code,
 no bindings, and no runtime network calls, so the site stays as static in
 production as it is locally.
 
+**Deploys happen automatically.** The Worker is connected to this repository via
+[Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), so
+every push to `main` builds and deploys itself. No credential lives on any
+developer machine.
+
+| Workers Builds setting | Value |
+|---|---|
+| Build command | `npm run build` |
+| Deploy command | `npx --yes wrangler@4 deploy` |
+| Root directory | *(blank — repo root)* |
+| Production branch | `main` |
+
+The Worker's name in the Cloudflare dashboard **must** match `name` in
+`wrangler.jsonc` (`montessori-math`) or the build fails. Node is pinned to 24 by
+[`.node-version`](.node-version); Vite 7 needs 20.19+.
+
+### Manual deploy (escape hatch)
+
+Only needed if the Git integration is down or you are testing a build that is
+not yet pushed:
+
 ```bash
 CLOUDFLARE_API_TOKEN=<token> npm run deploy
 ```
@@ -95,8 +116,11 @@ Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Two details matter:
   version. Cloudflare consumes this file as configuration; it is never served,
   and `scripts/generate-sw.mjs` keeps it out of the precache list.
 
-`wrangler` is intentionally **not** a dependency — `npm run deploy` fetches it
-via `npx` so the project keeps its three-package runtime footprint.
+`wrangler` is intentionally **not** a dependency — both the deploy command and
+`npm run deploy` fetch it via `npx`, pinned to major version 4, so the project
+keeps its three-package runtime footprint. (Cloudflare would otherwise use the
+wrangler version in `package.json`; adding it as a devDependency is the
+alternative if you ever want an exact pin.)
 
 ## Printing
 

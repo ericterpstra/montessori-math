@@ -5,9 +5,14 @@
 ## Overview
 
 Public GitHub repo + LAN/Tailscale test URL. Public web hosting was initially
-deferred (owner decision); the site now also deploys to **Cloudflare Workers
-static assets** — see `wrangler.jsonc` and `npm run deploy`. GitHub Pages was
-the documented alternative and was not used.
+deferred (owner decision); the site now deploys to **Cloudflare Workers static
+assets** at https://montessori-math.eterps.workers.dev.
+
+Deployment is **Git-connected via Workers Builds**: every push to `main` builds
+and deploys automatically, so no API token lives on a developer machine. The
+first deploy was a direct upload from the dev box; that path survives as
+`npm run deploy` for emergencies only. GitHub Pages was the documented
+alternative and was not used.
 
 ## Steps
 
