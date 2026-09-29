@@ -94,3 +94,9 @@ Four functional bugs reproduced on the live site during the Sep 2026 visual audi
   into a 10–60 field gave 60 and clearing one snapped it to the minimum. The
   field now keeps a draft string, applies in-range values live, and clamps on
   blur/Enter (`draftNumber` / `commitNumber` in `params.ts`, tested).
+- **Fixed:** answer keys glued the problem number to the first operand, so
+  "1. 214 + 459" rendered as "1.214 + 459", which reads as a decimal (worse on
+  the decimals sheet). Every generator's key now uses a `.problem-number` span
+  and a real space; `.answer-list` adds a slim margin, a smaller number, and a
+  hanging indent for wrapped entries. Measured across every generator's presets
+  in Chrome, no entry wraps that did not wrap before.

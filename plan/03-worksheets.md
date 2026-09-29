@@ -15,6 +15,7 @@ A parameterized, printable worksheet system. Each generator is a module in `src/
 - [x] `?preset=<id>` query applies a preset (used by lesson follow-up links)
 - [x] Color / B&W toggle (`.bw` on `.print-sheet`)
 - [x] Answer key on/off; prints on its own `.sheet-page`
+- [x] Answer-key entries set the problem number apart: every generator wraps it in `.problem-number` followed by a real space, and `.answer-list` gives it a smaller size, a margin, and a hanging indent for wrapped lines, so the split never depends on color. *Added after the Sep 2026 visual audit: "1. 214 + 459" rendered as "1.214 + 459", which reads as a decimal.*
 - [x] Name/date header on every student page; Print button → `window.print()`
 - [x] `/worksheets` index grouped by strand with preset shortcuts
 

@@ -212,7 +212,7 @@ function AnswerKey({ data, params }: SheetProps<SkipCountingParams, SkipCounting
       <ol className="answer-list skip-counting-key">
         {data.sequences.map((seq, i) => (
           <li key={i}>
-            <span className="skip-counting-num">{i + 1}.</span> {seq.n}s:{' '}
+            <span className="problem-number">{i + 1}.</span> {seq.n}s:{' '}
             {seq.values.map((value, j) => (
               <Fragment key={j}>
                 {j > 0 && ', '}

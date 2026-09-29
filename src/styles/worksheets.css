@@ -123,9 +123,27 @@ label.field.checkbox input {
   list-style: none;
 }
 
+/* Answer keys are dense runs of numbers: "1." flush against "214" reads as the
+   decimal 1.214. The problem number is smaller and followed by a real space
+   (in the markup) plus a margin, so the split is spatial, never color-only, and
+   survives .bw and grayscale printers. A hanging indent keeps a wrapped answer
+   under its problem rather than under the number. Key columns are tight (a
+   3-digit sum nearly fills one), so the gap stays slim instead of a gutter. */
 .answer-list li {
   break-inside: avoid;
   margin-bottom: 0.25em;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+
+.answer-list li > * {
+  text-indent: 0;
+}
+
+.answer-list .problem-number {
+  margin-right: 0.25em;
+  font-size: 0.8em;
+  color: var(--ink-soft);
 }
 
 .write-line {

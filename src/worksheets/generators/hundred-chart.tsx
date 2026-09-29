@@ -235,7 +235,7 @@ function AnswerKey({ data }: SheetProps<HundredChartParams, HundredChartData>) {
       <ol className="answer-list" style={{ columns: 2 }}>
         {data.fragments.map((piece, i) => (
           <li key={i}>
-            {i + 1}.{' '}
+            <span className="problem-number">{i + 1}.</span>{' '}
             {piece.cells.map((c) => (c.given ? `(${c.value})` : String(c.value))).join(', ')}
           </li>
         ))}
