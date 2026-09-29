@@ -398,18 +398,19 @@ Step 15 adds `contents.css` directly under it, and Step 16 adds `forms.css` unde
 
 Leave the line above them: Step 7 already rewrote the old line 292 as the scoped legacy phone h1.
 
-**4. Replace `src/components/Layout.tsx`.** Current lines 22–67 render `<>` + `header.site-header > div.site-header-inner` + `main.site-main` + `footer > div.site-footer-inner > p ×2` + `<ScrollToTop/>`. The new file:
+**4. Replace `src/components/Layout.tsx`.** The current file renders `<>` + `header.site-header > div.site-header-inner` + `main.site-main > ErrorBoundary > Outlet` + `footer > div.site-footer-inner > p ×2` + `<ScrollToTop/>`. The error boundary arrived on `main` in PR #8 (`d769872`); keep it exactly as it is, keyed by pathname and with no wrapper element, because the print isolation in Addition Charts, Multiplication Charts and Bead Chains selects `main.site-main > *`. The new file:
 - wraps the page in `div.site-shell`;
 - adds `container` to the three inner boxes;
 - gives every `NavLink` a `data-label`;
 - keeps the active link in view on phones;
 - adds the fleuron and the colophon links (`nav[aria-label="Footer"]`).
 
-`ScrollToTop`, `NAV`, the logo bead SVG and the two footer paragraphs are unchanged.
+`ScrollToTop`, `NAV`, the `ErrorBoundary` around the `Outlet`, the logo bead SVG and the two footer paragraphs are unchanged.
 
 ```tsx
 import { useEffect, useRef } from 'react'
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
+import { ErrorBoundary } from './ErrorBoundary'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -484,7 +485,10 @@ export default function Layout() {
         </div>
       </header>
       <main className="site-main container">
-        <Outlet />
+        {/* Keyed by pathname so leaving a broken page recovers. */}
+        <ErrorBoundary key={pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <footer className="site-footer no-print">
         <div className="site-footer-inner container">

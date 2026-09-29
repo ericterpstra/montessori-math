@@ -2,7 +2,7 @@
 
 **Status:** Not started
 **Effort:** L — about 9 working days. The prototype's estimate for the re-skin, the 21 plate thumbnails and print QA is 7–8 days; running the print gate on every phase and testing on a real iPad, phone and B&W laser printer add about one more.
-**Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session must be merged to `main` first. They are on branch `claude/sad-haslett-a7f731` (`84ff957`, `e24aa01`, `477ac70`, `dbe71b6`). Step 1 tags the print baseline after them, and Step 39 is written against the post-fix `BuilderPage.tsx`.
+**Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session are merged to `main` (PR #7: `84ff957`, `e24aa01`, `477ac70`, `dbe71b6`), and so is an error boundary around the routed page (PR #8: `d769872`), which Step 12 keeps. Step 1 tags the print baseline on that `main`, and Step 39 is written against the post-fix `BuilderPage.tsx`.
 
 ## Why
 

@@ -6,7 +6,7 @@ Every verified finding from the September 2026 visual audit, and what happens to
 |---|---|---|---|---|
 | [Resolved by PRD 19](#resolved-by-prd-19) | 3 | 11 | 38 | 52 |
 | [Partly resolved by PRD 19](#partly-resolved-by-prd-19) | 1 | 2 | 2 | 5 |
-| [Being fixed in the separate bug-fix session](#being-fixed-in-the-separate-bug-fix-session) | 4 | 0 | 0 | 4 |
+| [Fixed in the bug-fix session (merged, PR #7)](#fixed-in-the-bug-fix-session-merged-pr-7) | 4 | 0 | 0 | 4 |
 | [PRD 20 candidates: materials on screen](#prd-20-candidates-materials-on-screen) | 6 | 18 | 27 | 51 |
 | [PRD 20 candidates: printables and print content](#prd-20-candidates-printables-and-print-content) | 4 | 13 | 23 | 40 |
 | [PRD 20 candidates: content and features the redesign does not touch](#prd-20-candidates-content-and-features-the-redesign-does-not-touch) | 0 | 1 | 12 | 13 |
@@ -372,33 +372,33 @@ PRD 19 fixes part of each of these; the rest is listed as a PRD 20 candidate.
 - **Fix hint:** Tighten print spacing (line-height about 1.4, smaller section/li margins, about 22pt h1) and add a small print-only footer with the lesson URL.
 - **Partly resolved by PRD 19, Step 34:** Tighter print layout; long lessons end 30–53% down their last page. **Left for PRD 20:** A site name and URL on printed lessons.
 
-## Being fixed in the separate bug-fix session
+## Fixed in the bug-fix session (merged, PR #7)
 
-Fixed in a separate session on branch `claude/sad-haslett-a7f731`, which must merge to `main` before PRD 19 starts (PRD 19, Step 1). Out of scope for PRD 19.
+Fixed in a separate session and merged to `main` in PR #7. The error boundary suggested for S3-01 followed in PR #8. Out of scope for PRD 19.
 
 **S3-02+S4-01+S3-16** · high · print · recurring — 'Print control charts' prints a blank page
 - **Pages:** `/materials/addition-charts`, `/materials/multiplication-charts` (at 1400, 820 and 390px; in print)
 - **Cause:** src/materials/addition-charts/addition-charts.css:220-226 hides `body.addition-charts-print-mode main.site-main > *` and un-hides only `main.site-main > .addition-charts-print`. Since commit 8377f20, AdditionCharts.tsx:247 renders `<SheetPreview className="addition-charts-print">`. SheetPreview.tsx:36-37 puts that class on the inner `.print-sheet`, inside a `div.sheet-preview` wrapper. Also: `MaterialPage.tsx:52-82`.
 - **Fix hint:** Target the wrapper, e.g. `main.site-main > .sheet-preview:has(.addition-charts-print){display:block!important}`, or pass a wrapper class through SheetPreview.
-- **Fixed in the bug-fix session:** `e24aa01`, *Fix blank print from "Print control charts" on both chart materials* (branch `claude/sad-haslett-a7f731`).
+- **Fixed in the bug-fix session:** `e24aa01`, *Fix blank print from "Print control charts" on both chart materials* (merged in PR #7).
 
 **S6-02+S7-02** · high · typography · recurring — Answer keys glue the problem number to the first operand, so '1. 214 + 459' reads as the decimal '1.214 + 459'
 - **Pages:** `/worksheets/math-facts`, `/worksheets/multi-digit-ops` (at 1400, 820 and 390px; in print)
 - **Cause:** src/worksheets/generators/math-facts.tsx:221-222 and multi-digit-ops.tsx:376-377 put <span className="problem-number">{i + 1}.</span> at the end of a line, with the operand on the next line. JSX drops whitespace that contains a newline, so no space is rendered between the two. Also: `worksheets.css:87-91`.
 - **Fix hint:** Add {' '} after the number span (as other generators do) and give `.answer-list .problem-number` a margin-right.
-- **Fixed in the bug-fix session:** `dbe71b6`, *Separate the problem number from the problem in answer keys* (branch `claude/sad-haslett-a7f731`).
+- **Fixed in the bug-fix session:** `dbe71b6`, *Separate the problem number from the problem in answer keys* (merged in PR #7).
 
 **S9-02** · high · other · recurring — Typing into a builder's number field turns 25 into 60 (every keystroke is clamped)
 - **Pages:** `/worksheets/math-facts`, `/worksheets/long-division`, `/worksheets/place-value`, `/worksheets/command-cards`, `/worksheets/decimals` and 3 more (at 1400, 820 and 390px)
 - **Cause:** src/worksheets/BuilderPage.tsx:47-57 — a controlled <input type=number value={Number(value)}> whose onChange runs onChange(clamp(Number(e.target.value), field.min, field.max)) on every keystroke. That value is written to the URL (update() :101-106) and re-rendered as the new value. clamp (src/worksheets/params.ts:14-16) rounds, then clamps. Typing '2' becomes min 10; the next '5' makes '105', which becomes max 60.
 - **Fix hint:** Keep the raw text in local state while typing and clamp on blur/Enter, with an inline 'between 10 and 60' hint.
-- **Fixed in the bug-fix session:** `477ac70`, *Stop worksheet number fields from clamping every keystroke* (branch `claude/sad-haslett-a7f731`).
+- **Fixed in the bug-fix session:** `477ac70`, *Stop worksheet number fields from clamping every keystroke* (merged in PR #7).
 
 **S3-01** · high · other — Choosing 'Hundred chain' crashes the whole page to a blank white screen
 - **Pages:** `/materials/bead-chains` (at 1400, 820 and 390px)
 - **Cause:** src/materials/bead-chains/LongChain.tsx:37 initializes `range` to [0, 11] regardless of kind. BeadChains.tsx:103 remounts LongChain with key={longKind}, so the Hundred chain (spec.bars = 10, model.ts:145) always first-renders bar indexes 0..11 (LongChain.tsx:124). For k = 10 and 11, `state.placements[k]` is undefined. Also: `LongChain.tsx:188`, `placeValue.ts:158`, `LongChain.tsx:55-56`.
 - **Fix hint:** Clamp the initial range to spec.bars-1 (e.g. `[0, Math.min(11, spec.bars-1)]`) and guard with `placed != null`. Add an error boundary around material components.
-- **Fixed in the bug-fix session:** `84ff957`, *Fix Hundred chain crash that blanked the whole site* (branch `claude/sad-haslett-a7f731`).
+- **Fixed in the bug-fix session:** `84ff957`, *Fix Hundred chain crash that blanked the whole site* (merged in PR #7).
 
 ## PRD 20 candidates: materials on screen
 
