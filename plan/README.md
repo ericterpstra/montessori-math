@@ -37,6 +37,14 @@ Ten features chosen to make the site delightful for parents and kids, not just u
 | 17 | [Install-to-tablet PWA, full offline](17-pwa-offline.md) | S | Done |
 | 18 | [Material physicality pass + sheet themes](18-physicality-pass.md) | S | Done (header art removed, issue #2) |
 
+## Wave 3 — visual redesign
+
+A page-by-page visual audit (September 2026) checked all 97 routes in real Chrome at desktop, tablet and phone widths, plus print. It recorded 165 verified visual artifacts and a diagnosis of why the site feels unremarkable. Three design directions were mocked up on the live pages, and the owner chose The Album. Audit findings the redesign doesn't cover are kept as candidates for a follow-up PRD.
+
+| # | PRD | Effort | Status |
+|---|---|---|---|
+| 19 | [The Album — visual redesign](19-the-album.md) ([assets, prototype & audit findings](19-the-album/)) | L | Not started |
+
 ## Post-wave-2 — issue fixes
 
 Small changes from the owner's QA pass. These were driven by GitHub issues rather

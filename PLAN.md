@@ -13,6 +13,13 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 > tests, green) and per-feature sign-off in each PRD, while the checks only a
 > human can make — paper, ears, hands — are tracked in
 > [plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md).
+>
+> **Next: a visual redesign.** A September 2026 page-by-page visual audit found
+> the site functional but visually unremarkable. The owner chose "The Album"
+> direction, specified in [PRD 19](plan/19-the-album.md). Audit findings the
+> redesign doesn't cover are listed in
+> [plan/19-the-album/audit-findings.md](plan/19-the-album/audit-findings.md) as
+> candidates for a follow-up PRD.
 
 ## Product principles (agreed with owner)
 
