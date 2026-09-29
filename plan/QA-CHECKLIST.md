@@ -36,6 +36,7 @@ review pass) plus in-browser smoke checks. What's left is what only a human can 
 - [ ] Place a couple of arrow tickets (tap ticket → tap slot); a wrong one is marked only when you press Check
 - [ ] Hundred-square milestones appear at each hundred; the cube waits at 1,000
 2. Switch to **Hundred chain** — same, smaller.
+- [ ] The page renders (it used to go blank — fixed after the Sep 2026 visual audit)
 - [ ] Feels like an expedition, not a chore — honest gut call
 
 ### 4. Planner (PRD 13)

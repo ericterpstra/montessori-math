@@ -20,6 +20,8 @@ import './bead-chains.css'
 
 /** 120px TenBar (beadSize 12 → (12/20) · 200) + 10px gap. Must match the CSS. */
 const BAR_WIDTH = 130
+/** First-paint viewport guess; updateWindow measures the real one on mount. */
+const INITIAL_VIEWPORT = 900
 const TRAY_PREVIEW = 12
 const TICKETS_PER_PAGE = 30
 
@@ -34,7 +36,11 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
   const [state, setState] = useState<LongChainState>(() => createLongChain(kind))
   const [selected, setSelected] = useState<number | null>(null)
   const [checked, setChecked] = useState(false)
-  const [range, setRange] = useState<[number, number]>([0, 11])
+  // Derived from the chain, never a literal: the hundred chain has only 10 bars,
+  // and a window past its end renders slots whose placement is undefined.
+  const [range, setRange] = useState<[number, number]>(() =>
+    visibleBarRange(0, INITIAL_VIEWPORT, BAR_WIDTH, spec.bars),
+  )
   const [nearValue, setNearValue] = useState(10)
   const [showTickets, setShowTickets] = useState(false)
   const [bw, setBw] = useState(false)
@@ -167,7 +173,7 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
               const isMilestone = value % 100 === 0
               const slotClass = [
                 'bead-chains-slot',
-                placed !== null ? 'bead-chains-slot-filled' : '',
+                placed != null ? 'bead-chains-slot-filled' : '',
                 isMilestone ? 'bead-chains-slot-milestone' : '',
                 result === 'correct' ? 'bead-chains-slot-right' : '',
                 result === 'wrong' ? 'bead-chains-slot-wrong' : '',
@@ -183,12 +189,12 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
                       className={slotClass}
                       onClick={() => onSlotTap(k)}
                       aria-label={
-                        placed === null
+                        placed == null
                           ? `empty label spot at the end of ten-bar ${k + 1}`
                           : `label spot at the end of ten-bar ${k + 1}, holds ticket ${formatNumber(placed)}`
                       }
                     >
-                      {placed !== null ? formatNumber(placed) : ''}
+                      {placed != null ? formatNumber(placed) : ''}
                       {result === 'correct' && (
                         <span className="bead-chains-mark bead-chains-mark-right" aria-hidden="true">✓</span>
                       )}

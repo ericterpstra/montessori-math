@@ -75,3 +75,13 @@ A code/content/routing review of the whole project. Findings and fixes:
   cannot be undone without a full Reset; the physical material lets the bead move
   back. Also deferred: no SPA fallback (`404.html`) for deep links on a static
   host, and the 404 page links only to home.
+
+## Post-wave-2 — visual audit bugs (Sep 2026)
+
+Four functional bugs reproduced on the live site during the Sep 2026 visual audit:
+
+- **Fixed:** choosing **Hundred chain** on Bead Chains blanked the whole site.
+  `LongChain` started its visible window at a literal `[0, 11]` (copied from
+  PRD 15's spec), which runs past the hundred chain's 10 bars; the undefined
+  placement reached `formatNumber` and threw, and nothing catches render errors.
+  The first window now comes from `visibleBarRange`, clamped to the chain.

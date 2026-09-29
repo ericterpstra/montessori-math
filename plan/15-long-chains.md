@@ -121,7 +121,7 @@ export function placeLongTicket(state: LongChainState, trayIndex: number, slotIn
   const value = state.tray[trayIndex]
   const displaced = state.placements[slotIndex]
   const tray = state.tray.filter((_, i) => i !== trayIndex)
-  if (displaced !== null) tray.push(displaced)
+  if (displaced != null) tray.push(displaced)
   tray.sort((a, b) => a - b)
   return {
     ...state,
@@ -346,6 +346,8 @@ import './bead-chains.css'
 
 /** 120px TenBar (beadSize 12 → (12/20) · 200) + 10px gap. Must match the CSS. */
 const BAR_WIDTH = 130
+/** First-paint viewport guess; updateWindow measures the real one on mount. */
+const INITIAL_VIEWPORT = 900
 const TRAY_PREVIEW = 12
 const TICKETS_PER_PAGE = 30
 
@@ -360,7 +362,11 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
   const [state, setState] = useState<LongChainState>(() => createLongChain(kind))
   const [selected, setSelected] = useState<number | null>(null)
   const [checked, setChecked] = useState(false)
-  const [range, setRange] = useState<[number, number]>([0, 11])
+  // Derived from the chain, never a literal: the hundred chain has only 10 bars,
+  // and a window past its end renders slots whose placement is undefined.
+  const [range, setRange] = useState<[number, number]>(() =>
+    visibleBarRange(0, INITIAL_VIEWPORT, BAR_WIDTH, spec.bars),
+  )
   const [nearValue, setNearValue] = useState(10)
   const [showTickets, setShowTickets] = useState(false)
   const [bw, setBw] = useState(false)
@@ -493,7 +499,7 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
               const isMilestone = value % 100 === 0
               const slotClass = [
                 'bead-chains-slot',
-                placed !== null ? 'bead-chains-slot-filled' : '',
+                placed != null ? 'bead-chains-slot-filled' : '',
                 isMilestone ? 'bead-chains-slot-milestone' : '',
                 result === 'correct' ? 'bead-chains-slot-right' : '',
                 result === 'wrong' ? 'bead-chains-slot-wrong' : '',
@@ -509,12 +515,12 @@ export default function LongChain({ kind, chainSelect }: LongChainProps) {
                       className={slotClass}
                       onClick={() => onSlotTap(k)}
                       aria-label={
-                        placed === null
+                        placed == null
                           ? `empty label spot at the end of ten-bar ${k + 1}`
                           : `label spot at the end of ten-bar ${k + 1}, holds ticket ${formatNumber(placed)}`
                       }
                     >
-                      {placed !== null ? formatNumber(placed) : ''}
+                      {placed != null ? formatNumber(placed) : ''}
                       {result === 'correct' && (
                         <span className="bead-chains-mark bead-chains-mark-right" aria-hidden="true">✓</span>
                       )}
@@ -823,6 +829,13 @@ Add `longChain`, `createLongChain`, `longCorrectValue`, `placeLongTicket`, `remo
 - [x] Colors only via tokens (`--golden`, `--pv-ten`, `--pv-hundred`, `--pv-thousand`, `--line`, `--ink`, …); no hex literals in TSX
 - [x] `long-chains` lesson complete per album schema, sequence 8 in linear-counting; `bead-chains-skip-counting`'s `whatComesNext` corrected; `def.ts` lists both lessons
 - [x] Only files inside `src/materials/bead-chains/` (plus this PRD) are touched
+
+> **Post-ship fix (Sep 2026 visual audit).** Despite the ticked boxes above, choosing
+> **Hundred chain** crashed the page: this PRD's component code started the visible
+> window at a literal `[0, 11]`, which runs past the hundred chain's 10 bars. Slots 10–11 had an `undefined` placement, `formatNumber(undefined)`
+> threw, and with no error boundary the whole site went blank. The code above
+> now derives the first window from `visibleBarRange` and guards `placed != null`;
+> `model.test.ts` pins the first-paint window inside both chains.
 
 ## Out of scope
 
