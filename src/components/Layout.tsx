@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
+import { ErrorBoundary } from './ErrorBoundary'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -20,6 +21,7 @@ const NAV = [
 ]
 
 export default function Layout() {
+  const { pathname } = useLocation()
   return (
     <>
       <header className="site-header no-print">
@@ -47,7 +49,10 @@ export default function Layout() {
         </div>
       </header>
       <main className="site-main">
-        <Outlet />
+        {/* Keyed by pathname so leaving a broken page recovers. */}
+        <ErrorBoundary key={pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <footer className="site-footer no-print">
         <div className="site-footer-inner">

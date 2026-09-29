@@ -100,3 +100,14 @@ Four functional bugs reproduced on the live site during the Sep 2026 visual audi
   and a real space; `.answer-list` adds a slim margin, a smaller number, and a
   hanging indent for wrapped entries. Measured across every generator's presets
   in Chrome, no entry wraps that did not wrap before.
+- **Added (follow-up):** a render error in any page no longer blanks the site.
+  `ErrorBoundary` wraps the routed `<Outlet />` inside `main.site-main`, so the
+  header, nav and footer stay up and the page shows a calm "Something went wrong
+  on this page" note with a home link and a Reload button (standalone PWA mode
+  has no browser reload). Layout keys it by pathname, so navigating away
+  recovers. It renders its children with no wrapper element, because the chart
+  and bead-chain print isolation selects `main.site-main > *` direct children.
+  No logging or reporting beyond React's own `console.error`. Checked in Chrome
+  with a temporary throw on Hundred chain: header, nav and footer stayed; nav,
+  the home link, Back and Reload all recovered; Print control charts still
+  isolates the chart sheet.
