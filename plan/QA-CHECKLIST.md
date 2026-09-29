@@ -83,7 +83,8 @@ Print these six things in one session (Ctrl+P; **100% scale / "Actual size" — 
 
 ### 11. Control charts + B&W fractions (PRDs 14, 18-regression)
 1. `/materials/addition-charts` → **Print control charts**.
-- [ ] Charts 1 & 2 each fill a Letter page, readable at arm's length
+- [ ] Charts 1 & 2 each fill a Letter page, readable at arm's length (print preview used to be blank — fixed after the Sep 2026 visual audit)
+- [ ] Same on `/materials/multiplication-charts` → **Print control charts**
 2. `/worksheets/fractions?mode=identify&bw=1` → print preview only (no need to print).
 - [ ] In B&W, shaded sectors are mid-gray with visible division lines — you can count 5/8 vs 1/2 at a glance
 

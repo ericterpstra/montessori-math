@@ -85,3 +85,8 @@ Four functional bugs reproduced on the live site during the Sep 2026 visual audi
   PRD 15's spec), which runs past the hundred chain's 10 bars; the undefined
   placement reached `formatNumber` and threw, and nothing catches render errors.
   The first window now comes from `visibleBarRange`, clamped to the chain.
+- **Fixed:** **Print control charts** on Addition Charts and Multiplication Charts
+  printed a blank page. Their print-isolation CSS un-hid only a direct child of
+  `main` carrying the `-print` class, but since `8377f20` that class sits on the
+  `.print-sheet` inside `SheetPreview`'s wrapper. The rule now un-hides the
+  `.sheet-preview` that contains it.

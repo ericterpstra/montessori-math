@@ -216,12 +216,14 @@ button.addition-charts-header:focus-visible {
   flex-wrap: wrap;
 }
 
-/* Print isolation: while the control-chart sheet is open, only it prints */
+/* Print isolation: while the control-chart sheet is open, only it prints.
+   SheetPreview puts .addition-charts-print on the inner .print-sheet, so the
+   child of main to keep is its .sheet-preview wrapper. */
 @media print {
   body.addition-charts-print-mode main.site-main > * {
     display: none !important;
   }
-  body.addition-charts-print-mode main.site-main > .addition-charts-print {
+  body.addition-charts-print-mode main.site-main > .sheet-preview:has(> .addition-charts-print) {
     display: block !important;
   }
 }
