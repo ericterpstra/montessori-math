@@ -109,6 +109,7 @@ Honest limitation: install/offline needs HTTPS or localhost — the plain LAN IP
 - [ ] `/materials` shows 21 materials incl. Addition/Multiplication Charts
 - [ ] `/worksheets` shows 13 generators incl. Command Cards + the kits card at the bottom
 - [ ] One old flow untouched: `/worksheets/multi-digit-ops?preset=dynamic-subtraction` still generates and previews
+- [ ] `/worksheets/math-facts`: select the "Number of problems" text and type 25 — it stays 25 (it used to jump to 60); clear it and click away — it goes back to the old value, not 10
 - [ ] `/parents/scope-and-sequence` renders (now includes the 3 new lessons: addition-charts 6, multiplication-charts 7, long-chains 8)
 
 ---

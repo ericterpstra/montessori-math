@@ -9,6 +9,7 @@ A parameterized, printable worksheet system. Each generator is a module in `src/
 ## Builder UI requirements
 
 - [x] Form auto-rendered from `ParamField[]` schema (number / select / boolean)
+- [x] Number fields hold the typed text as a draft: in-range values apply live, and the clamp to `min`–`max` happens on blur/Enter (`draftNumber` / `commitNumber` in `params.ts`). *Added after the Sep 2026 visual audit: the fields clamped every keystroke, so typing 25 in a 10–60 field gave 60, and clearing one snapped it to the minimum.*
 - [x] Live preview of the sheet at US Letter proportions
 - [x] Seed control: visible seed, "new sheet" reroll, seed + params in the URL query so a sheet can be re-created/shared
 - [x] `?preset=<id>` query applies a preset (used by lesson follow-up links)

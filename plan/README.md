@@ -90,3 +90,7 @@ Four functional bugs reproduced on the live site during the Sep 2026 visual audi
   `main` carrying the `-print` class, but since `8377f20` that class sits on the
   `.print-sheet` inside `SheetPreview`'s wrapper. The rule now un-hides the
   `.sheet-preview` that contains it.
+- **Fixed:** worksheet number fields clamped on every keystroke, so typing 25
+  into a 10–60 field gave 60 and clearing one snapped it to the minimum. The
+  field now keeps a draft string, applies in-range values live, and clamps on
+  blur/Enter (`draftNumber` / `commitNumber` in `params.ts`, tested).
