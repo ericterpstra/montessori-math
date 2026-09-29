@@ -336,7 +336,7 @@ function AnswerKey({ data }: SheetProps<TeensTensParams, TeensTensData>) {
       <ol className="answer-list teens-tens-key">
         {data.problems.map((p, i) => (
           <li key={i}>
-            {i + 1}.{' '}
+            <span className="problem-number">{i + 1}.</span>{' '}
             {p.kind === 'sequence' ? (
               <SequenceRun p={p} showAnswers />
             ) : p.kind === 'numeral-to-bead' ? (

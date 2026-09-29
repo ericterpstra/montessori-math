@@ -224,6 +224,14 @@ First line comment: `/* Addition Charts — all classes prefixed addition-charts
 
 This works because `MaterialPage.tsx` renders the material component's top-level nodes as direct children of `main.site-main` (fragments and `Suspense` create no DOM nodes) — so the component **must** return exactly two top-level siblings: the interactive `<div className="addition-charts-app">` and, when toggled, the `.print-sheet` div (step 4).
 
+> **Superseded (Sep 2026 visual audit).** Commit `8377f20` moved the print section
+> into `SheetPreview`, which puts `addition-charts-print` on the inner `.print-sheet`
+> inside a `div.sheet-preview` wrapper. The direct-child un-hide above then matched
+> nothing, and **Print control charts** printed a blank page on both chart
+> materials. The shipped rule un-hides the wrapper instead:
+> `main.site-main > .sheet-preview:has(> .addition-charts-print)` (and the
+> `multiplication-charts-` twin).
+
 **Check:** file exists, no CSS syntax errors (Vite dev server compiles without warnings after step 4 imports it).
 
 ### Step 4 — `src/materials/addition-charts/AdditionCharts.tsx` (new)
@@ -491,6 +499,10 @@ Also: after step 9 wiring, the existing `src/lessons/content.test.ts` must stay 
 - [x] Lessons registered at memorization sequences 6 and 7 with prerequisites `['addition-strip-board']` / `['multiplication-bead-board']` and follow-up `math-facts` presets `first-facts` / `times-tables`
 - [x] No localStorage, no analytics, no new dependencies, no runtime network requests
 - [x] Both material pages and both lesson pages render on the LAN dev server; QA script above passes end to end
+
+> **Regression, since fixed.** The print-isolation box above stopped holding at
+> `8377f20` (see the note under step 3's print-isolation CSS): printing emitted a
+> blank page until the Sep 2026 visual-audit fix.
 
 ## Out of scope
 

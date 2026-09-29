@@ -75,3 +75,28 @@ A code/content/routing review of the whole project. Findings and fixes:
   cannot be undone without a full Reset; the physical material lets the bead move
   back. Also deferred: no SPA fallback (`404.html`) for deep links on a static
   host, and the 404 page links only to home.
+
+## Post-wave-2 — visual audit bugs (Sep 2026)
+
+Four functional bugs reproduced on the live site during the Sep 2026 visual audit:
+
+- **Fixed:** choosing **Hundred chain** on Bead Chains blanked the whole site.
+  `LongChain` started its visible window at a literal `[0, 11]` (copied from
+  PRD 15's spec), which runs past the hundred chain's 10 bars; the undefined
+  placement reached `formatNumber` and threw, and nothing catches render errors.
+  The first window now comes from `visibleBarRange`, clamped to the chain.
+- **Fixed:** **Print control charts** on Addition Charts and Multiplication Charts
+  printed a blank page. Their print-isolation CSS un-hid only a direct child of
+  `main` carrying the `-print` class, but since `8377f20` that class sits on the
+  `.print-sheet` inside `SheetPreview`'s wrapper. The rule now un-hides the
+  `.sheet-preview` that contains it.
+- **Fixed:** worksheet number fields clamped on every keystroke, so typing 25
+  into a 10–60 field gave 60 and clearing one snapped it to the minimum. The
+  field now keeps a draft string, applies in-range values live, and clamps on
+  blur/Enter (`draftNumber` / `commitNumber` in `params.ts`, tested).
+- **Fixed:** answer keys glued the problem number to the first operand, so
+  "1. 214 + 459" rendered as "1.214 + 459", which reads as a decimal (worse on
+  the decimals sheet). Every generator's key now uses a `.problem-number` span
+  and a real space; `.answer-list` adds a slim margin, a smaller number, and a
+  hanging indent for wrapped entries. Measured across every generator's presets
+  in Chrome, no entry wraps that did not wrap before.

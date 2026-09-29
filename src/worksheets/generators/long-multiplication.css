@@ -54,9 +54,9 @@
   columns: 2;
 }
 
+/* No padding of its own: the .answer-list hanging indent already sets it under the problem. */
 .long-multiplication-key-partials {
   display: block;
   font-size: 0.85em;
   color: var(--ink-soft);
-  padding-left: 1.4em;
 }

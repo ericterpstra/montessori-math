@@ -234,7 +234,7 @@ function AnswerKey({ data }: SheetProps<LongMultiplicationParams, LongMultiplica
       <ol className="answer-list long-multiplication-key">
         {data.problems.map((p, i) => (
           <li key={i}>
-            {i + 1}. {formatNumber(p.multiplicand)} × {formatNumber(p.multiplier)} ={' '}
+            <span className="problem-number">{i + 1}.</span> {formatNumber(p.multiplicand)} × {formatNumber(p.multiplier)} ={' '}
             <strong>{formatNumber(p.product)}</strong>
             {p.partialProducts.length > 1 && (
               <span className="long-multiplication-key-partials">

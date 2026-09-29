@@ -373,8 +373,8 @@ function AnswerKey({ data }: SheetProps<MultiDigitOpsParams, MultiDigitOpsData>)
       <ol className="answer-list">
         {data.problems.map((p, i) => (
           <li key={i}>
-            <span className="problem-number">{i + 1}.</span>
-            {formatNumber(p.a)} {sym} {formatNumber(p.b)} = <strong>{formatNumber(p.answer)}</strong>
+            <span className="problem-number">{i + 1}.</span> {formatNumber(p.a)} {sym} {formatNumber(p.b)} ={' '}
+            <strong>{formatNumber(p.answer)}</strong>
           </li>
         ))}
       </ol>

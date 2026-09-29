@@ -192,7 +192,7 @@ function AnswerKey({ data }: SheetProps<GoldenBeadPicturesParams, GoldenBeadPict
       <ol className="answer-list golden-bead-pictures-key">
         {data.problems.map((p, i) => (
           <li key={i}>
-            {i + 1}. <strong>{formatNumber(p.value)}</strong> — {p.breakdown}
+            <span className="problem-number">{i + 1}.</span> <strong>{formatNumber(p.value)}</strong> — {p.breakdown}
           </li>
         ))}
       </ol>

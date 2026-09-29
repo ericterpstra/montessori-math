@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { generatorBySlug } from './registry'
 import type { ParamField } from './types'
-import { clamp, resolveParams } from './params'
+import { commitNumber, draftNumber, resolveParams } from './params'
 import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
@@ -41,18 +41,50 @@ function Field({
       </label>
     )
   }
+  return <NumberField field={field} value={Number(value)} onChange={onChange} />
+}
+
+/**
+ * Holds the typed text as a draft so a keystroke is never clamped mid-number
+ * ("2" on the way to "25" in a 10–60 field). In-range values apply live; the
+ * clamp happens on blur or Enter. resolveParams still clamps whatever the URL says.
+ */
+function NumberField({
+  field,
+  value,
+  onChange,
+}: {
+  field: Extract<ParamField, { kind: 'number' }>
+  value: number
+  onChange: (v: number) => void
+}) {
+  // null = not editing, so the input mirrors the sheet (and follows preset changes).
+  const [draft, setDraft] = useState<string | null>(null)
+
+  function commit() {
+    if (draft === null) return
+    const n = commitNumber(draft, field.min, field.max)
+    if (n !== null && n !== value) onChange(n)
+    setDraft(null)
+  }
+
   return (
     <label className="field">
       {field.label}
       <input
         type="number"
-        value={Number(value)}
+        value={draft ?? String(value)}
         min={field.min}
         max={field.max}
         step={field.step ?? 1}
         onChange={(e) => {
-          const n = Number(e.target.value)
-          if (!Number.isNaN(n)) onChange(clamp(n, field.min, field.max))
+          setDraft(e.target.value)
+          const n = draftNumber(e.target.value, field.min, field.max)
+          if (n !== null && n !== value) onChange(n)
+        }}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') commit()
         }}
       />
       {field.help && <span className="field-help">{field.help}</span>}

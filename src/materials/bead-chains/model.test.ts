@@ -245,6 +245,18 @@ describe('windowing (visibleBarRange)', () => {
     expect(visibleBarRange(0, 900, 130, 10, 5)).toEqual([0, 9])
   })
 
+  it('never windows past the end of either long chain at first paint', () => {
+    // Regression: LongChain once started from a literal [0, 11], which runs past the
+    // hundred chain's 10 bars into undefined placements and blanked the whole page.
+    for (const kind of [100, 1000] as const) {
+      const { placements } = createLongChain(kind)
+      const [start, end] = visibleBarRange(0, 900, 130, longChain(kind).bars)
+      expect(start).toBe(0)
+      expect(end).toBeLessThan(placements.length)
+    }
+    expect(visibleBarRange(0, 900, 130, longChain(100).bars)).toEqual([0, 9])
+  })
+
   it('defaults the buffer to 5 and rejects nonsense geometry', () => {
     expect(visibleBarRange(6500, 900, 130, 100)).toEqual([45, 61])
     expect(() => visibleBarRange(0, 900, 0, 100)).toThrow()

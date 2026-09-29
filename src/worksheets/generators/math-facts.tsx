@@ -218,7 +218,7 @@ function AnswerKey({ data, params }: SheetProps<MathFactsParams, MathFactsData>)
       <ol className="answer-list">
         {data.problems.map((p, i) => (
           <li key={i}>
-            <span className="problem-number">{i + 1}.</span>
+            <span className="problem-number">{i + 1}.</span>{' '}
             <KeyValue value={p.a} filled={p.blank === 'a'} /> {OP_SYMBOL[p.op]}{' '}
             <KeyValue value={p.b} filled={p.blank === 'b'} /> ={' '}
             <KeyValue value={p.answer} filled={p.blank === 'answer'} />

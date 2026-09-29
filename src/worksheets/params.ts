@@ -15,6 +15,29 @@ export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, Math.round(n)))
 }
 
+/**
+ * A number field's text while the parent is still typing: the value to apply
+ * to the sheet now, or null to leave it alone. Empty or out-of-range text is
+ * often a prefix of what is coming ("2" on the way to "25" in a 10–60 field),
+ * so it waits for blur/Enter instead of being clamped mid-keystroke.
+ */
+export function draftNumber(text: string, min: number, max: number): number | null {
+  if (text.trim() === '') return null
+  const n = Number(text)
+  if (!Number.isFinite(n) || n < min || n > max) return null
+  return clamp(n, min, max)
+}
+
+/**
+ * A number field's text once editing ends (blur or Enter): clamped into range,
+ * or null — keep the current value — when it is empty or not a number.
+ */
+export function commitNumber(text: string, min: number, max: number): number | null {
+  if (text.trim() === '') return null
+  const n = Number(text)
+  return Number.isFinite(n) ? clamp(n, min, max) : null
+}
+
 /** Defaults ← preset (?preset=) ← individual URL params. */
 export function resolveParams(def: AnyGeneratorDef, searchParams: URLSearchParams): ParamValues {
   let params: ParamValues = { ...def.defaults }

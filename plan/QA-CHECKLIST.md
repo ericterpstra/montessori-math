@@ -36,6 +36,7 @@ review pass) plus in-browser smoke checks. What's left is what only a human can 
 - [ ] Place a couple of arrow tickets (tap ticket → tap slot); a wrong one is marked only when you press Check
 - [ ] Hundred-square milestones appear at each hundred; the cube waits at 1,000
 2. Switch to **Hundred chain** — same, smaller.
+- [ ] The page renders (it used to go blank — fixed after the Sep 2026 visual audit)
 - [ ] Feels like an expedition, not a chore — honest gut call
 
 ### 4. Planner (PRD 13)
@@ -82,7 +83,8 @@ Print these six things in one session (Ctrl+P; **100% scale / "Actual size" — 
 
 ### 11. Control charts + B&W fractions (PRDs 14, 18-regression)
 1. `/materials/addition-charts` → **Print control charts**.
-- [ ] Charts 1 & 2 each fill a Letter page, readable at arm's length
+- [ ] Charts 1 & 2 each fill a Letter page, readable at arm's length (print preview used to be blank — fixed after the Sep 2026 visual audit)
+- [ ] Same on `/materials/multiplication-charts` → **Print control charts**
 2. `/worksheets/fractions?mode=identify&bw=1` → print preview only (no need to print).
 - [ ] In B&W, shaded sectors are mid-gray with visible division lines — you can count 5/8 vs 1/2 at a glance
 
@@ -107,6 +109,8 @@ Honest limitation: install/offline needs HTTPS or localhost — the plain LAN IP
 - [ ] `/materials` shows 21 materials incl. Addition/Multiplication Charts
 - [ ] `/worksheets` shows 13 generators incl. Command Cards + the kits card at the bottom
 - [ ] One old flow untouched: `/worksheets/multi-digit-ops?preset=dynamic-subtraction` still generates and previews
+- [ ] Any answer key (try `/worksheets/decimals?preset=decimal-sums`): "1." sits clearly apart from the first number, in color and with B&W on (it used to read "1.214")
+- [ ] `/worksheets/math-facts`: select the "Number of problems" text and type 25 — it stays 25 (it used to jump to 60); clear it and click away — it goes back to the old value, not 10
 - [ ] `/parents/scope-and-sequence` renders (now includes the 3 new lessons: addition-charts 6, multiplication-charts 7, long-chains 8)
 
 ---
