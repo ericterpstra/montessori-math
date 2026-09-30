@@ -2392,7 +2392,9 @@ Create `src/styles/forms.css`:
 /* ---------- Fields ---------- */
 
 /* One column of fields; two columns on a tablet, where the builder form
-   spans the page and a 750px-wide number box helps no one. */
+   spans the page and a 750px-wide number box helps no one. The columns
+   start at 700px: narrower, a half-width select cuts the fractions
+   builder's longest option ("Name the fraction (picture → fraction)"). */
 .field-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -2400,7 +2402,7 @@ Create `src/styles/forms.css`:
   align-items: start;
 }
 
-@media (min-width: 641px) and (max-width: 900px) {
+@media (min-width: 700px) and (max-width: 900px) {
   .field-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2472,6 +2474,14 @@ Create `src/styles/forms.css`:
 .field input[type='date']::-webkit-date-and-time-value {
   min-height: 1.25em;
   text-align: left;
+}
+
+/* Chrome's calendar button is a Tab stop of its own, and while it has focus
+   the input matches neither :focus nor :focus-visible, only :focus-within;
+   without this it shows Chrome's thin mark instead of the 3px ring. */
+.field input[type='date']:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 /* ---------- Checkbox rows: box | label, help under the label ---------- */
@@ -2576,7 +2586,7 @@ Until Step 41 lands, the planner's enabled selects keep their old 38px look: `pl
 - `grep -n "label.field\|field-help" src/styles/global.css src/styles/worksheets.css` prints nothing.
 - On `/worksheets/multi-digit-ops` at 1400, this is true: `[...document.querySelectorAll('.builder-form select, .builder-form input:not([type=checkbox])')].every(e => e.offsetHeight >= 44)`.
 - `[...document.querySelectorAll('label.field.checkbox')].every(l => l.offsetHeight >= 44)` is true, and each help line starts under the label text, not under the box.
-- On `/planner` the "Week of (optional)" label sits above a full-width 44px date box in the sans, not in monospace.
+- On `/planner` the "Week of (optional)" label sits above a full-width 44px date box in the sans, not in monospace. Tab into it: every Tab stop in the field, Chrome's calendar button (the fourth) included, shows the 3px ring (Phase 6 review).
 - On `/planner`, `getComputedStyle(document.querySelector('.planner-row select:disabled')).opacity` is `"1"`, and the unticked rows' selects are dashed with readable ink-soft text.
 - The standard check (convention 12) passes. The forms are `no-print`, so nothing on paper changes.
 

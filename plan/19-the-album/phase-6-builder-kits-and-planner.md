@@ -16,7 +16,7 @@ This step makes these changes:
 - **A PageHeader** carries the title, `docTitle` `"<name> worksheet"`, the meta line (the boxed age via `AgeMeta`, and the strand), the lede, and **New problems + rubric Print in the action slot**. The Print button ends at y = 152 at 1400×900.
 - **A labelled panel.**
   - `aside.builder-form.panel` has `aria-labelledby` pointing at its `h2.panel-label` "Sheet settings".
-  - The fields sit in a `.field-grid`: one column in a 21rem panel on desktop (was 320px incl. padding; now 336px of field), and two columns at 641–900px.
+  - The fields sit in a `.field-grid`: one column in a 21rem panel on desktop (was 320px incl. padding; now 336px of field), and two columns at 700–900px (Step 16's grid; from 641px, as first written, a half-width select cut the fractions builder's longest options at 641–680px, Phase 6 review).
   - Every label's text is wrapped in `.field-label`.
 - **The desk.** `<SheetPreview bw={bw} desk>`.
 - **The preset help line** no longer disappears when a field is edited, which today makes the form jump about 84px under the pointer (S6-19). After an edit it reads `Based on “Two-digit divisors”, with your changes. <description>`.
@@ -428,6 +428,7 @@ The only print rule, `@media print { .builder-layout { display: block } }`, is u
 - **The preset line:** choose "Choose a preset…" › any preset; its description appears. Change "Problems": the line now begins `Based on “…”, with your changes.` and the form does not jump up.
 - **`/worksheets/fractions` at 1400:** the "Problem type" select shows "Name the fraction (picture → fraction)" in full. Run this check with the real MM Sans. If it still clips, record it for PRD 20 (shorten the option label).
 - **At 820:** the fields sit in two columns, and New problems and Print are still at the top right.
+- **At 641–699** the fields are one column; **at 700**, the narrowest two-column width, every option of every select in all 13 builders fits its select, "Name the fraction (picture → fraction)" and "Shade the circle (fraction → picture)" on `/worksheets/fractions` included.
 - **At 390:** they sit under the lede. `document.documentElement.scrollWidth === innerWidth`.
 - **Keyboard:** Tab order runs New problems, Print, Preset, … Include answer key page, Printing tips, and every control shows the 3px blue ring.
 - **Screen reader:** each checkbox is named by its label and help, as today.
@@ -604,6 +605,7 @@ This step makes these changes:
   - Rows are ruled, the names serif, and the preset and day selects have fixed widths (12.5rem and 8.5rem) so they line up.
   - At ≤560px the selects drop under the name.
   - Disabled selects are dashed, not faded.
+  - Ticking a row never moves it. At ≤900px the shelf above grows with each tick, so the page scrolls by however far the row moved (decision 33; Phase 6 review).
 - **The preview** lies on the desk. Its 2rem top margin is kept for print, because it sets where the plan starts on paper; the screen gets `--space-7`. `ParentPlanPage` and `JournalPage` are unchanged.
 
 Current lines 62–77 (the picker row):
@@ -736,7 +738,7 @@ describe('groupByStrand', () => {
 Replace the whole of `src/planner/PlannerPage.tsx` with the file below. It already contains Step 10's Copy link icon change.
 
 ```tsx
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { LESSONS, lessonBySlug } from '../lessons/registry'
@@ -794,14 +796,18 @@ function PickerRow({
   name: string
   checked: boolean
   day: Day | undefined
-  onToggle: (on: boolean) => void
+  onToggle: (on: boolean, row: Element | null) => void
   onDay: (day: string) => void
   presetControl?: ReactNode
 }) {
   return (
     <div className="planner-row">
       <label className="planner-pick">
-        <input type="checkbox" checked={checked} onChange={(e) => onToggle(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onToggle(e.target.checked, e.currentTarget.closest('.planner-row'))}
+        />
         <span className="planner-row-name">{name}</span>
       </label>
       <span className="planner-row-controls">
@@ -930,13 +936,28 @@ export default function PlannerPage() {
     }
   }
 
+  // At 900px and below the shelf sits above the picker, so ticking a row grows
+  // the shelf and would push that row down under the finger. Remember where
+  // the row was and scroll by however far it moved once the shelf has
+  // redrawn: 0 wherever the browser's scroll anchoring already held it.
+  // Like Layout's keepFocusedLinkClear, this only sets a scroll offset.
+  const tickedRow = useRef<{ el: Element; top: number } | null>(null)
+  useLayoutEffect(() => {
+    const ticked = tickedRow.current
+    if (!ticked) return
+    tickedRow.current = null
+    const dy = ticked.el.getBoundingClientRect().top - ticked.top
+    if (dy) window.scrollBy(0, dy)
+  })
+
   const isChecked = (kind: PlanItem['kind'], slug: string) =>
     plan.items.some((i) => i.kind === kind && i.slug === slug)
 
   const firstItem = (kind: PlanItem['kind'], slug: string) =>
     plan.items.find((i) => i.kind === kind && i.slug === slug)
 
-  const toggle = (kind: PlanItem['kind'], slug: string, on: boolean) => {
+  const toggle = (kind: PlanItem['kind'], slug: string, on: boolean, row: Element | null) => {
+    tickedRow.current = row ? { el: row, top: row.getBoundingClientRect().top } : null
     const items = on
       ? [...plan.items, { kind, slug }]
       : plan.items.filter((i) => !(i.kind === kind && i.slug === slug))
@@ -972,7 +993,7 @@ export default function PlannerPage() {
         name={name}
         checked={checked}
         day={firstItem(kind, slug)?.day}
-        onToggle={(on) => toggle(kind, slug, on)}
+        onToggle={(on, row) => toggle(kind, slug, on, row)}
         onDay={(day) => editFirst(kind, slug, { day })}
         presetControl={presetControl}
       />
@@ -990,9 +1011,9 @@ export default function PlannerPage() {
         docTitle="Weekly plan"
         lede={
           <>
-            Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a "My Work"
-            journal your child checks off in pencil as work is finished. The whole plan lives in this page's URL —
-            bookmark it or copy the link to keep it. Nothing is stored anywhere.
+            Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a
+            &ldquo;My Work&rdquo; journal your child checks off in pencil as work is finished. The whole plan lives in
+            this page's URL — bookmark it or copy the link to keep it. Nothing is stored anywhere.
           </>
         }
       />
@@ -1294,6 +1315,12 @@ with:
   max-width: 20rem;
 }
 
+/* The B&W box ends an empty shelf on the panel's own padding; once items
+   are picked, the actions keep the same 16px below it. */
+.planner-shelf > .field.checkbox {
+  margin-bottom: 0;
+}
+
 .planner-empty {
   margin: 0 0 var(--space-3);
   font-size: var(--fs-read-sm);
@@ -1377,7 +1404,7 @@ with:
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
 }
 
 .planner-actions > .btn.primary {
@@ -1420,14 +1447,14 @@ Lines 23–42 (`/* ---------- Printed pages ---------- */` onward) are unchanged
 
 **Check:**
 - `npm test`: the two new `groupByStrand` tests pass.
-- The standard check (convention 12) passes, and printing the 13-item plan from Step 43's review list gives the plan, then two journal pages with "(continued)", with no page chrome on paper.
+- The standard check (convention 12) passes, and printing the 13-item plan from Step 43's review list gives the plan and the "My Work" journal with no page chrome on paper (13 items: 5 sheets today; the plan runs onto sheet 2 and the first journal page onto sheet 4 before "(continued)"; PRD 20 candidates S1-03+S7-08 and S9-03).
 - **390, `/planner`:** `document.documentElement.scrollWidth === innerWidth`. Each row is a name line, then (worksheets only) a full-width preset select, then an 8.5rem day select, indented to the name. No name breaks one word per line.
-- **820:** the shelf is under the header, above "LESSONS". Tick a lesson: it appears on the shelf with its kind, Print appears full width, and Copy link and Clear week share the row below.
+- **820:** the shelf is under the header, above "LESSONS". Tick a lesson: it appears on the shelf with its kind, Print appears full width, and Copy link and Clear week share the row below. Ticking a row at 820 leaves it where it was, on the first tick and on later ones, with scroll anchoring on or off (`overflow-anchor: none`); so does unticking, and the same holds at 390.
 - **1400:** the shelf is at the right and stays in view while the picker scrolls. With 13 items it scrolls inside itself, and its buttons stay reachable.
   - Day selects on unticked rows are dashed with readable ink-soft text; ticking a row makes its select solid.
   - Preset selects line up down the column.
   - Worksheets and Materials are grouped under strand heads, with 36px above each head.
 - **Copy link:** click it (on `localhost` the clipboard works). The label reads "Copied" for 1.5s and neither neighbour moves. A screen reader announces "Link copied."
-- **Empty plan:** there is no Print, Copy link or Clear week, and the shelf says "Nothing picked yet — check lessons, worksheets, and materials in the lists."
-- The date field is a 44px sans box under its label.
+- **Empty plan:** there is no Print, Copy link or Clear week, and the shelf says "Nothing picked yet — check lessons, worksheets, and materials in the lists." It ends 24px under the B&W checkbox, as a filled shelf ends 24px under its actions (which sit 16px under the checkbox).
+- The date field is a 44px sans box under its label, and every Tab stop in it shows the 3px ring (Step 16).
 - `document.title` is `Weekly plan · Montessori Math`.

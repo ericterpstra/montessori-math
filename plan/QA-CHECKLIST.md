@@ -153,7 +153,7 @@ The Album redesign is complete, and every printable now carries the Album's type
 - [ ] `/kits/strip-boards`
 
 ### Planner: the parent plan and the child's "My Work" journal, colour and B&W
-- [ ] `/planner?l=golden-beads-addition:mon&s=math-facts.times-tables:tue&m=golden-beads:wed&s=multi-digit-ops&l=stamp-game-addition:thu&l=number-cards-intro:mon&s=long-division.first-long-division:fri&m=stamp-game&l=snake-game:tue&s=skip-counting:wed&m=hundred-board:sat&l=fractions-intro&s=place-value:sun&w=2026-10-05` (13 items: the plan, then two journal pages, the second marked "(continued)"; today the plan and the first journal page each run onto a second sheet, so it prints on 5 sheets: audit S1-03+S7-08 and S9-03)
+- [ ] `/planner?l=golden-beads-addition:mon&s=math-facts.times-tables:tue&m=golden-beads:wed&s=multi-digit-ops&l=stamp-game-addition:thu&l=number-cards-intro:mon&s=long-division.first-long-division:fri&m=stamp-game&l=snake-game:tue&s=skip-counting:wed&m=hundred-board:sat&l=fractions-intro&s=place-value:sun&w=2026-10-05` (13 items: 5 sheets today; the plan runs onto sheet 2 and the first journal page onto sheet 4 before "(continued)"; PRD 20 candidates S1-03+S7-08 and S9-03)
 
 ### Printables on material pages: colour, then "Ink-friendly B&W"
 - [ ] `/materials/addition-charts` › Print control charts

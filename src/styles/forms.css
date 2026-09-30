@@ -42,7 +42,9 @@
 /* ---------- Fields ---------- */
 
 /* One column of fields; two columns on a tablet, where the builder form
-   spans the page and a 750px-wide number box helps no one. */
+   spans the page and a 750px-wide number box helps no one. The columns
+   start at 700px: narrower, a half-width select cuts the fractions
+   builder's longest option ("Name the fraction (picture → fraction)"). */
 .field-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -50,7 +52,7 @@
   align-items: start;
 }
 
-@media (min-width: 641px) and (max-width: 900px) {
+@media (min-width: 700px) and (max-width: 900px) {
   .field-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -122,6 +124,14 @@
 .field input[type='date']::-webkit-date-and-time-value {
   min-height: 1.25em;
   text-align: left;
+}
+
+/* Chrome's calendar button is a Tab stop of its own, and while it has focus
+   the input matches neither :focus nor :focus-visible, only :focus-within;
+   without this it shows Chrome's thin mark instead of the 3px ring. */
+.field input[type='date']:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 /* ---------- Checkbox rows: box | label, help under the label ---------- */

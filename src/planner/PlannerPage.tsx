@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { LESSONS, lessonBySlug } from '../lessons/registry'
@@ -56,14 +56,18 @@ function PickerRow({
   name: string
   checked: boolean
   day: Day | undefined
-  onToggle: (on: boolean) => void
+  onToggle: (on: boolean, row: Element | null) => void
   onDay: (day: string) => void
   presetControl?: ReactNode
 }) {
   return (
     <div className="planner-row">
       <label className="planner-pick">
-        <input type="checkbox" checked={checked} onChange={(e) => onToggle(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onToggle(e.target.checked, e.currentTarget.closest('.planner-row'))}
+        />
         <span className="planner-row-name">{name}</span>
       </label>
       <span className="planner-row-controls">
@@ -192,13 +196,28 @@ export default function PlannerPage() {
     }
   }
 
+  // At 900px and below the shelf sits above the picker, so ticking a row grows
+  // the shelf and would push that row down under the finger. Remember where
+  // the row was and scroll by however far it moved once the shelf has
+  // redrawn: 0 wherever the browser's scroll anchoring already held it.
+  // Like Layout's keepFocusedLinkClear, this only sets a scroll offset.
+  const tickedRow = useRef<{ el: Element; top: number } | null>(null)
+  useLayoutEffect(() => {
+    const ticked = tickedRow.current
+    if (!ticked) return
+    tickedRow.current = null
+    const dy = ticked.el.getBoundingClientRect().top - ticked.top
+    if (dy) window.scrollBy(0, dy)
+  })
+
   const isChecked = (kind: PlanItem['kind'], slug: string) =>
     plan.items.some((i) => i.kind === kind && i.slug === slug)
 
   const firstItem = (kind: PlanItem['kind'], slug: string) =>
     plan.items.find((i) => i.kind === kind && i.slug === slug)
 
-  const toggle = (kind: PlanItem['kind'], slug: string, on: boolean) => {
+  const toggle = (kind: PlanItem['kind'], slug: string, on: boolean, row: Element | null) => {
+    tickedRow.current = row ? { el: row, top: row.getBoundingClientRect().top } : null
     const items = on
       ? [...plan.items, { kind, slug }]
       : plan.items.filter((i) => !(i.kind === kind && i.slug === slug))
@@ -234,7 +253,7 @@ export default function PlannerPage() {
         name={name}
         checked={checked}
         day={firstItem(kind, slug)?.day}
-        onToggle={(on) => toggle(kind, slug, on)}
+        onToggle={(on, row) => toggle(kind, slug, on, row)}
         onDay={(day) => editFirst(kind, slug, { day })}
         presetControl={presetControl}
       />
@@ -252,9 +271,9 @@ export default function PlannerPage() {
         docTitle="Weekly plan"
         lede={
           <>
-            Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a "My Work"
-            journal your child checks off in pencil as work is finished. The whole plan lives in this page's URL —
-            bookmark it or copy the link to keep it. Nothing is stored anywhere.
+            Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a
+            &ldquo;My Work&rdquo; journal your child checks off in pencil as work is finished. The whole plan lives in
+            this page's URL — bookmark it or copy the link to keep it. Nothing is stored anywhere.
           </>
         }
       />

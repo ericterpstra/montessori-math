@@ -358,7 +358,7 @@ PRD 19 fixes part of each of these; the rest is listed as a PRD 20 candidate.
 - **Pages:** `/worksheets/command-cards`, `/worksheets/decimals`, `/worksheets/long-division`, `/worksheets/golden-bead-pictures`, `/worksheets/numeral-tracing` and 10 more (at 820 and 390px)
 - **Cause:** worksheets.css:10-14 (@media max-width:900px → grid-template-columns:minmax(0,1fr)). global.css:233-245 makes label.field inputs and selects display:block width:100%, and nothing caps the width of number inputs.
 - **Fix hint:** At 600–900px lay the form out as a 2–3 column field grid (or keep side-by-side with a 260px form), and cap number-input width.
-- **Partly resolved by PRD 19, Steps 16 and 39:** A two-column field grid at 641–900px roughly halves the tablet form. **Left for PRD 20:** The phone preview is still a ~0.41 zoom fit (owner issue #1 reported having to scroll sideways to see a worksheet).
+- **Partly resolved by PRD 19, Steps 16 and 39:** A two-column field grid at 700–900px roughly halves the tablet form. **Left for PRD 20:** The phone preview is still a ~0.41 zoom fit (owner issue #1 reported having to scroll sideways to see a worksheet).
 
 **S1-10** · medium · alignment — Planner shelf list: day labels float mid-row (no column), names cramped, not grouped by day
 - **Pages:** `/planner` (at 1400, 820 and 390px)
