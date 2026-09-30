@@ -160,3 +160,5 @@ src/
 ## License
 
 Not yet chosen. Until one is added, all rights reserved by the repository owner.
+
+Exception: the web fonts in `public/fonts/` (Newsreader, and MM Sans, a renamed subset of Adobe's Source Sans 3) are licensed under the SIL Open Font License 1.1; see `public/fonts/OFL.txt`. `scripts/fonts/build-fonts.py` regenerates them.

@@ -180,14 +180,6 @@ a:where(:not(.material-stage *, .print-sheet *)):hover {
 
 /* ---------- Common components ---------- */
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  padding: 1rem 1.2rem;
-}
-
 /* ---------- Meta line: badges and the age stamp ----------
    Not pills: a small-caps run of facts separated by middots. The age is the
    one framed item, an ink stamp, so it is findable without colour. Badges
@@ -325,12 +317,6 @@ a:where(:not(.material-stage *, .print-sheet *)):hover {
       border-color 120ms ease,
       color 120ms ease;
   }
-}
-
-.page-intro {
-  max-width: 46rem;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
 }
 
 /* A small-caps kicker in ink. Index pages turn strand labels into chapter

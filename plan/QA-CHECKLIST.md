@@ -116,3 +116,57 @@ Honest limitation: install/offline needs HTTPS or localhost — the plain LAN IP
 ---
 
 **When you're done:** tell Claude what failed (a screenshot or one line per ✗ is plenty). Anything that passed here plus the 872 automated tests is considered shipped.
+
+---
+
+## PRD 19 — printables review (for the owner)
+
+The Album redesign is complete, and every printable now carries the Album's type and tokens: Newsreader for sheet text and numerals (the command-card stamps are MM Sans), lining figures, and the Album's ink and hairlines. Their content and layout did not change. Look at each one in Chrome's print preview (Letter, default margins, background graphics off, scale 100%), in colour and then in black and white, print the ones you want to see on paper, and jot down what you'd change. Your list becomes the printables PRD. The audit's print findings ([PRD 20 candidates: printables and print content](19-the-album/audit-findings.md#prd-20-candidates-printables-and-print-content)) are there to draw on.
+
+- Site: `npm run preview`, then the LAN URL (for example `http://192.168.1.208:4173`).
+
+### Throughout
+- [ ] Operator signs: Newsreader's + − × ÷ = are x-height sized next to its lining figures (PRD 19 open question 27), in problems, answer keys ("216 + 316 = 532") and headers. Keep them, or draw the five signs from MM Sans?
+
+### Worksheets (13): each with `?seed=424242&key=1`, then again with `&bw=1`
+- [ ] `/worksheets/command-cards`
+- [ ] `/worksheets/decimals`
+- [ ] `/worksheets/fractions`
+- [ ] `/worksheets/golden-bead-pictures`
+- [ ] `/worksheets/hundred-chart`
+- [ ] `/worksheets/long-division`
+- [ ] `/worksheets/long-multiplication`
+- [ ] `/worksheets/math-facts`
+- [ ] `/worksheets/multi-digit-ops`
+- [ ] `/worksheets/numeral-tracing`
+- [ ] `/worksheets/place-value`
+- [ ] `/worksheets/skip-counting`
+- [ ] `/worksheets/teens-tens`
+
+### Kits (7): colour, then `?bw=1`; at 100% scale the calibration square measures exactly 1 inch
+- [ ] `/kits/golden-bead-cards`
+- [ ] `/kits/hundred-board-tiles`
+- [ ] `/kits/large-number-cards`
+- [ ] `/kits/paper-fraction-circles`
+- [ ] `/kits/play-money`
+- [ ] `/kits/stamp-game-tiles`
+- [ ] `/kits/strip-boards`
+
+### Planner: the parent plan and the child's "My Work" journal, colour and B&W
+- [ ] `/planner?l=golden-beads-addition:mon&s=math-facts.times-tables:tue&m=golden-beads:wed&s=multi-digit-ops&l=stamp-game-addition:thu&l=number-cards-intro:mon&s=long-division.first-long-division:fri&m=stamp-game&l=snake-game:tue&s=skip-counting:wed&m=hundred-board:sat&l=fractions-intro&s=place-value:sun&w=2026-10-05` (13 items: the plan, then two journal pages, the second marked "(continued)"; today the plan and the first journal page each run onto a second sheet, so it prints on 5 sheets: audit S1-03+S7-08 and S9-03)
+
+### Printables on material pages: colour, then "Ink-friendly B&W"
+- [ ] `/materials/addition-charts` › Print control charts
+- [ ] `/materials/multiplication-charts` › Print control charts
+- [ ] `/materials/bead-chains` › Hundred chain › Show arrow labels
+- [ ] `/materials/bead-chains` › Thousand chain › Show arrow labels
+
+### Lessons (41): the album print design
+- [ ] `/lessons/checkerboard-multiplication`, `/lessons/decimal-board-operations`, `/lessons/racks-and-tubes` (the three longest) and `/lessons/golden-beads-addition`, including one print on the black-and-white laser
+- [ ] A skim of the rest from `/lessons`
+
+### Guides (6)
+- [ ] `/parents/faq`, `/parents/glossary`, `/parents/how-to-present`, `/parents/montessori-math-overview`, `/parents/using-this-site`
+- [ ] `/parents/scope-and-sequence` (the scope chart)
+
+**When you're done:** give Claude the list, one line per change. It becomes the printables PRD; no printable changes until you've approved it.

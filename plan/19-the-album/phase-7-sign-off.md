@@ -7,7 +7,7 @@ Delete the last legacy chrome rules, run the final checks and greps across the w
 
 ## Step 42 — Retire the last legacy chrome rules
 
-**Files:** `src/styles/global.css` (modified: deletions), `src/styles/layout.css` (modified: two selectors).
+**Files:** `src/styles/global.css` (modified: deletions), `src/styles/layout.css` (modified: two selectors), `src/components/ErrorBoundary.tsx` (modified: item 4, added when the step landed).
 
 After Steps 30 and 39–41, no markup uses `.card`, and after Steps 18–24, 30 and 39–41 none uses `.page-intro`. Step 12's `layout.css` styled `.page-intro` together with `.page-lede`, so pages that still used it looked right until their own step converted them. Both classes can now go, which leaves one name per thing: `.page-lede` for a page's lede, and no card surface at all.
 
@@ -54,6 +54,22 @@ After Steps 30 and 39–41, no markup uses `.card`, and after Steps 18–24, 30 
 
    change the selector to `.page-lede {` as well. The separate `.page-lede { margin: 0; }` rule stays.
 
+4. *Added when the step landed (2026-09-30).* `src/components/ErrorBoundary.tsx`, from the error-boundary commit on `main` (PR #8), still rendered `<h1>` and `<p className="page-intro">`. Render them as a `PageHeader` instead (`import { PageHeader } from './PageHeader'`), keeping the text:
+
+   ```tsx
+   <PageHeader
+     title="Something went wrong on this page"
+     lede={
+       <>
+         This page ran into a problem and couldn't be shown. The rest of the site still works: choose another page
+         from the menu above, go to the <Link to="/">home page</Link>, or try reloading this page.
+       </>
+     }
+   />
+   ```
+
+   The lede keeps its place; the Reload button moves down 3px at 1400 (5px at 390), because the header's `--space-5` margin replaces the paragraph's 1em, and the tab reads "Something went wrong on this page · Montessori Math". Swapping only the class would leave `.page-lede`'s `margin: 0` and put the Reload button right under the lede.
+
 `print.css` line 43 still lists `.card` in a print rule. Leave it: PRD 19 doesn't edit `print.css`, and a dead selector costs nothing. It can go with the owner's printables changes.
 
 **Check:**
@@ -97,6 +113,7 @@ This step runs the final checks across the whole diff, closes the docs and hands
   - under **Architecture**, list the new components (`Icon.tsx` with `IconGlyph`, `PageHeader.tsx` with `useDocumentTitle`, `Contents.tsx`, `MaterialThumb.tsx`, `plateCaption.ts` and `MaterialNameContext.ts`) and the new stylesheets (`fonts.css`, `layout.css`, `contents.css`, `forms.css`), and note that the fonts live in `public/fonts/` and are rebuilt with `scripts/fonts/build-fonts.py`;
   - under **Code conventions**, add: materials and printables take the Album's type (the materials-and-printables block in `global.css`: a 16px base and lining figures in every `.material-stage` and `.print-sheet`, MM Sans for stage text, `--font-numeral` for number cards); never re-point a material token or the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` that material pieces draw with (chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet`); the chrome guard (a chrome rule written as an element selector ends in `:where(:not(.material-stage *, .print-sheet *))`, and one on `.btn` in `:where(:not(.material-stage *))`); no emoji anywhere in `src/` (use `<Icon>` with a text label; a test enforces it); and "a new material needs a `MaterialThumb` drawing" (`MaterialThumb.test.ts` fails without one);
   - under **Workflow**, add that printables don't change until the owner has done the printables review (checklist in `plan/QA-CHECKLIST.md`) and approved the PRD drafted from their list.
+  - *2026-09-30: not applied when the step landed. A workflow agent's instructions can't authorize changes to `CLAUDE.md`, so these additions wait for the owner (the PRD's Progress).*
 - `README.md`: append to its **License** section: "Exception: the web fonts in `public/fonts/` (Newsreader, and MM Sans, a renamed subset of Adobe's Source Sans 3) are licensed under the SIL Open Font License 1.1; see `public/fonts/OFL.txt`. `scripts/fonts/build-fonts.py` regenerates them." Today that section says all rights are reserved, which the fonts' licence does not allow for them.
 - Proposal: the owner's printables list becomes the printables PRD (drawing on the audit's print-content candidates), and PRD 20 is drafted from the remaining "PRD 20 candidates" in [`audit-findings.md`](audit-findings.md); the owner decides the number and scope of each. Don't start either without the owner's go-ahead.
 
@@ -105,7 +122,7 @@ This step runs the final checks across the whole diff, closes the docs and hands
 ```markdown
 ## PRD 19 — printables review (for the owner)
 
-The Album redesign is complete, and every printable now carries the Album's type and tokens: Newsreader for sheet text and numerals (the command-card stamps are MM Sans), lining figures, and the Album's ink and hairlines. Their content and layout did not change. Look at each one in Chrome's print preview (Letter, default margins, background graphics off, scale 100%), in colour and then in black and white, print the ones you want to see on paper, and jot down what you'd change. Your list becomes the printables PRD. The audit's print findings ([PRD 20 candidates: printables and print content](audit-findings.md#prd-20-candidates-printables-and-print-content)) are there to draw on.
+The Album redesign is complete, and every printable now carries the Album's type and tokens: Newsreader for sheet text and numerals (the command-card stamps are MM Sans), lining figures, and the Album's ink and hairlines. Their content and layout did not change. Look at each one in Chrome's print preview (Letter, default margins, background graphics off, scale 100%), in colour and then in black and white, print the ones you want to see on paper, and jot down what you'd change. Your list becomes the printables PRD. The audit's print findings ([PRD 20 candidates: printables and print content](19-the-album/audit-findings.md#prd-20-candidates-printables-and-print-content)) are there to draw on.
 
 - Site: `npm run preview`, then the LAN URL (for example `http://192.168.1.208:4173`).
 
@@ -137,7 +154,7 @@ The Album redesign is complete, and every printable now carries the Album's type
 - [ ] `/kits/strip-boards`
 
 ### Planner: the parent plan and the child's "My Work" journal, colour and B&W
-- [ ] `/planner?l=golden-beads-addition:mon&s=math-facts.times-tables:tue&m=golden-beads:wed&s=multi-digit-ops&l=stamp-game-addition:thu&l=number-cards-intro:mon&s=long-division.first-long-division:fri&m=stamp-game&l=snake-game:tue&s=skip-counting:wed&m=hundred-board:sat&l=fractions-intro&s=place-value:sun&w=2026-10-05` (13 items: the plan, then two journal pages, the second marked "(continued)")
+- [ ] `/planner?l=golden-beads-addition:mon&s=math-facts.times-tables:tue&m=golden-beads:wed&s=multi-digit-ops&l=stamp-game-addition:thu&l=number-cards-intro:mon&s=long-division.first-long-division:fri&m=stamp-game&l=snake-game:tue&s=skip-counting:wed&m=hundred-board:sat&l=fractions-intro&s=place-value:sun&w=2026-10-05` (13 items: the plan, then two journal pages, the second marked "(continued)"; today the plan and the first journal page each run onto a second sheet, so it prints on 5 sheets: audit S1-03+S7-08 and S9-03)
 
 ### Printables on material pages: colour, then "Ink-friendly B&W"
 - [ ] `/materials/addition-charts` › Print control charts

@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { PageHeader } from './PageHeader'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -30,11 +31,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (!this.state.failed) return this.props.children
     return (
       <>
-        <h1>Something went wrong on this page</h1>
-        <p className="page-intro">
-          This page ran into a problem and couldn't be shown. The rest of the site still works: choose another page
-          from the menu above, go to the <Link to="/">home page</Link>, or try reloading this page.
-        </p>
+        <PageHeader
+          title="Something went wrong on this page"
+          lede={
+            <>
+              This page ran into a problem and couldn't be shown. The rest of the site still works: choose another page
+              from the menu above, go to the <Link to="/">home page</Link>, or try reloading this page.
+            </>
+          }
+        />
         <p>
           <button type="button" className="btn" onClick={() => window.location.reload()}>
             Reload this page

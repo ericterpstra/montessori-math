@@ -14,12 +14,7 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 > human can make — paper, ears, hands — are tracked in
 > [plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md).
 >
-> **Next: a visual redesign.** A September 2026 page-by-page visual audit found
-> the site functional but visually unremarkable. The owner chose "The Album"
-> direction, specified in [PRD 19](plan/19-the-album.md). Audit findings the
-> redesign doesn't cover are listed in
-> [plan/19-the-album/audit-findings.md](plan/19-the-album/audit-findings.md) as
-> candidates for a follow-up PRD.
+> **Visual redesign:** [PRD 19, The Album](plan/19-the-album.md), shipped; next is the owner's printables review ([plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md)).
 
 ## Product principles (agreed with owner)
 
