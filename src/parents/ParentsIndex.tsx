@@ -29,9 +29,9 @@ export default function ParentsIndex() {
         <span className="fleuron" aria-hidden="true" />
         <h2 id="note-plan">Plan the week</h2>
         <p>
-          Pick lessons, worksheets, and materials for the week, then print a parent plan and a "My Work" journal your
-          child checks off in pencil. The whole plan lives in the page's URL — bookmark it to keep it; nothing is stored
-          anywhere.
+          Pick lessons, worksheets, and materials for the week, then print a parent plan and a &ldquo;My Work&rdquo;
+          journal your child checks off in pencil. The whole plan lives in the page's URL — bookmark it to keep it;
+          nothing is stored anywhere.
         </p>
         <p className="note-action">
           <Link className="text-link" to="/planner">

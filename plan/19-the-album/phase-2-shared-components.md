@@ -1837,8 +1837,9 @@ export function ContentsRow({ to, title, thumb, strandOrder, num, titleMeta, sum
   color: var(--accent);
 }
 
+/* the ring sits on the row's edge, inside the 8px wash: rows have no side padding, so an inset ring would cross the title, summary and plate */
 .contents-row:focus-visible {
-  outline-offset: -3px;
+  outline-offset: 0;
 }
 
 /* ---------- Home: the title page ---------- */
@@ -2287,6 +2288,15 @@ export function ContentsRow({ to, title, thumb, strandOrder, num, titleMeta, sum
   .chapter-num,
   .row-num {
     color: inherit;
+  }
+
+  /* a hub's note prints whole, without its on-screen link onward */
+  .note {
+    break-inside: avoid;
+  }
+
+  .note-action {
+    display: none;
   }
 }
 ```

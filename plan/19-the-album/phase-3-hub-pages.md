@@ -270,9 +270,9 @@ export default function ParentsIndex() {
         <span className="fleuron" aria-hidden="true" />
         <h2 id="note-plan">Plan the week</h2>
         <p>
-          Pick lessons, worksheets, and materials for the week, then print a parent plan and a "My Work" journal your
-          child checks off in pencil. The whole plan lives in the page's URL — bookmark it to keep it; nothing is stored
-          anywhere.
+          Pick lessons, worksheets, and materials for the week, then print a parent plan and a &ldquo;My Work&rdquo;
+          journal your child checks off in pencil. The whole plan lives in the page's URL — bookmark it to keep it;
+          nothing is stored anywhere.
         </p>
         <p className="note-action">
           <Link className="text-link" to="/planner">
@@ -677,7 +677,7 @@ export default function NotFound() {
 }
 ```
 
-**Check:** `/this-page-does-not-exist` and `/materials/nope` both show "Page not found", six rows with ≥72px targets, the colophon at the viewport bottom at 1400×900, and a tab titled `Page not found · Montessori Math`.
+**Check:** `/this-page-does-not-exist` and `/materials/nope` both show "Page not found", six rows with ≥72px targets, and a tab titled `Page not found · Montessori Math`. At 1400×900 the colophon starts within the first screen and ends flush at the page foot, with no gap below it (sticky colophon, decision 6).
 
 ## Step 25 — Retire the card grid
 
