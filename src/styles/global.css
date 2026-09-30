@@ -341,27 +341,6 @@ a.card:hover {
   }
 }
 
-label.field {
-  display: block;
-  margin: 0 0 0.8rem;
-  font-weight: 600;
-  font-size: 0.92rem;
-}
-
-label.field input[type='number'],
-label.field input[type='text'],
-label.field select {
-  display: block;
-  width: 100%;
-  margin-top: 0.25rem;
-  padding: 0.45rem 0.6rem;
-  font: inherit;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: #fff;
-  color: var(--ink);
-}
-
 .page-intro {
   max-width: 46rem;
   color: var(--ink-soft);
