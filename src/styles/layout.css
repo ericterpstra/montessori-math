@@ -1,0 +1,354 @@
+/* ------------------------------------------------------------------
+   Page chrome: The Album (PRD 19).
+   One shared column, the running head (header + nav + silk ribbon),
+   the colophon (footer), the PageHeader pattern and text links.
+   Chrome tokens only. The golden material tokens appear here only as
+   the silk ribbon / underline and the bead fleuron (both decoration,
+   always paired with bold weight or text).
+   ------------------------------------------------------------------ */
+
+/* ---------- One column for header, main and footer ---------- */
+
+@media screen {
+  /* Print keeps the full Letter width: print.css resets main.site-main. */
+  .container {
+    width: var(--container);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* The colophon sits at the foot of short pages (404) instead of mid-screen. */
+  .site-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .site-shell > .site-main {
+    flex: 1 0 auto;
+  }
+}
+
+main.site-main {
+  padding: var(--space-5) 0 var(--space-8);
+}
+
+/* ---------- Running head ---------- */
+
+.site-header {
+  background: var(--paper);
+}
+
+.site-header-inner {
+  --head-pad: 1.25rem;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-7);
+  padding: var(--head-pad) 0 calc(0.45rem + 6px);
+  background: var(--oxford-under);
+}
+
+.site-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: var(--touch-target);
+  font-family: var(--font-text);
+  font-size: 1.625rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-title:hover {
+  color: var(--accent);
+}
+
+.site-title svg {
+  flex: none;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-4);
+  margin-left: auto;
+}
+
+/* Every link is a full 44 × 44 target, even "Kits"; the 0.35rem side
+   padding also keeps the phone's inset focus ring off the letters. */
+.site-nav a {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: 0 0.35rem;
+  font-family: var(--font-ui);
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* An invisible bold copy of the label reserves the bold width, so the row
+   never shifts when the current section's link turns bold. */
+.site-nav a::after {
+  content: attr(data-label);
+  content: attr(data-label) / '';
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 700;
+  pointer-events: none;
+  user-select: none;
+}
+
+.site-nav a:hover {
+  color: var(--accent);
+}
+
+.site-nav a.active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* The silk ribbon: a 12 × 22 golden bookmark hanging from the page's top
+   edge over the current section (bold weight carries the same meaning). */
+@media screen and (min-width: 1021px) {
+  .site-nav a.active::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--head-pad));
+    left: 50%;
+    width: 0;
+    height: 17px;
+    margin-left: -6px;
+    border-left: 6px solid var(--golden);
+    border-right: 6px solid var(--golden-dark);
+    border-bottom: 5px solid transparent;
+    pointer-events: none;
+  }
+}
+
+/* Tablet: title on one line, the nav on the next; a golden underline
+   replaces the ribbon. */
+@media screen and (max-width: 1020px) {
+  .site-header-inner {
+    --head-pad: var(--space-3);
+    row-gap: 0;
+  }
+
+  .site-nav {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .site-nav a.active {
+    box-shadow: inset 0 -3px 0 var(--golden);
+  }
+}
+
+/* Phone: one title line plus one sideways-scrolling nav row (about 110px
+   in all instead of 160px). The right edge fades while more links lie
+   beyond; the end padding lets the last link scroll clear of the fade. */
+@media screen and (max-width: 640px) {
+  main.site-main {
+    padding: var(--space-5) 0 var(--space-7);
+  }
+
+  .site-header-inner {
+    --head-pad: var(--space-2);
+    gap: 0;
+  }
+
+  .site-title {
+    font-size: 1.4rem;
+  }
+
+  .site-nav {
+    flex-wrap: nowrap;
+    gap: var(--space-4);
+    width: calc(100% + 32px);
+    margin: 0 -16px;
+    padding: 0 2.5rem 0 16px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* keyboard focus scrolls a link out of the fade, not just into the box */
+    scroll-padding-inline: 16px 2.5rem;
+    scrollbar-width: none;
+    /* mask alpha only: currentColor is opaque ink, so this is not a colour */
+    -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, currentColor calc(100% - 2.5rem), transparent);
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    flex: none;
+  }
+
+  /* inside the scroller an outside ring would be clipped */
+  .site-nav a:focus-visible {
+    outline-offset: -3px;
+  }
+}
+
+/* ---------- Colophon ---------- */
+
+.site-footer {
+  padding: 0 0 var(--space-7);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: var(--fs-ui);
+}
+
+.site-footer-inner {
+  padding-top: var(--space-6);
+  background: var(--oxford-over);
+  text-align: center;
+}
+
+.site-footer p {
+  max-width: 38rem;
+  margin: 0 auto var(--space-3);
+  font-family: var(--font-text);
+  font-size: var(--fs-read-sm);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.colophon-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.colophon-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font: 500 var(--fs-ui) / 1.2 var(--font-ui);
+  color: var(--ink);
+}
+
+/* Three golden beads: the section-break ornament. */
+.fleuron {
+  display: block;
+  width: 44px;
+  height: 12px;
+  margin: 0 auto var(--space-5);
+  background: var(--fleuron);
+}
+
+/* ---------- PageHeader: title, meta line, lede, actions top right ---------- */
+
+.page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--space-7);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+
+.page-header.has-actions {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.page-header-main > :last-child {
+  margin-bottom: 0;
+}
+
+.page-header h1 {
+  margin: 0 0 var(--space-2);
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-top: 0.45rem;
+}
+
+.page-meta {
+  margin: 0 0 var(--space-3);
+}
+
+.page-lede,
+.page-intro {
+  max-width: var(--measure);
+  font-family: var(--font-text);
+  font-size: var(--fs-lede);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.page-lede {
+  margin: 0;
+}
+
+.page-kicker {
+  margin: 0 0 var(--space-4);
+  font: 700 var(--fs-caps) / 1.3 var(--font-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .page-header.has-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-header-actions {
+    justify-content: flex-start;
+    padding-top: var(--space-4);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .page-lede,
+  .page-intro {
+    font-size: 1.1875rem;
+  }
+}
+
+/* ---------- Quiet arrow links (secondary actions) ---------- */
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  font: 600 var(--fs-ui) / 1.2 var(--font-ui);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--link-rule);
+}
+
+.text-link:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.text-link .icon {
+  width: 18px;
+  height: 18px;
+}

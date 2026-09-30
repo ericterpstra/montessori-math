@@ -4,6 +4,16 @@
   margin-top: 1rem;
 }
 
+/* Phones: the gutter grew from 12px to 16px (PRD 19, Step 12). Until Step 28
+   mounts the plate, the shell bleeds 4px back into it, so every stage keeps
+   today's width (viewport − 24px). Step 28 replaces this rule. */
+@media screen and (max-width: 640px) {
+  .material-shell {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+}
+
 .material-help {
   background: var(--card);
   border: 1px solid var(--line);
