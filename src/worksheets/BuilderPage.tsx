@@ -6,6 +6,7 @@ import { commitNumber, draftNumber, resolveParams } from './params'
 import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
+import { Icon } from '../components/Icon'
 import { SheetPreview } from '../components/SheetPreview'
 import NotFound from '../pages/NotFound'
 
@@ -199,8 +200,9 @@ export default function BuilderPage() {
           </label>
 
           <div className="builder-actions">
-            <button type="button" className="btn" onClick={() => update({ seed: String(randomSeed()) })}>
-              🎲 New problems
+            <button type="button" className="btn has-icon" onClick={() => update({ seed: String(randomSeed()) })}>
+              <Icon name="refresh" />
+              <span className="btn-label">New problems</span>
             </button>
             <PrintButton />
           </div>

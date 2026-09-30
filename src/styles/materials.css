@@ -96,7 +96,8 @@
   background: var(--stamp-color);
   color: #fff;
   font-weight: 700;
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
+  font-variant-numeric: lining-nums tabular-nums;
   border: 1px solid rgba(0, 0, 0, 0.35);
   border-radius: 5px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -127,7 +128,8 @@ button.stamp-tile:hover {
   border: 1px solid #b9b2a4;
   border-radius: 4px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), var(--shadow-sm);
-  font-family: var(--font-heading);
+  font-family: var(--font-numeral);
+  font-variant-numeric: lining-nums tabular-nums;
   font-weight: 700;
   color: var(--card-color);
   line-height: 1;

@@ -55,7 +55,7 @@ export default function Home() {
       <ul className="card-grid">
         <li>
           <Link className="card" to="/lessons">
-            <h3>📖 Lessons — you read, then show</h3>
+            <h3>Lessons — you read, then show</h3>
             <p style={{ marginBottom: 0 }}>
               Album-style presentations: what to gather, exactly what to do and say, and how the child checks their own
               work. Print one, read it with coffee, present it in ten quiet minutes.
@@ -64,7 +64,7 @@ export default function Home() {
         </li>
         <li>
           <Link className="card" to="/materials">
-            <h3>🟡 Materials — the child's hands</h3>
+            <h3>Materials — the child's hands</h3>
             <p style={{ marginBottom: 0 }}>
               Golden beads, the stamp game, bead frames, the checkerboard and more — virtual stand-ins that behave like
               the real materials, exchanges and all. Real beads are better; these fill the gaps.
@@ -73,7 +73,7 @@ export default function Home() {
         </li>
         <li>
           <Link className="card" to="/worksheets">
-            <h3>✏️ Worksheets — practice on paper</h3>
+            <h3>Worksheets — practice on paper</h3>
             <p style={{ marginBottom: 0 }}>
               Generate exactly the sheet your child needs — operation, ranges, regrouping or not, how many problems —
               with an answer key, in Montessori color or ink-friendly B&amp;W.

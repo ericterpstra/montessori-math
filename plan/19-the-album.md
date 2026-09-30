@@ -1,6 +1,6 @@
 # PRD 19 — The Album: visual redesign
 
-**Status:** In progress — Phase 1 under way on `album` (Steps 2–4 done)
+**Status:** In progress — Phase 1 done on `album`
 **Effort:** L — about 8–9 working days. The prototype's estimate for the re-skin, the 21 plate thumbnails and print QA is 7–8 days; testing on a real iPad, phone and B&W laser printer adds up to one more.
 **Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session are merged to `main` (PR #7: `84ff957`, `e24aa01`, `477ac70`, `dbe71b6`), and so is an error boundary around the routed page (PR #8: `d769872`), which Step 12 keeps. Implementation starts from that `main`, `bbbdb44`, on the `album` branch, and Step 39 is written against the post-fix `BuilderPage.tsx`.
 
@@ -380,6 +380,7 @@ Every push to `main` deploys (Workers Builds), so PRD 19 is built on the `album`
 
 - **2026-09-29.** Phase 0 (Step 1, the print regression gate) was built and then removed at the owner's request (owner decision 6): its commit, the `album-baseline` tag, the baseline checkout and the stored measurements are deleted. The token shield (Step 5), which the gate existed to prove, was removed from the plan at the same time; it had not been built. Implementation starts with Phase 1 on the `album` branch, from `bbbdb44`.
 - **2026-09-29.** Steps 2–4 landed as "Self-host Newsreader and MM Sans": the fonts total 116.5 KB (48.1 + 38.6 + 29.8), the fallback overrides match Step 3 exactly, and `dist/sw.js` precaches 54 assets. No code deviations. One check note: `vite preview` sends `Vary: Origin`, so its precached fonts don't match the browser's font requests and fail offline; on a plain static server all three load offline from the cache. Confirm Cloudflare sends no `Vary: Origin` on `/fonts/` (manual QA A17).
+- **2026-09-29.** Steps 6–11 landed as "Paper, ink and rubric: the album's type, tokens, icons and meta line", completing Phase 1: the Album tokens and Newsreader preload, base type with the chrome guard and the materials-and-printables block, the 14-glyph `Icon` set, the chrome and rubric buttons, every emoji replaced (the guard test scans TS, TSX and CSS), and the meta line. 882 tests (4 new). No code deviations. Check notes: the glossary has no h2 yet, so Step 7's phone h1/h2 check ran on `/parents/how-to-present` (36px over 28px); headless Linux Chrome draws small tracked MM Sans capitals with a gap after T (the unhinted subset, open question 2), while the owner's macOS Chrome draws them cleanly.
 
 ## Implementation
 

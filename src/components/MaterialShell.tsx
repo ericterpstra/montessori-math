@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { setSoundEnabled, soundEnabled } from '../lib/sound'
+import { Icon } from './Icon'
 
 export interface MaterialShellProps {
   /** Buttons/selects for modes, reset, etc. Hidden when printing. */
@@ -19,7 +20,7 @@ export interface MaterialShellProps {
  *
  * Focus mode fills the viewport with the material and hides every written
  * instruction (help box and on-stage notes) — a calm, wordless presentation
- * surface for children who don't read yet. Esc or ✕ exits.
+ * surface for children who don't read yet. Esc or the Exit focus button exits.
  */
 export function MaterialShell({ controls, help, mat = 'felt', sound = true, children }: MaterialShellProps) {
   const [soundOn, setSoundOn] = useState(() => soundEnabled())
@@ -41,20 +42,22 @@ export function MaterialShell({ controls, help, mat = 'felt', sound = true, chil
   const soundToggle = sound !== false && (
     <button
       type="button"
-      className="btn"
+      className="btn has-icon"
       onClick={() => {
         const next = !soundOn
         setSoundEnabled(next)
         setSoundOn(next)
       }}
     >
-      {soundOn ? '🔊 Sound on' : '🔇 Sound off'}
+      <Icon name={soundOn ? 'sound' : 'sound-off'} />
+      <span className="btn-label">{soundOn ? 'Sound on' : 'Sound off'}</span>
     </button>
   )
 
   const focusToggle = (
-    <button type="button" className="btn" onClick={() => setFocus((f) => !f)}>
-      {focus ? '✕ Exit focus' : '⛶ Focus'}
+    <button type="button" className="btn has-icon" onClick={() => setFocus((f) => !f)}>
+      <Icon name={focus ? 'close' : 'focus'} />
+      <span className="btn-label">{focus ? 'Exit focus' : 'Focus'}</span>
     </button>
   )
 

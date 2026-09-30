@@ -1,6 +1,16 @@
 /* ------------------------------------------------------------------
    Design tokens — Montessori Math
-   Color conventions follow authentic Montessori materials.
+
+   MATERIAL tokens (--pv-*, --inset-frame, --fraction-shade, --golden*,
+   --bead-*, --felt, --wood, --wood-dark) follow the authentic Montessori
+   materials. Never re-point them for a look-and-feel change.
+
+   CHROME tokens (paper, ink, rubric, rules, type, space) dress the site
+   around the materials: PRD 19 "The Album". Material stages and printable
+   sheets read the same names, so they take the Album's faces, paper and
+   ink too (global.css, "Materials and printables"). The legacy shape
+   tokens (--radius, --radius-sm, --shadow-sm, --shadow-md) keep their
+   values: material pieces draw their corners and depth with them.
    ------------------------------------------------------------------ */
 :root {
   /* Place-value hierarchy (repeats per family: 1/1k/1M green, 10/10k blue, 100/100k red) */
@@ -38,18 +48,12 @@
   --bead-9: #24408e;
   --bead-10: #d4a017;
 
-  /* Surfaces & ink */
-  --paper: #faf7f0;
-  --paper-warm: #f3ecdd;
-  --card: #ffffff;
-  --ink: #33302a;
-  --ink-soft: #6f6759;
+  /* Material surfaces (the chrome no longer uses wood) */
   --wood: #b58863;
   --wood-dark: #8a623f;
   --felt: #3f6b4f; /* green work mat */
-  --line: #e4ddcc;
-  --accent: #b0523c; /* terracotta */
-  --accent-dark: #8d3f2e;
+
+  /* State */
   --focus: #1e6bb8;
   --ok: #2e8b57;
   --error: #c0392b;
@@ -61,17 +65,80 @@
   --bead-wire: #9a9a9a; /* the wire a bar is threaded on */
   --bead-outline: rgba(0, 0, 0, 0.55); /* keeps the white 7-bar visible in print */
 
-  /* Shape & depth */
+  /* ---------- Chrome: paper and ink ----------
+     Contrast is WCAG 2.x, measured against the surface named. */
+  --paper: #f6f1e7; /* the album page; ink on paper 14.04:1 */
+  --paper-warm: #ede5d5; /* quiet fills, hover wash, tool panels; ink 12.62:1 */
+  --desk: #e2d9c7; /* the desk a printable sheet lies on (screen only); ink 11.27:1 */
+  --card: #fffdf8; /* plate and sheet stock, buttons, fields; ink 15.54:1 */
+  --ink: #26221d; /* letterpress black: text, rules, button borders */
+  --ink-soft: #5e5548; /* meta text only: 6.50:1 paper, 5.85:1 paper-warm, 7.20:1 card */
+  --line: #d6ccb8; /* hairline between entries: decorative, never a control's only edge */
+  --line-strong: #8c816f; /* field borders, spoken-line rule: 3.77:1 card, 3.40:1 paper, 3.06:1 paper-warm */
+  --accent: #9a3b27; /* rubric: numerals, quote marks, the one primary action; 6.16:1 paper, 6.82:1 card */
+  --accent-dark: #7a2d1d; /* rubric hover and pressed; 8.40:1 paper */
+  --on-accent: #fffdf8; /* text on rubric: 6.82:1 on accent, 9.30:1 on accent-dark */
+  --link-rule: #a8705f; /* underline under ink link text, the only cue: 3.62:1 paper, 3.26:1 paper-warm, 4.01:1 card */
+  /* The Oxford rule: a 2px rule over a 1px rule, 2px apart. Used as a background,
+     so print rules replace it with a 3px double border (backgrounds don't print). */
+  --oxford-under: linear-gradient(var(--ink), var(--ink)) left bottom / 100% 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) left calc(100% - 4px) / 100% 2px no-repeat;
+  --oxford-over: linear-gradient(var(--ink), var(--ink)) left top / 100% 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) left 4px / 100% 2px no-repeat;
+  /* The three-bead golden fleuron (section-break ornament), 44 x 12 px. */
+  --fleuron: radial-gradient(circle 6px at 6px 6px, var(--golden-light) 0, var(--golden) 3px, var(--golden-dark) 5.4px, transparent 6px)
+    0 0 / 16px 12px repeat-x;
+
+  /* ---------- Chrome: type ---------- */
+  --font-text: 'Newsreader', 'Newsreader Fallback', Georgia, 'Times New Roman', serif;
+  --font-ui: 'MM Sans', 'MM Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-text);
+  --font-body: var(--font-text);
+  --font-numeral: var(--font-text); /* figures on number cards and plate drawings: Newsreader's lining figures (audit S7-05) */
+  --font-mono: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  --fs-caps: 0.875rem; /* 14  sans capitals: margin heads, labels, meta, kickers */
+  --fs-ui: 1rem; /* 16  nav, buttons, fields, help, tables */
+  --fs-read-sm: 1.0625rem; /* 17  summaries, notes, captions */
+  --fs-body: 1.125rem; /* 18  reading text */
+  --fs-lede: 1.3125rem; /* 21  ledes, entry titles, h3 */
+  --fs-h2: 1.75rem; /* 28  chapter and section heads */
+  --fs-h1: clamp(2.25rem, 1.6rem + 1.9vw, 3.25rem); /* 36-52 */
+  --fs-display: clamp(2.75rem, 1.4rem + 4.6vw, 4.75rem); /* 44-76, home only */
+  --measure: 40rem; /* about 70 characters at 18px */
+
+  /* ---------- Chrome: space, shape, depth ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.25rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --radius-chrome: 2px; /* paper corners */
+  --radius-control: 3px; /* buttons */
+  --shadow-sheet: 0 1px 1px rgba(38, 34, 29, 0.12), 0 18px 36px -14px rgba(38, 34, 29, 0.45);
+  --container: min(1068px, calc(100% - 2rem)); /* header, main and footer share it (screen only) */
+  --margin-col: 11rem; /* album and guide margin heads */
+  --gutter: 2.75rem;
+
+  /* Legacy shape tokens: unchanged. Material pieces (tiles, cards, trays,
+     tickets) draw their corners, depth and hover lift with them, so they
+     are not re-pointed. Chrome rules use the three tokens above. */
   --radius: 10px;
   --radius-sm: 6px;
   --shadow-sm: 0 1px 3px rgba(51, 48, 42, 0.12);
   --shadow-md: 0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12);
 
-  /* Type */
-  --font-heading: Georgia, 'Times New Roman', serif;
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  --font-mono: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-
   /* Interaction */
   --touch-target: 44px;
+}
+
+/* Phones: one 16px gutter, and album/guide margin heads stack above their text. */
+@media screen and (max-width: 640px) {
+  :root {
+    --container: calc(100% - 32px);
+    --margin-col: 0px;
+    --gutter: 0px;
+  }
 }

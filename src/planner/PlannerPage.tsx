@@ -6,6 +6,7 @@ import { GENERATORS, generatorBySlug } from '../worksheets/registry'
 import { MATERIALS, materialBySlug } from '../materials/registry'
 import { STRANDS } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
+import { Icon } from '../components/Icon'
 import { SheetPreview } from '../components/SheetPreview'
 import { BeadBar } from '../components/beads'
 import { DAYS, DAY_LABELS, chunkJournal, parsePlan, serializePlan } from './state'
@@ -315,8 +316,9 @@ export default function PlannerPage() {
             </ul>
           )}
           <div className="planner-actions">
-            <button type="button" className="btn" onClick={copyLink}>
-              {copied ? 'Copied' : '🔗 Copy link'}
+            <button type="button" className="btn has-icon" onClick={copyLink}>
+              <Icon name="link" />
+              <span className="btn-label">{copied ? 'Copied' : 'Copy link'}</span>
             </button>
             <PrintButton />
             <button
