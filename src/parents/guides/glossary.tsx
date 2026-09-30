@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GuideHeader } from '../GuideHeader'
 import type { GuideMeta } from '../types'
 
 export const meta: GuideMeta = {
@@ -9,14 +10,13 @@ export const meta: GuideMeta = {
 
 export default function Glossary() {
   return (
-    <article className="guide">
-      <h1>Glossary</h1>
-      <p className="guide-lede">
+    <article className="guide guide-glossary">
+      <GuideHeader title="Glossary">
         Montessori has its own vocabulary, and the lessons on this site use it without apology — because the words
         are precise, and because you'll meet them everywhere else Montessori is discussed. Here is every term we
         use, defined the way we actually use it. Skim it once now, then come back whenever a lesson says something
         like "this is the control of error" and you want the fuller story.
-      </p>
+      </GuideHeader>
 
       <dl>
         <dt>Absorbent mind</dt>

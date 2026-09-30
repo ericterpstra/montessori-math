@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GuideHeader } from '../GuideHeader'
 import type { GuideMeta } from '../types'
 
 export const meta: GuideMeta = {
@@ -11,12 +12,11 @@ export const meta: GuideMeta = {
 export default function MontessoriMathOverview() {
   return (
     <article className="guide">
-      <h1>Why Montessori Math Works</h1>
-      <p className="guide-lede">
+      <GuideHeader title="Why Montessori Math Works">
         Montessori math rests on one big idea: a child should hold a quantity in her hands before she is ever asked to
         push its symbol around on paper. Everything else — the beads, the cards, the boards, the careful order of
         lessons — exists to walk that road from concrete to abstract, one honest step at a time.
-      </p>
+      </GuideHeader>
 
       <h2>Your child already has a mathematical mind</h2>
       <p>

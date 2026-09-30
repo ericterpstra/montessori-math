@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GuideHeader } from '../GuideHeader'
 import type { GuideMeta } from '../types'
 
 export const meta: GuideMeta = {
@@ -10,12 +11,11 @@ export const meta: GuideMeta = {
 export default function UsingThisSite() {
   return (
     <article className="guide">
-      <h1>Using This Site</h1>
-      <p className="guide-lede">
+      <GuideHeader title="Using This Site">
         Everything here comes in three flavors: lessons you read, materials your child uses, and worksheets you
         print. This page explains how they fit together, when to reach for the screen versus the real thing, and how
         to get good prints without burning through an ink cartridge.
-      </p>
+      </GuideHeader>
 
       <h2>The three kinds of pages</h2>
       <dl>

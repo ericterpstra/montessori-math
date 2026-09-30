@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GuideHeader } from '../GuideHeader'
 import type { GuideMeta } from '../types'
 
 export const meta: GuideMeta = {
@@ -10,12 +11,11 @@ export const meta: GuideMeta = {
 export default function HowToPresent() {
   return (
     <article className="guide">
-      <h1>How to Present a Lesson</h1>
-      <p className="guide-lede">
+      <GuideHeader title="How to Present a Lesson">
         In Montessori, a &ldquo;lesson&rdquo; is not a lecture. It's a short, quiet demonstration — you show your
         child how to do something with the material, using your hands more than your voice, and then you step back
         and let them do it. That's the whole trick, and anyone can learn it at the kitchen table.
-      </p>
+      </GuideHeader>
 
       <h2>What a presentation is</h2>
       <p>
@@ -100,7 +100,7 @@ export default function HowToPresent() {
         three is a small quiet triumph, not a quiz. If you're not sure they'll get it, stay in period two, or simply
         end the lesson happily and pick it up tomorrow. There is no prize for reaching period three today.
       </p>
-      <blockquote>
+      <blockquote className="guide-scene">
         You place the ten-bar on the mat and let your hands rest. A breath. &ldquo;This is a <em>ten</em>.&rdquo;
         Another breath. You slide it toward her. She picks it up, counts the beads with one finger, and looks up at
         you. You smile and say nothing at all.

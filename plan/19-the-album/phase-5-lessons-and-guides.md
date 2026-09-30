@@ -1672,7 +1672,7 @@ Replace the whole file with:
   - `/parents/glossary`: each term hangs in the margin column beside its definition.
   - `/parents/faq`: questions head the text column at 21px.
 - **Scope at 1400:** `/parents/scope-and-sequence` spans the full 1068px column (S8-01). Strand rows are dark on light with a rubric number and the strand's bead bar (S8-03). Compare `plan/19-the-album/screens/scope-after.webp`.
-- **At 820:** the guides are single-column with each head above its text, and there is no stray hairline under a head.
+- **At 760 and below** (the stacking breakpoint, decision 28): the guides are single-column with each head above its text, and there is no stray hairline under a head. At 820 (and down to 761) the margin heads still hang beside the text, as on the lessons.
 - **At 390:**
   - The scope chart is a list of entries: numeral | lesson, `AGES 4–6  GRADES PK–K`, `MATERIALS: …`, `PRINTABLE: …`.
   - `document.documentElement.scrollWidth === innerWidth` (S8-02).
@@ -1785,7 +1785,7 @@ Append:
 
 **Check:**
 - In print preview (Letter, default margins, background graphics off), every guide except the FAQ prints with its h2s in the 8rem margin column beside a hairline, and the glossary's terms hang in that column. (That is the Step 37 block being screen-only: before that fix, paper got the stacked phone layout.)
-- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). Today's `main` prints them on 4, 3, 4, 3, 3 and 3. **Pass** if each count is at most today's plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit.
+- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). Today's `main` prints them on 4, 3, 4, 3, 3 and 3. **Measured (2026-09-29, Step 38 as landed): 3, 3, 4, 3, 3 and 3** (headless Chromium on Linux, Letter, 0.5in margins, background graphics off). **Pass** if each count is at most today's plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit.
 - With the DevTools device toolbar at 720px wide (Step 34, item 2), the console snippet from Step 34 prints "No stranded heads, no split steps." on each guide (S9-25/S8-12).
 - On the scope chart, the column heads repeat on every page, no lesson row splits across a page, and strand heads never end a page.
 - The standard check (convention 12) passes.

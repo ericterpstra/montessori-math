@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { GuideHeader } from '../GuideHeader'
 import type { GuideMeta } from '../types'
 
 export const meta: GuideMeta = {
@@ -9,13 +10,12 @@ export const meta: GuideMeta = {
 
 export default function Faq() {
   return (
-    <article className="guide">
-      <h1>Frequently Asked Questions</h1>
-      <p className="guide-lede">
+    <article className="guide guide-faq">
+      <GuideHeader title="Frequently Asked Questions">
         Real questions from real kitchen tables, answered plainly. If yours isn't here, the{' '}
         <Link to="/parents/montessori-math-overview">overview</Link> and{' '}
         <Link to="/parents/how-to-present">how to present</Link> guides cover the bigger picture.
-      </p>
+      </GuideHeader>
 
       <h2>Is my child ready to start?</h2>
       <p>
