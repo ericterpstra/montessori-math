@@ -155,6 +155,16 @@ a:where(:not(.material-stage *, .print-sheet *)):hover {
   font-family: var(--font-ui);
 }
 
+/* The self-hosted faces are an unhinted subset (Step 2). Chrome's print path
+   rounds their glyph advances, which on Linux squeezes some word spaces shut
+   ("pushthem") and spaces letters unevenly at small sizes. Geometric
+   precision keeps the designed spacing on paper; the screen is unaffected. */
+@media print {
+  html {
+    text-rendering: geometricPrecision;
+  }
+}
+
 /* Shared helpers */
 .visually-hidden {
   position: absolute !important;

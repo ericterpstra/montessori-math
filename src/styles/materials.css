@@ -481,13 +481,15 @@ body.has-focus-mode {
 
   /* A label never outgrows the task group, and its select shrinks only
      when label and select together are wider than the group, so the chosen
-     value shows in full wherever it fits. */
+     value shows in full wherever it fits, but never below a touch target
+     (macOS draws a narrower select arrow, which left the division board's
+     divisor at 41px). */
   .material-toolbar label {
     max-width: 100%;
   }
 
   .material-toolbar label > select {
-    min-width: 0;
+    min-width: var(--touch-target);
     flex: 0 1 auto;
     padding-right: 0.3rem;
   }
