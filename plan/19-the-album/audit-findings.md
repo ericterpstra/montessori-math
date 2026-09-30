@@ -186,7 +186,7 @@ The step numbers refer to [PRD 19](../19-the-album.md). Each entry says how the 
 - **Pages:** `/materials/golden-beads`, `/materials/stamp-game`, `/materials/bead-frame`, `/materials/number-cards`, `/materials/cards-and-counters` and 9 more (at 1400 and 820px)
 - **Cause:** MaterialPage.tsx:84 and :90 have inline style maxWidth:'46rem' on the 'For parents' and 'Make the real thing' cards. :93 sets inline marginBottom:0 on each kit <p>, and :94 renders '({k.pieces})' where pieces strings already contain parentheses (e.g. large-number-cards.tsx:13 '36 number cards (1–9,000)'). The lessons/worksheets section (:100-128) has no cap.
 - **Fix hint:** Use one content measure for all below-mat sections (or a 2-column parent/kits layout on desktop), and render kits as a spaced list or cards.
-- **Resolved by PRD 19, Step 30:** Notes and link lists are two ruled columns across the plate.
+- **Resolved by PRD 19, Step 30:** Notes and link lists are two ruled columns across the plate. On the 14 materials without a kit, "For parents" is the only note: its ink rule spans the plate's full width and its text keeps the 40rem reading measure (Phase 4 review fixes; before them it sat alone in the left column, narrower than the old 46rem card).
 
 **S4-13+S8-10+S2-23** · low · consistency · recurring — Emoji icons are glued to button labels and mix color and monochrome styles
 - **Pages:** `/materials/multiplication-charts`, `/materials/multiplication-bead-board`, `/materials/division-board`, `/materials/racks-and-tubes`, `/materials/checkerboard` and 16 more (at 1400, 820 and 390px)

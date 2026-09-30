@@ -81,7 +81,7 @@ export default function MaterialPage() {
         meta={
           <>
             <AgeMeta ages={material.ages} grades={`grades ${material.grades}`} />
-            <span className="badge">{strand.name}</span>
+            <span className="badge badge-strand">{strand.name}</span>
           </>
         }
         lede={material.summary}

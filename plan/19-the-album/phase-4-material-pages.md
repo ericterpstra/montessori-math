@@ -256,7 +256,7 @@ Step 28 replaces this block together with the lines around it and keeps the rule
 
 **Files:** `src/styles/materials.css` (modified). Four edits:
 1. Lines 1–66, together with the `.material-plate` rule that Step 27 and the phone `.material-shell` rule that Step 12 inserted among them, are replaced; the block re-includes lines 29–58 unchanged.
-2. One rule is inserted after line 88.
+2. No rule is inserted any more (Phase 4 review fixes; see Edit 2).
 3. Lines 193–228 are replaced.
 4. A phone block is appended.
 
@@ -266,7 +266,7 @@ This is the prototype's §11, written against the real classes:
 - a ruled toolbar (ink rule above, hairline below) with small-capital labels vertically centred on their fields;
 - ghost Sound/Focus buttons;
 - a +/− disclosure line;
-- the stage mounted with an inset ink hairline and a 6px paper mat;
+- the stage mounted on its frame with an ink hairline and a 6px paper mat, outside the stage's scroll area;
 - a focus mode that stretches the plate.
 
 **Edit 1.** The current lines 1–66 (line numbers at `bbbdb44`; Step 27's `.material-plate` rule and Step 12's phone `.material-shell` bleed, each with its comment, now sit after `.material-shell`) begin:
@@ -542,29 +542,33 @@ Replace all of them, Step 27's and Step 12's rules included, with:
   margin-bottom: 0;
 }
 
-/* The plate: the stage is mounted with a 1px ink hairline and a paper mat,
-   both drawn as inset rings inside the stage's own padding, so every
-   material keeps exactly today's width. */
+/* The plate: the frame mounts the stage with a 1px ink hairline and a 6px
+   paper mat (the frame's own padding). The mount is outside the stage's
+   scroll area, so a mat wider than its stage never scrolls over it. The
+   stage's padding and min-height give the same 6px back, so every
+   material's content box is exactly today's (1rem padding, 320px tall at
+   least). The stage has no border, so whatever a material places in stage
+   coordinates (the exchange ceremony's ghosts) lands where it did. */
 .material-plate {
   margin: 0;
 }
 
-/* Positioning context for the scroll veil (below). Never give it a
-   z-index, opacity, transform, filter or mask: it must not become a
+/* Also the positioning context for the scroll veil (below). Never give it
+   a z-index, opacity, transform, filter or mask: it must not become a
    stacking context, and neither may .material-stage. */
 .material-stage-frame {
   position: relative;
+  padding: 6px;
+  background: var(--paper);
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 .material-stage {
-  border-radius: var(--radius-control);
-  padding: 1rem;
-  min-height: 320px;
+  padding: calc(1rem - 6px);
+  min-height: calc(320px - 12px);
   overflow-x: auto;
-  box-shadow:
-    inset 0 0 0 1px var(--ink),
-    inset 0 0 0 6px var(--paper),
-    inset 0 2px 10px 6px rgba(0, 0, 0, 0.18);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 .material-plate > .plate-caption {
@@ -576,22 +580,11 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 - Lines 29–58 (`.material-controls` and its label, checkbox and select rules) appear unchanged inside this block. LongChain's print row still uses them.
 - The toolbar carries both classes, so each `.material-toolbar` rule has the same specificity as its `.material-controls` twin and wins on order.
 - `font-family: var(--font-ui)` on the toolbar follows convention 5 (no blanket UI-font rule). The labels and fields set their own face. The toolbar also re-scopes `--font-body` to `--font-ui`, as Step 7 does inside a stage, because the chart materials' and the multiplication bead board's toolbar buttons set their own `font-family: var(--font-body)` and would otherwise draw in Newsreader beside the MM Sans `.btn`s.
-- `.material-plate` and `.material-stage-frame` set no inherited text property (convention 4).
+- `.material-plate` and `.material-stage-frame` set no inherited text property (convention 4). The frame's padding, background, corner and box-shadow create no stacking context (decision 20).
 - **The toolbar's material buttons.** Seven materials pass buttons with their own classes as `controls`: `.addition-charts-btn`, `.multiplication-charts-btn`, `.bead-chains-btn`, `.bead-frame-btn`, `.multiplication-bead-board-btn`, `.number-cards-btn` and `.subtraction-strip-board-button`. (Cards & counters' toolbar button is already a `.btn`.) Their rules are in the materials' own stylesheets, which this PRD doesn't edit. In the toolbar they read the Album's `--card` and `--line` and the legacy `--radius-sm` (6px), and would be the only chrome controls whose edge is the decorative `--line`. The rule above gives them the ink edge and 3px corner, and so does the chart materials' Close button in the `.no-print` bar inside the chart sheet preview. It leaves their fill and hover to the material, and skips a pressed number-cards toggle (its `--focus` border and outline are the pressed state) and the strip board's primary variant (drawn inside the stage today, but excluded in case it ever moves to the toolbar). Specificity is (0,3,0), so a material's own `:hover:not(:disabled)` border (bead frame) still wins on order. The same classes inside a stage are untouched.
-- **The mount is chrome.** The stage's corner radius and box-shadow change here on purpose. The mount is drawn inside the stage's own padding, so no material changes size; the box-shadow check below tests it.
+- **The mount is chrome, and it sits outside the scroll area.** The frame carries the ink hairline (an inset box-shadow) and the 6px paper mat (its padding). The stage loses its corner radius and gives the 6px back from its padding and min-height, so every material's content box is exactly today's; only the stage's own box is 12px smaller. A mat wider than its stage is clipped at the stage's edge, inside the mount, so it never runs over either ring. The stage gets no border of its own: the exchange ceremony (`src/lib/ceremony.ts`) places its ghosts from the stage's border box, so a 6px border would put every ghost 6px off its piece (3px on a phone). *Phase 4 review fixes:* Phase 4 first drew both rings as inset box-shadows on the stage, inside its scroll area, and every mat that scrolls ran over them (10 materials at 390, 4 at 820). The checks below test the new mount.
 
-**Edit 2.** After line 88 (the end of `.mat-paper { … }`), insert:
-
-```css
-/* A paper mat keeps its legacy border and gets the mount without the felt's depth. */
-.material-stage.mat-paper {
-  box-shadow:
-    inset 0 0 0 1px var(--ink),
-    inset 0 0 0 6px var(--paper);
-}
-```
-
-No material uses `mat="paper"` today. The rule keeps the mount (without the felt's depth) if one ever does, because the legacy `.mat-paper { box-shadow: none }` would otherwise remove it.
+**Edit 2.** None. Phase 4 first inserted a `.material-stage.mat-paper` rule after line 88 to redraw the mount's rings on a paper mat; the review fixes deleted it when the rings moved to the frame. No material uses `mat="paper"` today. If one ever does, the frame mounts it like any other stage, and the legacy `.mat-paper { background: #fff; border: 1px solid var(--line); box-shadow: none }` keeps its white ground and hairline inside the mount, without the felt's depth.
 
 **Edit 3.** The current lines 193–228 are:
 
@@ -672,9 +665,19 @@ Replace them with:
   flex-direction: column;
 }
 
+/* no mount in focus mode: the felt fills the frame */
+.material-shell.focus-mode .material-stage-frame {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .material-shell.focus-mode .material-stage {
   flex: 1 1 auto;
   min-height: 0;
+  padding: 1rem;
+  border-radius: var(--radius-control);
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
@@ -700,8 +703,16 @@ body.has-focus-mode {
     gap: var(--space-1) var(--space-2);
   }
 
+  /* A label never outgrows the task group, and its select shrinks only
+     when label and select together are wider than the group, so the chosen
+     value shows in full wherever it fits. */
+  .material-toolbar label {
+    max-width: 100%;
+  }
+
   .material-toolbar label > select {
-    max-width: 6.6rem;
+    min-width: 0;
+    flex: 0 1 auto;
     padding-right: 0.3rem;
   }
 
@@ -735,9 +746,10 @@ body.has-focus-mode {
   }
 
   /* The phone gutter grew from 12px to 16px (Step 12). The plate bleeds 4px
-     back into it, so every stage keeps today's width (viewport − 24px) and
-     its 1rem padding; wider phone mats are PRD 20 layout work. The mat ring
-     is 3px here instead of 6px. */
+     back into it, so every plate keeps today's stage width (viewport − 24px)
+     and every material today's content box (1rem inside it); wider phone
+     mats are PRD 20 layout work. The mat ring is 3px here instead of 6px,
+     and the stage's padding gives those 3px back. */
   .material-plate {
     margin: 0 -4px;
   }
@@ -746,17 +758,25 @@ body.has-focus-mode {
     padding-left: 4px;
   }
 
+  .material-stage-frame {
+    padding: 3px;
+  }
+
   .material-stage {
-    box-shadow:
-      inset 0 0 0 1px var(--ink),
-      inset 0 0 0 3px var(--paper),
-      inset 0 2px 10px 3px rgba(0, 0, 0, 0.18);
+    padding: calc(1rem - 3px);
+    min-height: calc(320px - 6px);
+  }
+
+  /* Focus mode fills the screen inside its own 12px padding: no bleed. */
+  .material-shell.focus-mode .material-plate {
+    margin: 0;
   }
 }
 ```
 
-- **Phone stages keep today's width** (decision 19). Today a phone stage is `viewport − 24px` wide (12px main padding each side) with 16px padding. Step 12 made the gutter 16px, and the 4px bleed gives the stage back exactly those 8px: 366px at 390, with the same 1rem padding. Until now the shell carried that bleed (Step 12, item 5); Edit 1 removed it, so the bleed is on the plate alone and the toolbar and help line sit back on the 16px gutter. The prototype's 8px bleed with tighter padding would have widened every phone stage by 24px and reflowed several materials, which is layout work for PRD 20 (S2-16, open question 12). `golden-beads.css` is not touched.
+- **Phone stages keep today's width** (decision 19). Today a phone stage is `viewport − 24px` wide (12px main padding each side) with 16px padding. Step 12 made the gutter 16px, and the 4px bleed gives the plate back exactly those 8px: 366px at 390, with the material 1rem inside its edge (3px ring plus 13px stage padding), a 334px content box as today. Focus mode is a fixed layer with its own 12px side padding, so the bleed is cancelled there: the focus-mode stage is 366px at 390, as before this phase (without that rule it was 374px). Until now the shell carried that bleed (Step 12, item 5); Edit 1 removed it, so the bleed is on the plate alone and the toolbar and help line sit back on the 16px gutter. The prototype's 8px bleed with tighter padding would have widened every phone stage by 24px and reflowed several materials, which is layout work for PRD 20 (S2-16, open question 12). `golden-beads.css` is not touched.
 - `min-width` on the task buttons keeps short labels (the checkerboard's "Set") at 44px once the phone padding tightens.
+- **Phone selects show their value.** The prototype capped phone toolbar selects at 6.6rem because it hid their labels, so each select had its row to itself. With the labels visible (decision 18), that cap cut the chosen value on 11 of 21 materials ("Chart 1 —", "Symbols (", "4-digit × 2", which reads as "times 2"). The label is capped at the task group's width instead, and the select may shrink only when label and select together are wider than the group. No select at 390 is cut, and nothing passes its group; four toolbars (number cards, both strip boards, teen board) gain a row. *Phase 4 review fixes.*
 
 **Measured contrast:**
 
@@ -774,46 +794,65 @@ body.has-focus-mode {
 There are no transitions here. The `.btn-utility .btn-label` phone rule repeats `.visually-hidden`'s declarations (Step 9) because it applies only inside the media query.
 
 **Check:**
-- At 1400 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage').getBoundingClientRect().top)` is about 459 (today it is about 466).
+- At 1400 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage-frame').getBoundingClientRect().top)` is about 459 (the stage's top before this phase was about 466).
 - The MODE label is centred on its select. Sound and Focus are right-aligned ghost buttons with line icons. The help line has a circled + that becomes − when open.
-- The stage shows a 1px ink line and a 6px paper mat inside its edge, and `getComputedStyle(document.querySelector('.material-stage')).boxShadow` starts with `rgb(38, 34, 29) 0px 0px 0px 1px inset, rgb(246, 241, 231) 0px 0px 0px 6px inset`.
+- The plate shows a 1px ink line and a 6px paper mat round the stage. `getComputedStyle(document.querySelector('.material-stage-frame'))` has `boxShadow` `rgb(38, 34, 29) 0px 0px 0px 1px inset` and `padding` `6px`; the stage's `boxShadow` is `rgba(0, 0, 0, 0.18) 0px 2px 10px 0px inset` and its `padding` `10px`.
+- The mount stays whole while a mat scrolls: at 390 on `/materials/golden-beads` after `document.querySelector('.material-stage').scrollLeft = 150`, and on `/materials/checkerboard` at 820 (at rest and scrolled), the bank tray, the instruction line, the "Total on the mat" chip and the wooden board stop at the paper ring, and the ink line is unbroken on all four sides.
+- On `/materials/golden-beads` at 1400 and 390 and `/materials/stamp-game` at 1400 and 390, exchange 10 units: each flying ghost starts exactly on its piece (0px apart), as before this phase.
 - On `/materials/checkerboard` at 820, the task controls wrap into three rows inside their group, and the Sound/Focus group's top equals the task group's top: nothing stranded (S2-08).
-- At 390 on `/materials/golden-beads`, Sound and Focus are 44×44 icon-only buttons at the top right. The first task row is `MODE [Free build] [Hide total]`, and Reset sits on the second. `Math.round(document.querySelector('.material-stage').getBoundingClientRect().width)` is `366`, as today.
+- At 390 on `/materials/golden-beads`, Sound and Focus are 44×44 icon-only buttons at the top right. The first task row is `MODE [Free build]`, and Hide total and Reset sit on the second. `Math.round(document.querySelector('.material-stage-frame').getBoundingClientRect().width)` is `366`, as the stage is today, and the stage's content box is today's 334px: `(() => { const s = document.querySelector('.material-stage'), c = getComputedStyle(s); return s.clientWidth - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight) })()`.
+- At 390 every toolbar select shows its whole value: "Small — to 9,999" and "Free exploration" on the bead frame, "Chart 1 — control chart" on both chart materials, "Symbols (build 11–19)" on the teen board, "4-digit × 2-digit" on the checkerboard. No task control reaches past its group, and no page scrolls sideways.
 - On `/materials/number-cards`, `/materials/bead-frame`, `/materials/bead-chains`, `/materials/multiplication-bead-board`, `/materials/subtraction-strip-board`, `/materials/addition-charts` and `/materials/multiplication-charts`, the toolbar's own buttons have a 1px ink edge and 3px corners like the chrome buttons, and on the two chart materials "Print control charts", Reset, the Mode label and its select compute to MM Sans like the Sound and Focus buttons beside them (until this step they draw in Newsreader). A pressed number-cards view toggle keeps its blue border and outline, and `/materials/checkerboard`'s "Set" is 44px wide at 390.
-- Press Focus on `/materials/bead-frame`, `/materials/cards-and-counters`, `/materials/teen-board` and `/materials/decimal-board` at 1400 and at 390. Exit focus sits at the top right every time (S9-33). The help line and caption are hidden, and the felt fills the screen. Esc exits.
+- Press Focus on `/materials/bead-frame`, `/materials/cards-and-counters`, `/materials/teen-board` and `/materials/decimal-board` at 1400 and at 390. Exit focus sits at the top right every time (S9-33). The help line and caption are hidden, the mount is gone, and the felt fills the screen. At 390 the stage is 366px wide at x = 12, as before this phase (`document.querySelector('.material-stage').getBoundingClientRect()`), and at 1400 it is 1376px. Esc exits.
 - The standard check (convention 12) passes: on golden beads, stamp game and number cards nothing inside the stage moved apart from the mount.
 
 ## Step 29 — The scroll veil on wide mats
 
 **Files:** `src/styles/materials.css` (modified: appended).
 
-On a phone the golden-bead mat is 640px wide inside a 366px stage. Tens and Units, where the work starts, sit off to the right behind a scroll nobody can see (S2-02). The veil fades the stage's right edge into paper while more mat lies beyond, and lifts as the child scrolls to the end. Place value keeps its left-to-right order and nothing reflows. The fluid-mat redesign stays with PRD 20.
+On a phone the golden-bead mat is 640px wide inside a 366px plate (a 334px content box). Tens and Units, where the work starts, sit off to the right behind a scroll nobody can see (S2-02). The veil fades the stage's right edge into paper while more mat lies beyond, and lifts as the child scrolls to the end. Place value keeps its left-to-right order and nothing reflows. The fluid-mat redesign stays with PRD 20.
 
 Append:
 
 ```css
 /* ---------- Scroll veil (PRD 19) ----------
-   When a mat is wider than its stage (golden beads, stamp game, bead frame on
-   a phone; cards & counters and the checkerboard on a tablet) the stage
-   scrolls sideways. A paper veil fades its right edge while more of the mat
-   lies beyond and lifts as the child scrolls to the end, so place value keeps
-   its left-to-right order and nothing reflows. It is a separate layer on the
-   frame, driven by the stage's own scroll position (no JavaScript), so the
-   stage never becomes a stacking context: a mask on the stage would make it
-   one and would surface the stamp game's z-index:-1 stack hint. It is
-   inactive when the mat fits, and absent where scroll-driven animations are
-   unsupported or the reader asks for reduced motion. */
+   Wherever a mat is wider than its stage (for example golden beads, the
+   stamp game and the bead frame on a phone, or cards & counters and the
+   checkerboard on a tablet) the stage scrolls sideways. A paper veil fades
+   its right edge while more of the mat lies beyond and lifts as the child
+   scrolls to the end, so place value keeps its left-to-right order and
+   nothing reflows. It is a separate layer on the frame, driven by the
+   stage's own scroll position (no JavaScript), so the stage never becomes a
+   stacking context: a mask on the stage would make it one and would surface
+   the stamp game's z-index:-1 stack hint. It is inactive when the mat fits,
+   and absent where scroll-driven animations are unsupported or the reader
+   asks for reduced motion. It lies over the stage only, inside the mount's
+   paper ring, so the ink hairline stays whole. */
 .material-stage-frame::after {
   content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
   width: 2.75rem;
-  border-radius: 0 var(--radius-control) var(--radius-control) 0;
   background: linear-gradient(to right, transparent, color-mix(in srgb, var(--paper) 82%, transparent));
   pointer-events: none;
   opacity: 0;
+}
+
+@media screen and (max-width: 640px) {
+  .material-stage-frame::after {
+    top: 3px;
+    right: 3px;
+    bottom: 3px;
+  }
+}
+
+.material-shell.focus-mode .material-stage-frame::after {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -864,6 +903,7 @@ and, at the very end of the file:
 **Check:**
 - At 390 on `/materials/golden-beads`, `getComputedStyle(document.querySelector('.material-stage-frame'), '::after').opacity` is `"1"`. After `document.querySelector('.material-stage').scrollLeft = 2000` it is `"0"`.
 - At 1400 it is `"0"`: the mat fits. On `/materials/checkerboard` at 820 it is `"1"`.
+- The veil covers the stage only: `getComputedStyle(document.querySelector('.material-stage-frame'), '::after').right` is `"6px"` at 820 and 1400, `"3px"` at 390 and `"0px"` in focus mode, so the plate's right ink line is never washed out.
 - With DevTools, Rendering, "Emulate CSS prefers-reduced-motion: reduce", it is `"0"`.
 - Tap the Units column's exchange button through the veil: it works (`pointer-events: none`).
 - At 390 on `/materials/golden-beads`, tap UNIT ten times so "10 units → 1 ten" is enabled. In the console, scroll the mat so only the button's left edge peeks out under the veil, then focus it the way Tab would:
@@ -1056,7 +1096,7 @@ export default function MaterialPage() {
         meta={
           <>
             <AgeMeta ages={material.ages} grades={`grades ${material.grades}`} />
-            <span className="badge">{strand.name}</span>
+            <span className="badge badge-strand">{strand.name}</span>
           </>
         }
         lede={material.summary}
@@ -1182,6 +1222,16 @@ Then append to `src/styles/materials.css`:
   font-size: var(--fs-read-sm);
 }
 
+/* Without a kit, "For parents" is the only note: its ink rule spans the
+   plate's width and its text keeps the reading measure (S2-18). */
+.material-notes > .note-col:only-child {
+  grid-column: 1 / -1;
+}
+
+.material-notes > .note-col:only-child p {
+  max-width: var(--measure);
+}
+
 .links-col > .section-label {
   margin: 0;
   padding: var(--space-4) 0 var(--space-2);
@@ -1216,6 +1266,15 @@ Then append to `src/styles/materials.css`:
   font-weight: 500;
 }
 
+/* The focus ring hugs the title inside that padding, clear of the row's
+   next line. The same padding on the sides (cancelled by the margin, so
+   nothing moves) keeps it clear of the first and last letters. */
+.link-row-title:focus-visible {
+  padding-inline: 0.55rem;
+  margin-inline: -0.55rem;
+  outline-offset: -0.4rem;
+}
+
 .link-row .badge.age {
   margin-left: var(--space-2);
 }
@@ -1238,7 +1297,24 @@ Then append to `src/styles/materials.css`:
     margin-top: var(--space-5);
   }
 }
+
+/* On phones the strand takes its own line under the age and grades, with no
+   leading dot, so a long strand name never breaks in the middle. */
+@media screen and (max-width: 640px) {
+  .page-meta .badge-strand {
+    display: block;
+  }
+
+  .page-meta .badge-strand::before {
+    content: none;
+  }
+}
 ```
+
+Three details were added in the Phase 4 review fixes:
+- **A lone note spans the plate.** Only 7 of the 21 materials have a kit. On the other 14, "For parents" would sit alone in the left column, its rule and text stopping at mid-plate, narrower than the old 46rem card (S2-18). `:only-child` lets it span both columns, and its text keeps the 40rem measure.
+- **The strand has its own line on phones.** The labelled grades (S4-24) push the strand past the line end at 390, and it broke mid-name on 15 of 21 materials ("PASSAGE" / "TO ABSTRACTION"). A `nowrap` strand would overflow instead, because there is no break opportunity between the grades and the strand's dot. So at ≤640px the strand is a block with no leading dot; wider screens are unchanged.
+- **The title's focus ring hugs the title.** The 44px padding put the default ring (2px outside the padded box) through the row's next line. On focus the ring is drawn 0.4rem inside the padded box, and matching side padding, cancelled by the margin so nothing moves, keeps it off the first and last letters.
 
 **Check:**
 - The standard check (convention 12) passes.
@@ -1246,6 +1322,9 @@ Then append to `src/styles/materials.css`:
   - The header reads `Golden Beads & Mat`, then `[AGES 4–7] GRADES PK–1 · THE DECIMAL SYSTEM`, then the 21px ink lede. "▶ Walk through: Golden Bead Addition" sits at the top right.
   - `document.title` is `Golden Beads & Mat · Montessori Math`.
   - Below the plate, "For parents" and "Make the real thing" start on the same ink rule. The right column ends flush with the plate's right edge (S2-18).
+- On a material without a kit (for example `/materials/cards-and-counters` and `/materials/bead-frame`) at 1400, "For parents" stands alone: its ink rule runs from the plate's left edge to its right edge (166 to 1234), and its text keeps the 40rem measure (640px).
+- At 390 on all 21 materials the strand sits on its own line under the age and grades, with no leading dot, and never breaks mid-name (`document.querySelector('.badge-strand').getClientRects().length` is `1`). At 820 and 1400 it follows the grades after a dot, as before.
+- Tab to a kit or lesson title at 1400 and 390: the 3px focus ring hugs the title and does not touch the row's next line.
   - Each kit shows its piece count on its own grey sans line, with no nested parentheses.
 - On `/materials/multiplication-charts` the meta reads `GRADES 1–3` (S4-24).
 - These all hold:
