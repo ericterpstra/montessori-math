@@ -1,11 +1,8 @@
-/* ---------- Presentation mode: lesson walk-through overlay ---------- */
-
-.presentation-launch {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-}
+/* ---------- Presentation mode: the lesson walk-through step card ----------
+   PRD 11; re-skinned in PRD 19 (prototype §18): card stock under an ink
+   hairline, a Newsreader title, and the spoken line in ink with rubric
+   quote marks, as on the lesson page (album.css). The Walk-through launch
+   buttons live in the material page's PageHeader. */
 
 .presentation-overlay {
   position: fixed;
@@ -16,10 +13,10 @@
   max-height: 45vh;
   overflow-y: auto;
   background: var(--card);
-  border: 1px solid var(--line);
+  border: 1px solid var(--ink);
   border-bottom: none;
-  border-radius: var(--radius) var(--radius) 0 0;
-  box-shadow: var(--shadow-md);
+  border-radius: 0;
+  box-shadow: var(--shadow-sheet);
   padding: 0.9rem 1.2rem;
   z-index: 50;
 }
@@ -31,9 +28,9 @@
 }
 
 .presentation-title {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  color: var(--wood-dark);
+  font-family: var(--font-text);
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .presentation-progress {
@@ -54,7 +51,7 @@
 .presentation-overlay .say {
   display: block;
   font-style: italic;
-  color: var(--accent-dark);
+  color: var(--ink);
   margin: 0.25rem 0 0;
 }
 
@@ -64,6 +61,13 @@
 
 .presentation-overlay .say::after {
   content: '”';
+}
+
+.presentation-overlay .say::before,
+.presentation-overlay .say::after {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .presentation-nav {

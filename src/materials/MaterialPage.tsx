@@ -7,6 +7,10 @@ import { kitsForMaterial } from '../kits/registry'
 import { strandInfo } from '../lib/strands'
 import { DemoContext } from '../lessons/DemoContext'
 import { PresentationOverlay } from '../lessons/PresentationOverlay'
+import { PageHeader } from '../components/PageHeader'
+import { AgeMeta } from '../components/Contents'
+import { Icon } from '../components/Icon'
+import { MaterialNameContext } from '../components/MaterialNameContext'
 import NotFound from '../pages/NotFound'
 
 export default function MaterialPage() {
@@ -31,6 +35,7 @@ export default function MaterialPage() {
   if (!material) return <NotFound />
 
   const Component = material.component
+  const strand = strandInfo(material.strand)
   const lessons = material.lessonSlugs.map((s) => lessonBySlug(s)).filter((l) => l !== undefined)
   const generators = material.worksheetSlugs.map((s) => generatorBySlug(s)).filter((g) => g !== undefined)
   const kits = kitsForMaterial(material.slug)
@@ -49,82 +54,110 @@ export default function MaterialPage() {
     setSearchParams({})
   }
 
+  const walkThroughs =
+    demoLessons.length > 0
+      ? demoLessons.map((l) => (
+          <button
+            key={l.slug}
+            type="button"
+            className="btn has-icon"
+            onClick={() => openDemo(l.slug)}
+            aria-pressed={presentSlug === l.slug}
+          >
+            <Icon name="play" />
+            <span className="btn-label">Walk through: {l.name}</span>
+          </button>
+        ))
+      : undefined
+
+  // No wrapper element around <Component/>: its output (the shell, and the
+  // control-chart print sheets of addition-charts and multiplication-charts)
+  // must stay direct children of main.site-main, which those materials'
+  // print-isolation rules select.
   return (
     <>
-      <h1>{material.name}</h1>
-      <p>
-        <span className="badge age">ages {material.ages[0]}–{material.ages[1]}</span>
-        <span className="badge">{material.grades}</span>
-        <span className="badge">{strandInfo(material.strand).name}</span>
-      </p>
-      <p className="page-intro">{material.summary}</p>
-
-      {demoLessons.length > 0 && (
-        <div className="presentation-launch no-print">
-          {demoLessons.map((l) => (
-            <button
-              key={l.slug}
-              type="button"
-              className="btn"
-              onClick={() => openDemo(l.slug)}
-              aria-pressed={presentSlug === l.slug}
-            >
-              Walk through: {l.name}
-            </button>
-          ))}
-        </div>
-      )}
+      <PageHeader
+        title={material.name}
+        meta={
+          <>
+            <AgeMeta ages={material.ages} grades={`grades ${material.grades}`} />
+            <span className="badge">{strand.name}</span>
+          </>
+        }
+        lede={material.summary}
+        actions={walkThroughs}
+      />
 
       <DemoContext.Provider value={demoValue}>
-        <Suspense fallback={<p>Loading material…</p>}>
-          <Component />
-        </Suspense>
+        <MaterialNameContext.Provider value={material.name}>
+          <Suspense fallback={<p>Loading material…</p>}>
+            <Component />
+          </Suspense>
+        </MaterialNameContext.Provider>
       </DemoContext.Provider>
 
-      <section className="card" style={{ marginTop: '1.5rem', maxWidth: '46rem' }}>
-        <h2>For parents</h2>
-        <p style={{ marginBottom: 0 }}>{material.parentNote}</p>
-      </section>
-
-      {kits.length > 0 && (
-        <section className="card" style={{ marginTop: '1.5rem', maxWidth: '46rem' }}>
-          <h2>Make the real thing</h2>
-          {kits.map((k) => (
-            <p key={k.slug} style={{ marginBottom: 0 }}>
-              <Link to={`/kits/${k.slug}`}>{k.name}</Link> — {k.description} ({k.pieces})
-            </p>
-          ))}
+      <div className="material-notes">
+        <section className="note-col" aria-labelledby="material-parents">
+          <h2 id="material-parents">For parents</h2>
+          <p>{material.parentNote}</p>
         </section>
-      )}
+        {kits.length > 0 && (
+          <section className="note-col" aria-labelledby="material-kits">
+            <h2 id="material-kits">Make the real thing</h2>
+            <ul className="link-list">
+              {kits.map((k) => (
+                <li key={k.slug} className="link-row">
+                  <Link className="link-row-title" to={`/kits/${k.slug}`}>
+                    {k.name}
+                  </Link>{' '}
+                  — {k.description}
+                  <span className="link-row-note">{k.pieces}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
 
       {(lessons.length > 0 || generators.length > 0) && (
-        <section style={{ marginTop: '1.5rem' }}>
+        <div className="material-links">
           {lessons.length > 0 && (
-            <>
-              <p className="section-label">Lessons for this material</p>
-              <ul>
+            <section className="links-col" aria-labelledby="material-lessons">
+              <h2 className="section-label" id="material-lessons">
+                Lessons for this material
+              </h2>
+              <ul className="link-list">
                 {lessons.map((l) => (
-                  <li key={l.slug}>
-                    <Link to={`/lessons/${l.slug}`}>{l.name}</Link>{' '}
-                    <span className="badge age">ages {l.ages[0]}–{l.ages[1]}</span>
+                  <li key={l.slug} className="link-row">
+                    <Link className="link-row-title" to={`/lessons/${l.slug}`}>
+                      {l.name}
+                    </Link>{' '}
+                    <span className="badge age">
+                      ages {l.ages[0]}–{l.ages[1]}
+                    </span>
                   </li>
                 ))}
               </ul>
-            </>
+            </section>
           )}
           {generators.length > 0 && (
-            <>
-              <p className="section-label">Printable follow-up work</p>
-              <ul>
+            <section className="links-col" aria-labelledby="material-printables">
+              <h2 className="section-label" id="material-printables">
+                Printable follow-up work
+              </h2>
+              <ul className="link-list">
                 {generators.map((g) => (
-                  <li key={g.slug}>
-                    <Link to={`/worksheets/${g.slug}`}>{g.name}</Link> — {g.description}
+                  <li key={g.slug} className="link-row">
+                    <Link className="link-row-title" to={`/worksheets/${g.slug}`}>
+                      {g.name}
+                    </Link>{' '}
+                    — {g.description}
                   </li>
                 ))}
               </ul>
-            </>
+            </section>
           )}
-        </section>
+        </div>
       )}
 
       {demoActive && demoLesson && (

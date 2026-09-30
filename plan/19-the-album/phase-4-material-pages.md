@@ -870,7 +870,7 @@ and, at the very end of the file:
   ```js
   const stage = document.querySelector('.material-stage')
   stage.scrollLeft = 150
-  ;[...stage.querySelectorAll('button')].find((b) => b.textContent.includes('10 units')).focus()
+  ;[...stage.querySelectorAll('button')].find((b) => b.textContent.trim().startsWith('10 units')).focus()
   stage.scrollLeft === stage.scrollWidth - stage.clientWidth // true (306 at 390): the mat scrolled to its end, so the button is clear and the veil has lifted
   ```
   With `scroll-padding-inline-end` unticked in DevTools, the same lines leave `scrollLeft` at 150 and the button under the veil.
