@@ -245,9 +245,16 @@ a.card:hover {
   content: none;
 }
 
-.badge + .badge.age,
-.badge.age + .badge {
+/* The gap after the stamp is the stamp's own trailing margin, which is
+   invisible at a line end, so a meta line that wraps right after the stamp
+   starts flush. A stamp that is its parent's last element (a lone stamp in a
+   right-aligned contents-row meta, or one followed only by text) has none. */
+.badge + .badge.age {
   margin-left: 0.75em;
+}
+
+.badge.age:not(:last-child) {
+  margin-right: 0.75em;
 }
 
 /* A paragraph that holds only badges (PageHeader meta, contents-row meta). */

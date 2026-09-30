@@ -109,6 +109,9 @@ The Album redesign is complete, and every printable now carries the Album's type
 
 - Site: `npm run preview`, then the LAN URL (for example `http://192.168.1.208:4173`).
 
+### Throughout
+- [ ] Operator signs: Newsreader's + − × ÷ = are x-height sized next to its lining figures (PRD 19 open question 27), in problems, answer keys ("216 + 316 = 532") and headers. Keep them, or draw the five signs from MM Sans?
+
 ### Worksheets (13): each with `?seed=424242&key=1`, then again with `&bw=1`
 - [ ] `/worksheets/command-cards`
 - [ ] `/worksheets/decimals`

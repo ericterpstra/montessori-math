@@ -1484,9 +1484,16 @@ Replace them with:
   content: none;
 }
 
-.badge + .badge.age,
-.badge.age + .badge {
+/* The gap after the stamp is the stamp's own trailing margin, which is
+   invisible at a line end, so a meta line that wraps right after the stamp
+   starts flush. A stamp that is its parent's last element (a lone stamp in a
+   right-aligned contents-row meta, or one followed only by text) has none. */
+.badge + .badge.age {
   margin-left: 0.75em;
+}
+
+.badge.age:not(:last-child) {
+  margin-right: 0.75em;
 }
 
 /* A paragraph that holds only badges (PageHeader meta, contents-row meta). */
@@ -1496,7 +1503,7 @@ Replace them with:
 }
 ```
 
-The separator is generated content with empty alternative text (`/ ''`), so screen readers don't announce "dot". The first `content` line is the fallback for browsers without alt-text support. JSX drops the whitespace between badges written on separate lines, so the middot and its 0.5em margins are the only spacing.
+The separator is generated content with empty alternative text (`/ ''`), so screen readers don't announce "dot". The first `content` line is the fallback for browsers without alt-text support. JSX drops the whitespace between badges written on separate lines, so the middot and its 0.5em margins are the only spacing. The 0.75em gap after the stamp is a trailing margin on the stamp, not a leading one on the next badge, because an inline margin at the start of a line still renders: the next line would start indented (Phase 1 review, 2026-09-29). A wrap right before a stamp that follows a badge still starts with its 0.75em lead; avoiding that would need `:has()` or new markup.
 
 Current lines 253–260:
 
