@@ -1,41 +1,72 @@
-/* ---------- Worksheet builder layout ---------- */
+/* ---------- Worksheet builder and kit pages: screen chrome ----------
+   PRD 19. The PageHeader carries the page's actions; a settings panel sits
+   on the left and the printable sheets lie on a desk on the right. Nothing
+   in this block reaches paper except the one print rule below, which only
+   un-grids the layout, exactly as before. */
+
+.builder > .page-header {
+  margin-bottom: var(--space-6);
+}
 
 .builder-layout {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: 21rem minmax(0, 1fr);
+  gap: var(--space-7);
   align-items: start;
+}
+
+.builder-preview {
+  min-width: 0;
+  overflow-x: auto;
 }
 
 @media (max-width: 900px) {
   .builder-layout {
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
   }
-}
-
-.builder-preview {
-  overflow-x: auto;
-}
-
-.builder-form .preset-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.builder-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin: 1rem 0 0.75rem;
 }
 
 @media print {
   .builder-layout {
     display: block;
   }
+}
+
+/* Kit panel prose: the piece list and the numbered assembly steps. */
+.panel-text {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-read-sm);
+  line-height: 1.5;
+}
+
+.panel-steps {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: var(--fs-read-sm);
+  line-height: 1.5;
+}
+
+.panel-steps > li + li {
+  margin-top: var(--space-2);
+}
+
+/* Rubric only decorates numbers that are already numbers. */
+.panel-steps > li::marker {
+  font-family: var(--font-text);
+  font-style: italic;
+  color: var(--accent);
+}
+
+.panel-steps + .field-grid {
+  margin-top: var(--space-5);
+}
+
+/* "For use with: Golden Beads, Stamp Game" under a kit's lede. */
+.page-forwith {
+  margin: var(--space-3) 0 0;
+  font: 400 var(--fs-ui) / 1.5 var(--font-ui);
+  color: var(--ink-soft);
 }
 
 /* ---------- The desk (screen only) ----------

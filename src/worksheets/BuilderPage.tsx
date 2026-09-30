@@ -6,8 +6,10 @@ import { commitNumber, draftNumber, resolveParams } from './params'
 import { createRng, randomSeed } from '../lib/rng'
 import { strandInfo } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
-import { Icon } from '../components/Icon'
 import { SheetPreview } from '../components/SheetPreview'
+import { Icon } from '../components/Icon'
+import { PageHeader } from '../components/PageHeader'
+import { AgeMeta } from '../components/Contents'
 import NotFound from '../pages/NotFound'
 
 function Field({
@@ -22,7 +24,8 @@ function Field({
   if (field.kind === 'boolean') {
     return (
       <label className="field checkbox">
-        <input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} /> {field.label}
+        <input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
+        <span className="field-label">{field.label}</span>
         {field.help && <span className="field-help">{field.help}</span>}
       </label>
     )
@@ -30,7 +33,7 @@ function Field({
   if (field.kind === 'select') {
     return (
       <label className="field">
-        {field.label}
+        <span className="field-label">{field.label}</span>
         <select value={String(value)} onChange={(e) => onChange(e.target.value)}>
           {field.options.map((o) => (
             <option key={o.value} value={o.value}>
@@ -71,7 +74,7 @@ function NumberField({
 
   return (
     <label className="field">
-      {field.label}
+      <span className="field-label">{field.label}</span>
       <input
         type="number"
         value={draft ?? String(value)}
@@ -129,7 +132,14 @@ export default function BuilderPage() {
   const presetParam = searchParams.get('preset')
   const overridden = def.schema.some((f) => searchParams.get(f.key) !== null)
   const activePreset = !overridden && presetParam && def.presets.some((p) => p.id === presetParam) ? presetParam : ''
-  const activePresetDescription = def.presets.find((p) => p.id === activePreset)?.description
+  // The help line under the select never disappears while a preset is the
+  // starting point, so the form doesn't jump when a field is edited (S6-19).
+  const basePreset = def.presets.find((p) => p.id === presetParam)
+  const presetHelp = basePreset
+    ? activePreset
+      ? basePreset.description
+      : `Based on “${basePreset.name}”, with your changes. ${basePreset.description}`
+    : undefined
 
   const update = (patch: Record<string, string>) => {
     const next = new URLSearchParams(searchParams)
@@ -142,78 +152,92 @@ export default function BuilderPage() {
 
   return (
     <div className="builder">
-      <div className="no-print">
-        <h1>{def.name}</h1>
-        <p>
-          <span className="badge age">ages {def.ages[0]}–{def.ages[1]}</span>
-          <span className="badge">{strandInfo(def.strand).name}</span>
-        </p>
-        <p className="page-intro">{def.description}</p>
-      </div>
-
-      <div className="builder-layout">
-        <aside className="builder-form card no-print">
-          {def.presets.length > 0 && (
-            <label className="field">
-              Preset
-              <select
-                value={activePreset}
-                onChange={(e) => {
-                  if (e.target.value === '') return
-                  // Drop the per-field overrides so the preset's params win, but
-                  // keep the view toggles — picking a preset must not silently
-                  // undo an ink-friendly or hide-the-key choice.
-                  const next = new URLSearchParams(searchParams)
-                  for (const f of def.schema) next.delete(f.key)
-                  next.set('preset', e.target.value)
-                  next.set('seed', String(seed))
-                  setSearchParams(next, { replace: true })
-                }}
-              >
-                <option value="">Choose a preset…</option>
-                {def.presets.map((p) => (
-                  <option key={p.id} value={p.id} title={p.description}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-              {activePresetDescription && <span className="field-help">{activePresetDescription}</span>}
-            </label>
-          )}
-
-          {def.schema.map((field) => (
-            <Field
-              key={field.key}
-              field={field}
-              value={params[field.key]}
-              onChange={(v) => update({ [field.key]: typeof v === 'boolean' ? (v ? '1' : '0') : String(v) })}
-            />
-          ))}
-
-          <label className="field checkbox">
-            <input type="checkbox" checked={bw} onChange={(e) => update({ bw: e.target.checked ? '1' : '0' })} />
-            Ink-friendly black &amp; white
-          </label>
-          <label className="field checkbox">
-            <input type="checkbox" checked={showKey} onChange={(e) => update({ key: e.target.checked ? '1' : '0' })} />
-            Include answer key page
-          </label>
-
-          <div className="builder-actions">
+      <PageHeader
+        className="no-print"
+        title={def.name}
+        docTitle={`${def.name} worksheet`}
+        meta={
+          <>
+            <AgeMeta ages={def.ages} />
+            <span className="badge">{strandInfo(def.strand).name}</span>
+          </>
+        }
+        lede={def.description}
+        actions={
+          <>
             <button type="button" className="btn has-icon" onClick={() => update({ seed: String(randomSeed()) })}>
               <Icon name="refresh" />
               <span className="btn-label">New problems</span>
             </button>
             <PrintButton />
+          </>
+        }
+      />
+
+      <div className="builder-layout">
+        <aside className="builder-form panel no-print" aria-labelledby="sheet-settings">
+          <h2 className="panel-label" id="sheet-settings">
+            Sheet settings
+          </h2>
+          <div className="field-grid">
+            {def.presets.length > 0 && (
+              <label className="field">
+                <span className="field-label">Preset</span>
+                <select
+                  value={activePreset}
+                  onChange={(e) => {
+                    if (e.target.value === '') return
+                    // Drop the per-field overrides so the preset's params win, but
+                    // keep the view toggles — picking a preset must not silently
+                    // undo an ink-friendly or hide-the-key choice.
+                    const next = new URLSearchParams(searchParams)
+                    for (const f of def.schema) next.delete(f.key)
+                    next.set('preset', e.target.value)
+                    next.set('seed', String(seed))
+                    setSearchParams(next, { replace: true })
+                  }}
+                >
+                  <option value="">Choose a preset…</option>
+                  {def.presets.map((p) => (
+                    <option key={p.id} value={p.id} title={p.description}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+                {presetHelp && <span className="field-help">{presetHelp}</span>}
+              </label>
+            )}
+
+            {def.schema.map((field) => (
+              <Field
+                key={field.key}
+                field={field}
+                value={params[field.key]}
+                onChange={(v) => update({ [field.key]: typeof v === 'boolean' ? (v ? '1' : '0') : String(v) })}
+              />
+            ))}
+
+            <label className="field checkbox">
+              <input type="checkbox" checked={bw} onChange={(e) => update({ bw: e.target.checked ? '1' : '0' })} />
+              <span className="field-label">Ink-friendly black &amp; white</span>
+            </label>
+            <label className="field checkbox">
+              <input
+                type="checkbox"
+                checked={showKey}
+                onChange={(e) => update({ key: e.target.checked ? '1' : '0' })}
+              />
+              <span className="field-label">Include answer key page</span>
+            </label>
           </div>
-          <p className="field-help">
+          <p className="panel-note">
             Seed {seed} — this exact sheet can be reprinted from this page's URL. Practice happens on paper: print it,
             don't screen it. <Link to="/parents/using-this-site">Printing tips</Link>
           </p>
         </aside>
 
         <div className="builder-preview">
-          <SheetPreview bw={bw}>
+          <SheetPreview bw={bw} desk>
             <Sheet data={data} params={params} />
             {showKey && <AnswerKey data={data} params={params} />}
           </SheetPreview>

@@ -1,6 +1,7 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { kitBySlug } from './registry'
 import { materialBySlug } from '../materials/registry'
+import { PageHeader } from '../components/PageHeader'
 import { PrintButton } from '../components/PrintButton'
 import { SheetPreview } from '../components/SheetPreview'
 import NotFound from '../pages/NotFound'
@@ -24,10 +25,14 @@ export default function KitPage() {
 
   return (
     <div className="builder">
-      <div className="no-print">
-        <h1>{kit.name}</h1>
-        <p className="page-intro">{kit.description}</p>
-        <p>
+      <PageHeader
+        className="no-print"
+        title={kit.name}
+        docTitle={`${kit.name} kit`}
+        lede={kit.description}
+        actions={<PrintButton />}
+      >
+        <p className="page-forwith">
           For use with:{' '}
           {kit.forMaterials.map((s, i) => (
             <span key={s}>
@@ -36,40 +41,34 @@ export default function KitPage() {
             </span>
           ))}
         </p>
-      </div>
+      </PageHeader>
 
       <div className="builder-layout">
-        <aside className="builder-form card no-print">
-          <p className="section-label" style={{ margin: 0 }}>
-            In this kit
-          </p>
-          <p style={{ marginTop: '0.25rem' }}>{kit.pieces}</p>
+        <aside className="builder-form panel no-print" aria-label="Kit contents and settings">
+          <h2 className="panel-label">In this kit</h2>
+          <p className="panel-text">{kit.pieces}</p>
 
-          <p className="section-label" style={{ margin: 0 }}>
-            Assembly
-          </p>
-          <ol style={{ marginTop: '0.25rem', paddingLeft: '1.25rem' }}>
+          <h2 className="panel-label">Assembly</h2>
+          <ol className="panel-steps">
             {kit.assembly.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
           </ol>
 
-          <label className="field checkbox">
-            <input type="checkbox" checked={bw} onChange={(e) => setBw(e.target.checked)} />
-            Ink-friendly black &amp; white
-          </label>
-
-          <div className="builder-actions">
-            <PrintButton />
+          <div className="field-grid">
+            <label className="field checkbox">
+              <input type="checkbox" checked={bw} onChange={(e) => setBw(e.target.checked)} />
+              <span className="field-label">Ink-friendly black &amp; white</span>
+            </label>
           </div>
-          <p className="field-help">
+          <p className="panel-note">
             Print at 100% scale on cardstock and check the 1-inch square on page 1 before cutting.{' '}
             <Link to="/parents/using-this-site">Printing tips</Link>
           </p>
         </aside>
 
         <div className="builder-preview">
-          <SheetPreview bw={bw}>
+          <SheetPreview bw={bw} desk>
             <Pages />
           </SheetPreview>
         </div>
