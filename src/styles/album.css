@@ -1,64 +1,199 @@
-/* ---------- Album-style lesson pages (screen + print) ---------- */
+/* ---------- The Lesson Album (PRD 19): screen + print ----------
+   A centred 56rem book page: a running head with Print, the title over an
+   Oxford rule, a centred lede, section heads hung in an 11rem margin column,
+   rubric step numerals hung in the gutter, spoken lines on a 2px rule.
+   Lessons print as the same object (see @media print at the end). */
 
 .album {
-  max-width: 50rem;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 2rem 2.4rem;
-  box-shadow: var(--shadow-sm);
+  max-width: 56rem;
+  margin: 0 auto;
 }
+
+/* ---------- Running head and title ---------- */
 
 .album-header {
-  border-bottom: 3px double var(--wood);
-  padding-bottom: 0.75rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-5);
+  padding-bottom: calc(var(--space-4) + 6px);
+  background: var(--oxford-under);
+  text-align: center;
 }
 
-.album-header h1 {
-  margin-bottom: 0.35rem;
+.album-runhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
 }
 
 .album-meta {
+  margin: 0;
+}
+
+.album-meta .album-name {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.album-actions {
+  flex: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  align-items: center;
+  gap: var(--space-2);
 }
 
+.album-header h1 {
+  max-width: 18ch;
+  margin: var(--space-5) auto 0;
+  font-size: var(--fs-h1);
+  font-weight: 350;
+}
+
+.album-lede {
+  max-width: 42rem;
+  margin: 0 auto var(--space-5);
+  font-size: var(--fs-lede);
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* ---------- Sections with margin heads ---------- */
+
+/* Each section is a two-column grid: the head in the margin column, the
+   content in the text column. A grid (not a float) keeps the head and its
+   first lines in one row, which a printed page can never split. */
 .album section {
-  margin-bottom: 1.4rem;
+  display: grid;
+  grid-template-columns: var(--margin-col) minmax(0, 1fr);
+  column-gap: var(--gutter);
+  align-items: start;
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid var(--line);
 }
 
-.album h2 {
-  font-size: 1.05rem;
+.album section > * {
+  grid-column: 2;
+}
+
+.album section > h2 {
+  grid-column: 1;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  border: 0;
+  font: 700 var(--fs-caps) / 1.4 var(--font-ui);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--wood-dark);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.2rem;
-  margin-bottom: 0.6rem;
+  color: var(--ink);
 }
 
 .album ul,
 .album ol {
   margin: 0;
-  padding-left: 1.3rem;
+}
+
+.album ul {
+  padding-left: 1.2rem;
+  list-style-type: '\2013\2002';
+}
+
+.album ul > li::marker {
+  color: var(--ink-soft);
 }
 
 .album li {
-  margin-bottom: 0.35rem;
+  margin-bottom: var(--space-2);
 }
 
-.album ol.presentation li {
-  margin-bottom: 0.65rem;
+.album section > p:last-child,
+.album li > :last-child {
+  margin-bottom: 0;
 }
 
+/* sans asides: the virtual-material line, Walk through, next lesson */
+.album-aside {
+  margin: var(--space-3) 0 0;
+  font: 400 var(--fs-ui) / 1.5 var(--font-ui);
+  color: var(--ink-soft);
+}
+
+.album-aside a {
+  color: var(--ink);
+}
+
+.album-aside .btn {
+  margin-top: var(--space-1);
+  text-align: left;
+}
+
+/* lesson-to-lesson and "Printable:" links are 44px tap targets without
+   taller lines: 24px of 16px sans (or 28.8px of 18px serif) plus 20px of
+   padding, taken back by the negative margin. The leading .album lets this
+   outrank `.album li > :last-child` above, which would otherwise zero the
+   bottom margin of a "Before this lesson" link and add 10px to its row. */
+.album .album-links a,
+.album .album-printable a {
+  display: inline-block;
+  padding-block: 0.625rem;
+  margin-block: -0.625rem;
+}
+
+.album-links li {
+  margin-bottom: var(--space-3);
+}
+
+/* ---------- Aims ---------- */
+
+.album-aims {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.album-aims h3 {
+  margin: 0 0 var(--space-1);
+  font: italic 500 1.2rem / 1.3 var(--font-text);
+  letter-spacing: 0;
+}
+
+/* ---------- Presentation: hung rubric numerals, spoken lines ---------- */
+
+.album ol.presentation {
+  padding: 0;
+  list-style: none;
+}
+
+.album ol.presentation > li {
+  position: relative;
+  margin-bottom: var(--space-5);
+}
+
+.album .step-num {
+  position: absolute;
+  right: calc(100% + 0.9rem);
+  top: -0.2rem;
+  font: italic 400 1.75rem / 1 var(--font-text);
+  color: var(--accent);
+}
+
+/* spoken words: italic, rubric quote marks, indented on a 2px rule, and a
+   faint band on screen so an untrained parent finds them at a glance */
 .album .say {
   display: block;
+  margin-top: var(--space-2);
+  padding: 0.35rem 0.8rem 0.4rem 0.9rem;
+  border-left: 2px solid var(--line-strong);
+  font-size: 1.0625em;
   font-style: italic;
-  color: var(--accent-dark);
-  margin-top: 0.15rem;
+  color: var(--ink);
+}
+
+@media screen {
+  .album .say {
+    background: var(--paper-warm);
+  }
 }
 
 .album .say::before {
@@ -69,58 +204,172 @@
   content: '”';
 }
 
+.album .say::before,
+.album .say::after {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------- Vocabulary: an italic run-in list ---------- */
+
 .album .vocab {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
 .album .vocab li {
-  border: 1px solid var(--line);
-  background: var(--paper-warm);
-  border-radius: 999px;
-  padding: 0.1rem 0.7rem;
-  font-size: 0.9rem;
+  display: inline;
   margin: 0;
+  font-style: italic;
 }
 
-.album-aims {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.album .vocab li + li::before {
+  content: '\2002\00B7\2002';
+  font-style: normal;
+  color: var(--ink-soft);
 }
 
-@media (max-width: 640px) {
-  .album {
-    padding: 1.2rem 1.1rem;
+/* ---------- Follow-up work: the printable on its own line ---------- */
+
+.album-printable {
+  display: block;
+  margin-top: var(--space-1);
+  font: 600 var(--fs-ui) / 1.5 var(--font-ui);
+  color: var(--ink-soft);
+}
+
+.album-printable a {
+  color: var(--ink);
+}
+
+/* ---------- End of the lesson: the bead fleuron ---------- */
+
+.album-end {
+  margin: var(--space-7) auto 0;
+}
+
+/* ---------- Phone ---------- */
+
+@media screen and (max-width: 640px) {
+  .album-runhead {
+    flex-wrap: wrap;
+  }
+
+  .album-meta .badge + .badge::before {
+    margin: 0 0.35em;
+  }
+
+  .album-header {
+    text-align: left;
+  }
+
+  .album-header h1 {
+    max-width: none;
+    margin: var(--space-5) 0 0;
+    font-size: 2.4rem;
+  }
+
+  .album-lede {
+    font-size: 1.1875rem;
+    text-align: left;
+  }
+
+  .album section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .album section > h2 {
+    grid-column: 1;
+    margin: 0 0 var(--space-2);
+  }
+
+  .album section > * {
+    grid-column: 1;
+  }
+
+  .album ol.presentation {
+    padding-left: 2.1rem;
   }
 
   .album-aims {
     grid-template-columns: 1fr;
+    gap: var(--space-2);
   }
 }
 
+/* ---------- Print: the lesson prints as it reads ----------
+   Margin heads narrow to a 10rem gutter (QA found a head/numeral collision
+   at 9rem), the Oxford rule becomes a 3px double rule (browsers drop
+   background images), and every rubric mark prints black in colour and in
+   B&W alike. */
+
 @media print {
   .album {
-    border: none;
-    padding: 0;
     max-width: none;
     font-size: 11pt;
+    line-height: 1.5;
   }
 
-  /* Keep list items and headings intact, but let long sections break
-     between steps — a section taller than one page must not overflow. */
+  .album-header {
+    padding-bottom: 0.9rem;
+    background: none;
+    border-bottom: 3px double #000;
+  }
+
+  .album-runhead {
+    border-bottom: 0;
+  }
+
+  .album-header h1 {
+    max-width: none;
+    margin-top: 0.6rem;
+    font-size: 26pt;
+  }
+
+  .album-lede {
+    font-size: 12.5pt;
+  }
+
+  /* the margin column narrows to a 7.5rem head in a 10rem gutter */
+  .album section {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    column-gap: 2.5rem;
+    margin-bottom: 1.1rem;
+    padding-top: 0.6rem;
+    break-inside: auto;
+  }
+
+  .album section > h2 {
+    font-size: 8.5pt;
+  }
+
   .album li {
+    margin-bottom: 0.3rem;
     break-inside: avoid;
   }
 
-  .album h2 {
-    break-after: avoid;
+  .album ol.presentation > li {
+    margin-bottom: 0.6rem;
+  }
+
+  .album .step-num {
+    font-size: 18pt;
+    top: -0.1rem;
+  }
+
+  .album .step-num,
+  .album .say::before,
+  .album .say::after {
+    color: #000;
   }
 
   .album .say {
-    color: #000;
+    border-left-color: #000;
+  }
+
+  .album p {
+    orphans: 3;
+    widows: 3;
   }
 }

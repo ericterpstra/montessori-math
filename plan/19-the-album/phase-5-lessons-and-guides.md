@@ -536,9 +536,11 @@ Replace the whole file with:
 
 /* lesson-to-lesson and "Printable:" links are 44px tap targets without
    taller lines: 24px of 16px sans (or 28.8px of 18px serif) plus 20px of
-   padding, taken back by the negative margin */
-.album-links a,
-.album-printable a {
+   padding, taken back by the negative margin. The leading .album lets this
+   outrank `.album li > :last-child` above, which would otherwise zero the
+   bottom margin of a "Before this lesson" link and add 10px to its row. */
+.album .album-links a,
+.album .album-printable a {
   display: inline-block;
   padding-block: 0.625rem;
   margin-block: -0.625rem;
@@ -815,7 +817,7 @@ Append:
 
 **Page-break QA.** Run this on the three longest lessons, `/lessons/checkerboard-multiplication`, `/lessons/decimal-board-operations` and `/lessons/racks-and-tubes`, then on `/lessons/golden-beads-addition`.
 
-1. **Print preview.** Chrome, Print, destination "Save as PDF", paper Letter, margins Default, "Background graphics" **off**. Expected: 4, 4, 4 and 3 pages, the counts Chrome's own Letter PDF gave with the real Newsreader and MM Sans from Step 2 (headless Chromium on Linux). Today's `main` (`bbbdb44`) prints the same four lessons on 4, 4, 4 and 3 pages. **Pass** if each count is at most today's plus one and the snippet in item 2 reports no stranded head and no split step. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit. On each page:
+1. **Print preview.** Chrome, Print, destination "Save as PDF", paper Letter, margins Default, "Background graphics" **off**. Expected: 4, 4, 4 and 3 pages, the counts Chrome's own Letter PDF gave with the real Newsreader and MM Sans from Step 2 (headless Chromium on Linux). Today's `main` (`bbbdb44`) prints the same four lessons on 4, 4, 4 and 3 pages. **Measured (2026-09-29, Step 34 as landed): 4, 4, 4 and 3** (headless Chromium on Linux, Letter, 0.5in margins, background graphics off). **Pass** if each count is at most today's plus one and the snippet in item 2 reports no stranded head and no split step. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit. On each page:
    - no margin head sits at the foot of a page without its first line beside it;
    - no step is split, so a numeral always stays with its step;
    - every spoken line stays with its step;
@@ -854,7 +856,7 @@ Append:
    })()
    ```
 
-   Expected: `4 Letter pages. No stranded heads, no split steps.` on each of the three long lessons, and `3 Letter pages. …` on golden-beads-addition.
+   Expected: `4 Letter pages. No stranded heads, no split steps.` on each of the three long lessons, and `3 Letter pages. …` on golden-beads-addition. Measured (2026-09-29): exactly that on all four, and "No stranded heads, no split steps." on all 41 lessons (two print on 2 pages, 34 on 3, five on 4).
 3. **B&W laser test (the owner's printer).** If no printer is at hand during the build, this moves to the owner's printables review (Step 43). Print the three long lessons with the printer's black-and-white option. Check four things:
    - the 8.5pt margin heads are crisp and readable;
    - the section hairlines (`--line`) are visible as light grey;
