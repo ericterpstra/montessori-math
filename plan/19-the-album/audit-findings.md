@@ -1,13 +1,13 @@
 # PRD 19 — audit findings
 
-Every verified finding from the September 2026 visual audit, and what happens to it. [PRD 19](../19-the-album.md) resolves the ones about the visual system and page chrome. A separate session fixes four functional bugs. Everything else is a candidate for PRD 20, which the owner will scope after PRD 19 ships.
+Every verified finding from the September 2026 visual audit, and what happens to it. [PRD 19](../19-the-album.md) resolves the ones about the visual system and page chrome, and Georgia's old-style numerals inside materials and printables. A separate session fixes four functional bugs. Everything else is a candidate for PRD 20, which the owner will scope after PRD 19 ships.
 
 | Group | High | Medium | Low | Total |
 |---|---|---|---|---|
-| [Resolved by PRD 19](#resolved-by-prd-19) | 3 | 11 | 38 | 52 |
+| [Resolved by PRD 19](#resolved-by-prd-19) | 4 | 11 | 38 | 53 |
 | [Partly resolved by PRD 19](#partly-resolved-by-prd-19) | 1 | 2 | 2 | 5 |
 | [Fixed in the bug-fix session (merged, PR #7)](#fixed-in-the-bug-fix-session-merged-pr-7) | 4 | 0 | 0 | 4 |
-| [PRD 20 candidates: materials on screen](#prd-20-candidates-materials-on-screen) | 6 | 18 | 27 | 51 |
+| [PRD 20 candidates: materials on screen](#prd-20-candidates-materials-on-screen) | 5 | 18 | 27 | 50 |
 | [PRD 20 candidates: printables and print content](#prd-20-candidates-printables-and-print-content) | 4 | 13 | 23 | 40 |
 | [PRD 20 candidates: content and features the redesign does not touch](#prd-20-candidates-content-and-features-the-redesign-does-not-touch) | 0 | 1 | 12 | 13 |
 | **All findings** | **18** | **45** | **102** | **165** |
@@ -25,6 +25,12 @@ Every verified finding from the September 2026 visual audit, and what happens to
 ## Resolved by PRD 19
 
 The step numbers refer to [PRD 19](../19-the-album.md). Each entry says how the step resolves it.
+
+**S7-05+S6-04+S2-03+S3-07+S4-12+S9-18** · high · typography · recurring — Georgia's old-style numerals make digits bounce off the baseline on number cards, boards and printables (0 looks like o, the decimal point like a times dot)
+- **Pages:** `/kits/hundred-board-tiles`, `/kits/large-number-cards`, `/kits/strip-boards`, `/kits/play-money`, `/worksheets/numeral-tracing` and 17 more (at 1400, 820 and 390px; in print)
+- **Cause:** --font-heading is Georgia first (tokens.css:71). Child-facing numerals use it at kits.css:13 (.kit-number-card), :20 (.kit-hb-tile), :26 (.kit-strip), :33 (.kit-board-head), :45-46 (.kit-bill, .kit-bill-corner), and numeral-tracing.css:26-28 (the SVG <text> glyphs). Georgia's default figures are old-style. Also: `numeral-tracing.tsx:96-98`.
+- **Fix hint:** Use a lining-figure face (e.g. the system-ui body stack or a dedicated numeral font) for all child-facing numerals; Georgia has no lining alternates.
+- **Resolved by PRD 19, Steps 6 and 7:** `--font-heading` and the new `--font-numeral` are Newsreader, whose default figures are lining, and every material stage and printable sheet sets `font-variant-numeric: lining-nums`. Number cards use `--font-numeral` and stamps MM Sans (`materials.css`); kits and numeral tracing take Newsreader through `--font-heading` without edits to their files.
 
 **S1-01** · high · overflow clipping — Kits index: piece-count pill overflows its card, overlaps the next card, and makes phone/tablet pages scroll sideways
 - **Pages:** `/kits` (at 1400, 820 and 390px)
@@ -352,7 +358,7 @@ PRD 19 fixes part of each of these; the rest is listed as a PRD 20 candidate.
 - **Pages:** `/worksheets/command-cards`, `/worksheets/decimals`, `/worksheets/long-division`, `/worksheets/golden-bead-pictures`, `/worksheets/numeral-tracing` and 10 more (at 820 and 390px)
 - **Cause:** worksheets.css:10-14 (@media max-width:900px → grid-template-columns:minmax(0,1fr)). global.css:233-245 makes label.field inputs and selects display:block width:100%, and nothing caps the width of number inputs.
 - **Fix hint:** At 600–900px lay the form out as a 2–3 column field grid (or keep side-by-side with a 260px form), and cap number-input width.
-- **Partly resolved by PRD 19, Steps 16 and 39:** A two-column field grid at 641–900px roughly halves the tablet form. **Left for PRD 20:** The phone preview is still a ~0.41 zoom fit (owner issue #1 forbids sideways scroll).
+- **Partly resolved by PRD 19, Steps 16 and 39:** A two-column field grid at 641–900px roughly halves the tablet form. **Left for PRD 20:** The phone preview is still a ~0.41 zoom fit (owner issue #1 reported having to scroll sideways to see a worksheet).
 
 **S1-10** · medium · alignment — Planner shelf list: day labels float mid-row (no column), names cramped, not grouped by day
 - **Pages:** `/planner` (at 1400, 820 and 390px)
@@ -402,18 +408,12 @@ Fixed in a separate session and merged to `main` in PR #7. The error boundary su
 
 ## PRD 20 candidates: materials on screen
 
-How the virtual materials render and behave inside their stage, plus the walk-through and focus mode. PRD 19 keeps everything inside `.material-stage` identical, so none of these change.
+How the virtual materials render and behave inside their stage, plus the walk-through and focus mode. PRD 19 changes only the type inside the stage (the Album's faces and lining figures) and the chrome tokens materials share with the page (paper, card, ink, hairlines, rubric), Steps 6–7; Montessori colours, sizes, layout and behaviour are unchanged, so none of these change. Small reflows from the new faces are expected.
 
 **S2-01+S9-31** · high · material rendering · recurring — Stacked number cards hide the leading digit (3,251 reads as '_251'), including when 'Expand it' asks the child to read it
 - **Pages:** `/materials/number-cards`, `/materials/golden-beads`, `/materials/number-cards (Expand it)` (at 1400, 820 and 390px)
 - **Cause:** src/components/NumberCard.tsx:34-39 sets width = round(h*0.62*digits) and fontSize = 0.5h, and src/styles/materials.css:122-125 (.number-card inline-flex, justify-content:center) centers the numeral. At h=72, the 3000 card is 179px wide and its 4 Georgia-bold digits (~80-100px) start about 40-50px from the left edge. Also: `number-cards.css:89-93`, `GoldenBeads.tsx:81-102`, `golden-beads.css:63-67`.
 - **Fix hint:** Lay the digits out in fixed 0.62h slots aligned to the right edge (per-digit spans or justify-content:flex-end plus a fixed per-digit width) so each card's leading digit falls in its exposed strip.
-
-**S7-05+S6-04+S2-03+S3-07+S4-12+S9-18** · high · typography · recurring — Georgia's old-style numerals make digits bounce off the baseline on number cards, boards and printables (0 looks like o, the decimal point like a times dot)
-- **Pages:** `/kits/hundred-board-tiles`, `/kits/large-number-cards`, `/kits/strip-boards`, `/kits/play-money`, `/worksheets/numeral-tracing` and 17 more (at 1400, 820 and 390px; in print)
-- **Cause:** --font-heading is Georgia first (tokens.css:71). Child-facing numerals use it at kits.css:13 (.kit-number-card), :20 (.kit-hb-tile), :26 (.kit-strip), :33 (.kit-board-head), :45-46 (.kit-bill, .kit-bill-corner), and numeral-tracing.css:26-28 (the SVG <text> glyphs). Georgia's default figures are old-style. Also: `numeral-tracing.tsx:96-98`.
-- **Fix hint:** Use a lining-figure face (e.g. the system-ui body stack or a dedicated numeral font) for all child-facing numerals; Georgia has no lining alternates.
-- **Note:** PRD 19 adds the `--font-numeral` token (Step 5), so lining figures become a one-token change. It changes materials and printables, so it needs its own approval and a new print baseline.
 
 **S9-01** · high · overflow clipping · recurring — Walkthrough on a phone held sideways: step card covers the mat and its Next/Previous buttons fall off the bottom
 - **Pages:** `/materials/golden-beads?present=golden-beads-addition`, `/materials/stamp-game?present=stamp-game-addition` (a phone held sideways (844×390))
@@ -543,17 +543,19 @@ How the virtual materials render and behave inside their stage, plus the walk-th
 - **Pages:** `/materials/checkerboard`, `/materials/multiplication-bead-board`, `/materials/division-board`, `/materials/fraction-circles` (at 1400, 820 and 390px)
 - **Cause:** checkerboard.css:99-107 (.checkerboard-cell-value 0.62rem, rgba(0,0,0,.55) on pastel) and :120-128 (.checkerboard-edge-bottom 0.68rem). multiplication-bead-board.css:106-115 (count label 12px in a 396-unit viewBox that renders at 300px, see S4-08, so about 9px) and :34-40 (slot label 0.72rem). division-board.css:80-85 `.division-board-slot-empty{border:2px dashed var(--line)}` is #e4ddcc on the white board (--card).
 - **Fix hint:** Set a minimum on-material label size (~12-13px rendered), use darker ink on pastels, and give the slot targets a solid outline.
+- **Note:** PRD 19 sets these labels in MM Sans (Step 7) but doesn't change their size or contrast (PRD 19, open question 22).
 
 **S4-20** · low · typography · recurring — Monospace 'code' font used for written records
 - **Pages:** `/materials/multiplication-bead-board`, `/materials/racks-and-tubes`, `/materials/decimal-board` (at 1400, 820 and 390px)
 - **Cause:** --font-mono (tokens.css:73) is used at multiplication-bead-board.css:227 (record list), racks-and-tubes.css:225-230 (.racks-and-tubes-paper-sheet) and decimal-board.css:160-167 (.decimal-board-value).
 - **Fix hint:** Use the body/numeral face with tabular-nums for aligned columns; keep mono out of child-facing UI.
+- **Note:** PRD 19 leaves `--font-mono` unchanged: racks and tubes lines up its record by character (PRD 19, open question 23).
 
 **S9-22** · low · color contrast · recurring — Keyboard focus ring almost invisible on the felt and wood mats; walkthrough never takes focus
 - **Pages:** `/materials/golden-beads`, `/materials/stamp-game`, `all felt/wood materials`, `/materials/golden-beads?present=golden-beads-addition` (at 1400, 820 and 390px)
 - **Cause:** src/styles/global.css:55-58 — :focus-visible { outline: 3px solid var(--focus) } with --focus:#1e6bb8 (src/styles/tokens.css:53). Computed contrast ≈1.15:1 against --felt #3f6b4f and ≈1.69:1 against --wood #b58863 (the mat patterns are at materials.css:68-80). src/lessons/PresentationOverlay.tsx:16 is role='region' with no focus management and no Escape handler. Also: `MaterialPage.tsx:42-45`.
 - **Fix hint:** Inside .material-stage use a two-tone ring (2px white inside a 2px near-black). Move focus to the step card on open, and close it on Esc.
-- **Note:** Fixing it changes computed styles inside the material stages, which PRD 19 keeps identical.
+- **Note:** It is focus styling on the mat, not type or labels, so it stays with PRD 20 (PRD 19, open question 24).
 
 **S2-14** · low · consistency — Teen Board and Ten Board render the Seguin board differently; teen '10' reads as '1 0'
 - **Pages:** `/materials/teen-board`, `/materials/ten-board` (at 1400, 820 and 390px)
@@ -668,7 +670,7 @@ How the virtual materials render and behave inside their stage, plus the walk-th
 
 ## PRD 20 candidates: printables and print content
 
-What the worksheets, kits, planner, control charts and printed guides put on paper. PRD 19 keeps every printable sheet computed-style identical, so none of these change.
+What the worksheets, kits, planner, control charts and printed guides put on paper. PRD 19 changes only the type and chrome tokens on printable sheets (the Album's faces, lining figures, ink and hairlines, Steps 6–7), so none of these is resolved. When PRD 19 is complete the owner reviews every printable and makes a list of changes; these candidates are there to draw on.
 
 **S6-01+S7-01** · high · print · recurring — Worksheet-specific CSS silently loses to the shared worksheet CSS: write-on blanks shrink to about 0.25in and answer keys squeeze into 4 columns
 - **Pages:** `/worksheets/decimals`, `/worksheets/long-division`, `/worksheets/golden-bead-pictures`, `/worksheets/multi-digit-ops`, `/worksheets/place-value` and 3 more (at 1400, 820 and 390px; in print)
@@ -766,6 +768,7 @@ What the worksheets, kits, planner, control charts and printed guides put on pap
 - **Pages:** `/worksheets/golden-bead-pictures`, `/worksheets/decimals`, `/worksheets/long-division`, `/worksheets/multi-digit-ops`, `/worksheets/math-facts` (at 1400, 820 and 390px; in print)
 - **Cause:** Each generator places and styles its own numbers. golden-bead-pictures.tsx:136-138 puts the number on its own line in read mode, while :158-161 puts it inline with the numeral in draw mode. decimals.css:3-6 and worksheets.css:94-100 use mono numerals, while math-facts and place-value use the body sans. long-division.css:43-46 (.long-division-eq mono) wraps the recording-sheet problem number, so that number is mono.
 - **Fix hint:** One shared problem-number component (top-left, fixed size) and one numeral face with tabular lining figures for all sheets.
+- **Note:** After PRD 19 every sheet's figures are lining (Step 7), but the mono and body faces still vary (PRD 19, open question 23).
 
 **S7-17** · low · typography · recurring — Problem numbers are tiny grey and sit tight against the problem ('1. 6 ⟌ 5,034' reads as 1.6)
 - **Pages:** `/worksheets/long-division`, `/worksheets/math-facts`, `/worksheets/multi-digit-ops`, `/worksheets/decimals`, `/worksheets/place-value` (in print)

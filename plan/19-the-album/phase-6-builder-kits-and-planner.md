@@ -3,7 +3,7 @@
 Part of [PRD 19 — The Album: visual redesign](../19-the-album.md). Steps 39–41. Steps are numbered across the whole PRD; read the PRD’s decisions, conventions and rollout first.
 
 
-The three tool pages get the PageHeader with their actions at the top right, a labelled settings panel, and the printable preview on the desk. Their printed output must not change: the print gate PASSes after every step. This phase depends only on Phases 1–3, so it can move ahead of Phase 5 (see [Rollout](../19-the-album.md#rollout)).
+The three tool pages get the PageHeader with their actions at the top right, a labelled settings panel, and the printable preview on the desk. These steps change the pages around the printables, not the printables: the sheets keep the type and tokens they took in Phase 1, and the desk is screen only. This phase depends only on Phases 1–3, so it can move ahead of Phase 5 (see [Rollout](../19-the-album.md#rollout)).
 
 ## Step 39 — The worksheet builder
 
@@ -418,7 +418,7 @@ export default function BuilderPage() {
 The only print rule, `@media print { .builder-layout { display: block } }`, is unchanged. `.builder-actions` is gone because its buttons moved into the PageHeader.
 
 **Check:**
-- `npm run build` is green, and the print gate PASSes.
+- The standard check (convention 12) passes, and print preview shows only the sheets (student sheet, then the answer key), with no page chrome.
 - **1400×900, `/worksheets/multi-digit-ops`:**
   - The title "Multi-Digit Operations", `[AGES 5–9] PASSAGE TO ABSTRACTION`, the ink lede, and New problems (card stock, refresh glyph) + Print (rubric, print glyph) sit top right, with Print's bottom under y = 160.
   - "SHEET SETTINGS" in ink capitals sits under a 2px ink rule.
@@ -449,7 +449,7 @@ The kit gets the builder's anatomy:
 - the pages on the desk.
 
 The kit page chrome rules live with the builder's, in `worksheets.css` (Step 39: `.panel-text`, `.panel-steps`, `.page-forwith`), not in `kits.css`, for two reasons:
-- `kits.css` holds only printed-piece rules, and leaving it byte-identical is the simplest proof they didn't change;
+- `kits.css` holds only printed-piece rules, which PRD 19 doesn't edit (print changes wait for the owner's printables list);
 - `KitPage.tsx` imports it, and the audit found that CSS imported by page modules lands *before* the global sheets in the bundle (S6-01), so a chrome rule there would lose ties on order.
 
 Current lines 25–42:
@@ -561,7 +561,7 @@ export default function KitPage() {
 The kit preview still opens on the calibration page, because print order is unchanged. Showing a piece page first on screen needs owner approval (PRD 20).
 
 **Check:**
-- `npm run build` is green, and the print gate PASSes. All 7 kits, in colour and `bw=1`, are covered.
+- The standard check (convention 12) passes, and in print preview `/kits/golden-bead-cards` and `/kits/strip-boards?bw=1` print only their pages, calibration page first.
 - **`/kits/golden-bead-cards` at 1400:**
   - The title, lede and "For use with: Golden Beads & Mat" are at the left, and the rubric Print is at the top right.
   - The panel shows "IN THIS KIT", the piece list, "ASSEMBLY" and four steps with italic rubric numerals, then the B&W checkbox and the printing tip.
@@ -1420,7 +1420,7 @@ Lines 23–42 (`/* ---------- Printed pages ---------- */` onward) are unchanged
 
 **Check:**
 - `npm test`: the two new `groupByStrand` tests pass.
-- `npm run build` is green, and the print gate PASSes. Both planner routes are compared, including the sheet's page offset, which proves the 2rem print margin held.
+- The standard check (convention 12) passes, and printing the 13-item plan from Step 43's review list gives the plan, then two journal pages with "(continued)", with no page chrome on paper.
 - **390, `/planner`:** `document.documentElement.scrollWidth === innerWidth`. Each row is a name line, then (worksheets only) a full-width preset select, then an 8.5rem day select, indented to the name. No name breaks one word per line.
 - **820:** the shelf is under the header, above "LESSONS". Tick a lesson: it appears on the shelf with its kind, Print appears full width, and Copy link and Clear week share the row below.
 - **1400:** the shelf is at the right and stays in view while the picker scrolls. With 13 items it scrolls inside itself, and its buttons stay reachable.

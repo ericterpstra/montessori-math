@@ -1,8 +1,8 @@
 # PRD 19 — The Album: visual redesign
 
 **Status:** Not started
-**Effort:** L — about 9 working days. The prototype's estimate for the re-skin, the 21 plate thumbnails and print QA is 7–8 days; running the print gate on every phase and testing on a real iPad, phone and B&W laser printer add about one more.
-**Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session are merged to `main` (PR #7: `84ff957`, `e24aa01`, `477ac70`, `dbe71b6`), and so is an error boundary around the routed page (PR #8: `d769872`), which Step 12 keeps. Step 1 tags the print baseline on that `main`, and Step 39 is written against the post-fix `BuilderPage.tsx`.
+**Effort:** L — about 8–9 working days. The prototype's estimate for the re-skin, the 21 plate thumbnails and print QA is 7–8 days; testing on a real iPad, phone and B&W laser printer adds up to one more.
+**Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session are merged to `main` (PR #7: `84ff957`, `e24aa01`, `477ac70`, `dbe71b6`), and so is an error boundary around the routed page (PR #8: `d769872`), which Step 12 keeps. Implementation starts from that `main`, `bbbdb44`, on the `album` branch, and Step 39 is written against the post-fix `BuilderPage.tsx`.
 
 ## Why
 
@@ -18,7 +18,7 @@ A page-by-page visual audit in September 2026 rendered all 97 routes in Chrome a
 
 The Album treats the site as a well-made book: a Montessori teacher's album that happens to live on screen. Pages are warm paper and text is near-black ink. A book serif (Newsreader) sets everything you read, and a plain sans (MM Sans, a renamed subset of Source Sans 3) sets everything you operate. Fine rules replace boxes. Chapters are numbered, lesson steps are set like a printed album, and every index reads like a table of contents with a small mounted plate of each material.
 
-Colour belongs to the materials. The golden beads, the place-value green, blue and red, and the bead stair become the brightest things on every page. The chrome adds only a golden silk ribbon, a three-bead fleuron and one rubric red for numerals, quote marks and the page's single primary action. A lesson on screen and the same lesson on paper look like one object. Worksheets, kits and the planner print exactly as they do now.
+Colour belongs to the materials. The golden beads, the place-value green, blue and red, and the bead stair become the brightest things on every page. The chrome adds only a golden silk ribbon, a three-bead fleuron and one rubric red for numerals, quote marks and the page's single primary action. A lesson on screen and the same lesson on paper look like one object. Worksheets, kits, the planner's printouts and the materials take the album's type; once the redesign is complete, the owner reviews every printable and decides what else should change.
 
 These screenshots come from the working prototype, which re-skinned the live pages (see [Reference assets](#reference-assets)).
 
@@ -42,24 +42,30 @@ These screenshots come from the working prototype, which re-skinned the live pag
 
 The audit's full report is private. Everything this PRD needs from it is in [19-the-album/audit-findings.md](19-the-album/audit-findings.md): all 165 verified findings, each marked as resolved by a step here, fixed in the bug-fix session, or left as a candidate for PRD 20.
 
-## Owner decisions (locked 2026-09-29)
+## Owner decisions
 
-1. **Direction.** The Album, chosen over two other directions after a panel scored all three for parents and Montessori authenticity, visual craft, and feasibility under the hard rules.
-2. **Fonts.** Self-host Newsreader (reading and display) and Source Sans 3 (UI) as woff2 files in `public/fonts/`, under the SIL Open Font License 1.1, precached by the service worker. The approved budget is about 148 KB; the build in Step 2 measures 116.6 KB, with a hard 200 KB cap in Step 4. Source Sans 3 declares "Source" as a Reserved Font Name, so the modified subset ships renamed **MM Sans**. Only Newsreader roman is preloaded. There is no font CDN and no `@import`.
-3. **Print.** Lessons and guides print in the album design: running head, margin heads and hung numerals. That change requires page-break QA on the longest lessons and a test on a black-and-white laser printer (Steps 34 and 38). Worksheets, kits and planner printables stay computed-style identical in print, in colour and with `bw=1`. The print gate (Step 1) proves it on every phase.
-4. **Primary buttons are rubric.** The home call to action, every Print button and the builder's primary action are rubric red `#9a3b27` with `#fffdf8` text, 6.82:1.
-5. **Scope.** PRD 19 is the visual system and the page chrome only. Audit findings about how materials render and what printables contain are candidates for PRD 20. The four functional bugs are fixed in the separate session and are out of scope here: the Hundred chain crash, the blank "Print control charts", number fields clamping each keystroke, and the answer-key number glued to its operand.
+These are the owner's words and choices. Everything else in this PRD is Claude's design; the open questions list the choices the owner may want to revisit.
+
+1. **Direction.** "Go with The Album, save it to plan/." The Album was one of three directions mocked up on the live pages.
+2. **Fonts: "Self-host both."** Newsreader and Source Sans 3, both under the SIL Open Font License 1.1, ship with the site as woff2 files in `public/fonts/`, precached by the service worker (Steps 2–4). There is no font CDN and no `@import`. Source Sans 3's licence reserves the name "Source", so the modified subset ships renamed **MM Sans**.
+3. **Lesson and guide print: "Print in the new design."** Lessons and guides print in the album design: running head, margin heads and hung numerals (decision 27, Steps 34 and 38).
+4. **Primary buttons: "Rubric red."** The home call to action, every Print button and the builder's primary action are rubric `#9a3b27` with `#fffdf8` text, 6.82:1.
+5. **Scope: "Separate follow-up PRD."** PRD 19 is the visual system and the page chrome. Audit findings about how materials render and what printables contain are candidates for PRD 20. The four functional bugs are fixed in the separate session and are out of scope here: the Hundred chain crash, the blank "Print control charts", number fields clamping each keystroke, and the answer-key number glued to its operand.
+6. **No print gate (2026-09-29).** The owner, verbatim: "This line: 'The owner's rule is that worksheets, kits and the planner print exactly as before, and that no material changes.' is not true. I don't recall saying that, and if I did, I've changed my mind. Regression tests against every printable are not needed. In fact, after the redesign to 'The Album' is complete, I want to take a look at the printables myself and make a list of changes." That rule came from Claude's own option description, not from the owner. The owner chose to remove Phase 0 entirely, which removed the print regression gate (Step 1). With decisions 7 and 8 the token shield (Step 5), which the gate existed to prove, has no job left and is removed too.
+7. **Printables: "Let them pick up the new look."** Worksheets, kits, the planner's printouts and the other printables take the new fonts and tokens as each phase lands. When PRD 19 is complete, the owner reviews every printable in its Album version, and that list of changes drives the real print changes (Step 43 hands over the checklist).
+8. **Materials: "Yes, type and labels."** The virtual materials take the new fonts and label styling, which also fixes Georgia's bouncing old-style numerals on number cards (audit S7-05). Montessori colours stay exactly as they are, per `CLAUDE.md`. Material layout and rendering stay with PRD 20 (owner decision 5). Claude's default for PRD 19: the Album's faces reach every label on the mat; label sizes, tracking and contrast stay with PRD 20 unless the owner says otherwise (open question 22).
+9. **Non-Montessori colours inside materials: "Follow the Album palette."** Without the shield, the chrome tokens materials share with the page take the Album values inside every stage too: card stock `#fffdf8` instead of white on pieces and trays, the darker ink and hairlines, and rubric instead of terracotta for the notices and buttons seven materials draw in the accent (open question 26). Montessori colours are unaffected (decision 8).
 
 ## Binding product rules
 
 From `CLAUDE.md`, restated as they bind this work:
 
 1. **No accounts, tracking or gamification.** Nothing new is stored. The only new state is ephemeral UI: the planner's "Link copied" status and the nav's scroll position on phones. No localStorage, no praise animation, no progress.
-2. **Practice happens on paper.** No new on-screen child activity. The materials behave exactly as before.
-3. **Print is first-class, and colour never carries information alone.** The print gate keeps every worksheet, kit and planner printable identical, in colour and B&W. Lessons and guides print in the new design and must read cleanly on a B&W laser. In the chrome, meaning always has a non-colour cue: the active nav link is bold, the age is a boxed stamp, spoken lines are italic with quote marks and an indent, disabled controls are dashed, and links are underlined.
+2. **Practice happens on paper.** No new on-screen child activity. The materials behave exactly as before. They take the Album's type (owner decision 8) and the chrome tokens they share with the page (paper, card, ink, hairlines, rubric; open question 26); Montessori colours, piece shapes, sizes and layout don't change.
+3. **Print is first-class, and colour never carries information alone.** Printables take the Album's type and chrome tokens (owner decision 7); the `.bw` class still overrides every material colour, and no printable's content or layout changes in PRD 19. Lessons and guides print in the new design and must read cleanly on a B&W laser. After PRD 19 the owner reviews every printable (Step 43). In the chrome, meaning always has a non-colour cue: the active nav link is bold, the age is a boxed stamp, spoken lines are italic with quote marks and an indent, disabled controls are dashed, and links are underlined.
 4. **Fully static and offline.** The fonts are same-origin files in `public/fonts/`, precached by the service worker. The prototype's Google Fonts `@import` is a mock-only stand-in and never ships. No runtime request leaves the origin.
-5. **No new npm dependencies.** The fonts are built once with fontTools, a Python tool installed outside the repo, and the print gate is a console script. Runtime dependencies stay `react`, `react-dom` and `react-router-dom`, and `package.json` does not change.
-6. **Montessori authenticity.** Material tokens (`--pv-*`, `--bead-*`, `--golden*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame`, `--fraction-shade`) are never re-pointed, and no material component's own rendering is edited. The token shield (Step 5) hands the old chrome values back to every material stage and printable sheet. The plate thumbnails are drawn with the real bead primitives and colour rules, and Plate I shows the golden beads in true proportion.
+5. **No new npm dependencies.** The fonts are built once with fontTools, a Python tool installed outside the repo. Runtime dependencies stay `react`, `react-dom` and `react-router-dom`, and `package.json` does not change.
+6. **Montessori authenticity.** Material tokens (`--pv-*`, `--bead-*`, `--golden*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame`, `--fraction-shade`) are never re-pointed, and Montessori colours stay exactly as they are (owner decision 8). Inside materials the type changes (the Album's faces and lining figures, Steps 6–7) and the shared chrome tokens take the Album's values (Step 6, open question 26); nothing else does. No material component's own rendering is edited; material layout is PRD 20. The plate thumbnails are drawn with the real bead primitives and colour rules, and Plate I shows the golden beads in true proportion.
 7. **Plain CSS and tokens.** Colours come only from CSS variables defined in `tokens.css`. No TSX file has a colour literal. Print rules may use `#000`, as `print.css` already does. No `:has()`, no `[style]` attribute selectors, no CSS-generated captions, and no JavaScript DOM surgery: the prototype's shortcuts all become real classes and markup.
 8. **TypeScript strict with `verbatimModuleSyntax`.** Type-only imports use `import type`. Tests are colocated, run in Vitest's node environment, and test pure logic, never React rendering.
 9. **Access.** Every chrome control is at least 44px (`--touch-target`), keeps a visible 3px focus ring, and meets WCAG AA contrast (measured ratios below). Every chrome transition and animation respects `prefers-reduced-motion`.
@@ -90,19 +96,17 @@ All values live in `src/styles/tokens.css` (Step 6).
 | `--fleuron` | three radial-gradient golden beads, 44×12px | The section-break ornament |
 | `--focus` | `#1e6bb8` (unchanged) | The 3px focus ring |
 | `--golden*`, `--pv-*`, `--bead-*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame`, `--fraction-shade` | unchanged | Material colours. The chrome borrows golden only for the silk ribbon, the fleuron and `::selection` |
-| `--mat-*` | the pre-PRD-19 chrome values | The source of the token shield |
-| `--chrome-*` | the chrome values, resolved at `:root` | Twins for chrome drawn on or inside a shielded element |
+| `--radius`, `--radius-sm`, `--shadow-sm`, `--shadow-md` | unchanged: 10px, 6px, `0 1px 3px rgba(51, 48, 42, 0.12)`, `0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12)` | Legacy shape tokens: the corners, depth and hover lift of material pieces. The chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet` |
 
-The legacy names `--radius` and `--radius-sm` now alias 2px, `--shadow-sm` is a transparent zero shadow, and `--shadow-md` is the sheet shadow. That flattens the old card chrome before later steps restyle it.
+The legacy shape tokens are not re-pointed, because material pieces draw with them (Step 6). Legacy chrome rules that still use them (`.card`, `label.field`, the legacy `.btn`, the old help box) keep their rounded corners until the step that replaces them.
 
 ### Type
 
 | Token | Value | Use |
 |---|---|---|
-| `--font-text` | `'Newsreader', 'Newsreader Fallback', Georgia, 'Times New Roman', serif` | Everything you read, and titles. `--font-heading` and `--font-body` alias it in the chrome |
+| `--font-text` | `'Newsreader', 'Newsreader Fallback', Georgia, 'Times New Roman', serif` | Everything you read, and titles. `--font-heading` and `--font-body` alias it (inside a material stage, and in the no-print bars inside sheet previews, `--font-body` is MM Sans: Step 7) |
 | `--font-ui` | `'MM Sans', 'MM Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif` | Everything you operate: nav, buttons, fields, labels, meta, tables |
-| `--font-numeral` | `Georgia, 'Times New Roman', serif` | Number-card and stamp figures inside materials (unchanged look) |
-| `--font-material` | `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif` | The legacy body face the shield gives back to stages and sheets |
+| `--font-numeral` | `var(--font-text)` (Newsreader) | Figures on number cards and in the plate drawings: Newsreader's lining figures (Step 7, audit S7-05) |
 
 | Step | Token | Size | Use |
 |---|---|---|---|
@@ -152,84 +156,44 @@ Measured with the WCAG 2.x formula against the surface named.
 
 `--line-strong` is deliberately darker than the prototype's `#9c907c`, which gave 2.79:1 on paper and 2.51:1 on paper-warm and failed WCAG 1.4.11 for field borders. `--link-rule` is darker than the prototype's `#c79a8b` for the same reason: at 2.21:1 on paper (1.99:1 on paper-warm) the only cue on an ink link fell below 3:1.
 
-### The token shield
+### Inside materials and printables
 
-Re-skinning the chrome must not change a single material or printout, and both read the same token names the chrome does. The shield solves this in `tokens.css`:
+Material stages and printable sheets read the same token names as the chrome, so they take the Album's values (owner decision 7 for the printables' type and tokens, owner decision 8 for the materials' type; for the materials' paper, card, ink, hairlines and rubric this is Claude's default, open question 26). There is no token shield.
 
-- The pre-PRD-19 chrome values are kept as `--mat-*` source tokens.
-- On every `.material-stage` and every `.print-sheet`, the 17 chrome tokens that material and print CSS read (`--paper`, `--paper-warm`, `--card`, `--ink`, `--ink-soft`, `--line`, `--accent`, `--accent-dark`, `--on-accent`, `--radius`, `--radius-sm`, `--shadow-sm`, `--shadow-md`, `--font-heading`, `--font-body`, `--font-text`, `--font-ui`) are pinned back to those values.
-- A zero-specificity rule resets the text metrics a stage or sheet would inherit from the new body (font family, 1rem, line-height 1.55, and ink colour on the stage).
-- Material tokens are never listed, because they are never re-pointed.
-
-Two small additions complete it. **Chrome twins** (`--chrome-paper`, `--chrome-ink` and so on) are resolved at `:root` and keep the chrome value inside a shielded element; the plate mount drawn on `.material-stage` (Step 28) uses them. **The shield exception** `.print-sheet .no-print` hands the chrome values back to control bars that sit inside a sheet preview but never print (the chart materials' print bars), so their Print button is rubric.
-
-The shield is installed while every value is still the old one (Step 5), and only then are the chrome tokens re-pointed (Step 6). The stage gates and the print gate prove it: 0 computed-style differences inside all 21 stages at 1400px and 19 at 390px, and in every printable.
-
+- **Faces.** Headings, numerals and sheet text are Newsreader (`--font-heading`, `--font-body`, `--font-numeral`). Inside a material stage, text, labels and buttons are MM Sans: Step 7 re-scopes `--font-body` to `--font-ui` inside a stage and in the no-print bars inside sheet previews. Figures are lining everywhere, which ends Georgia's old-style numerals (audit S7-05).
+- **Surfaces and ink.** `--paper`, `--paper-warm`, `--card`, `--ink`, `--ink-soft`, `--line`, `--accent` and `--accent-dark` take the Album's values: slightly warmer paper and card stock (`#fffdf8` instead of white on pieces and trays), darker ink and hairlines, and rubric instead of terracotta for the few notices and buttons that seven materials draw in the accent (open question 26).
+- **Unchanged.** Every Montessori colour (`--pv-*`, `--bead-*`, `--golden*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame`, `--fraction-shade`) and the `.bw` overrides; the legacy shape tokens `--radius` (10px), `--radius-sm` (6px), `--shadow-sm` and `--shadow-md`, which give material pieces their corners, depth and hover lift; `--font-mono`; and each material's and sheet's own sizes, tracking, spacing and layout. Stages and sheets keep their 16px / 1.55 base (Step 7), so the body's 18px reading size doesn't rescale them.
+- **Reflow.** Small reflows from the new faces' metrics are accepted. Anything clipped, overlapping, blank or unreadable is fixed in the step that caused it. How printables should look is the owner's review after PRD 19 (Step 43); material layout is PRD 20.
 
 ## Conventions every step follows
 
 The steps below rely on these rules. Each one is defined by an early step and then assumed by every later one.
 
-1. **The chrome guard.** Any chrome rule written as an *element* selector (h1–h4, p, li, dd, a), or on a class that also appears inside materials (`.btn`), ends in `:where(:not(.material-stage *, .print-sheet *))`. `.btn` uses `:where(:not(.material-stage *))` only, because the print bars inside sheet previews are chrome. The guard adds no specificity. The legacy element rules stay in place above the guarded rules and still style everything inside a stage or sheet. Rules on chrome-only classes (`.page-header`, `.contents-row`, `.album …`) don't need the guard.
-2. **The token shield** (Step 5) pins 17 legacy chrome tokens on `.material-stage` and `.print-sheet`, and resets their `font-family`, `font-size` and `line-height` (plus `color` on the stage). Never re-point `--pv-*`, `--bead-*`, `--golden*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame` or `--fraction-shade`.
-3. **Chrome twins.** Inside a shielded element, `--paper`, `--ink` and the other pinned names hold the *legacy* values, and that includes the stage element's own properties. Chrome drawn on or inside a shielded element uses the twin instead: `--chrome-paper`, `--chrome-ink`, `--chrome-line`, `--chrome-accent` and so on (Step 6). For example, the plate mount that Step 28 draws with inset box-shadows on `.material-stage` must use `var(--chrome-ink)` and `var(--chrome-paper)`, or it comes out in the old colours.
-4. **Containers around a stage or sheet** (`.material-shell`, `.material-plate`, `.builder-preview`, `.sheet-preview`, `.planner-preview`) may set `font-family`, `font-size`, `line-height` and `color`, because the shield resets those. They must not set any other inherited text property (`letter-spacing`, `font-style`, `font-weight`, `text-transform`, `text-wrap`, `font-variant*`, `font-feature-settings`). Any of those would leak into materials and printouts.
+1. **The chrome guard.** Any chrome rule written as an *element* selector (h1–h4, p, li, dd, a), or on a class that also appears inside materials (`.btn`), ends in `:where(:not(.material-stage *, .print-sheet *))`. `.btn` uses `:where(:not(.material-stage *))` only, because the print bars inside sheet previews are chrome. The guard adds no specificity. The legacy element rules stay in place above the guarded rules and still style everything inside a stage or sheet, now in the Album's faces and colours (convention 2). The guard keeps the chrome's page-scale sizes, weights, tracking, wrapping and link styling out of materials and printables, which keep their own. Rules on chrome-only classes (`.page-header`, `.contents-row`, `.album …`) don't need the guard.
+2. **Materials and printables take the Album's type** (owner decisions 7 and 8). They read the same tokens as the chrome (for the materials' paper, card, ink and rubric, open question 26). Step 7's materials-and-printables block in `global.css` gives every `.material-stage` and `.print-sheet` the 16px / 1.55 base they were laid out on and lining figures, and sets a stage's text in MM Sans (`--font-body` is re-scoped to `--font-ui` inside a stage and in the no-print bars inside sheet previews); number cards use `--font-numeral` and stamps MM Sans. Never re-point `--pv-*`, `--bead-*`, `--golden*`, `--felt`, `--wood`, `--wood-dark`, `--inset-frame` or `--fraction-shade`, nor the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` that material pieces draw with; chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet`.
+3. *Removed 2026-09-29.* The chrome twins (`--chrome-*`) existed only for the token shield (owner decisions 6–8). Chrome drawn on or inside a stage or sheet, such as the plate mount (Step 28), uses the plain tokens.
+4. **Containers around a stage or sheet** (`.material-shell`, `.material-plate`, `.builder-preview`, `.sheet-preview`, `.planner-preview`) may set `font-family`, `font-size`, `line-height` and `color`: the stage and the sheet set their own (Step 7, `print.css`). They must not set any other inherited text property (`letter-spacing`, `font-style`, `font-weight`, `text-transform`, `text-wrap`, `font-variant*`, `font-feature-settings`). Any of those would leak the chrome's styling into materials and printouts.
 5. **No blanket UI-font rule.** The prototype's `:where(button, select, input, textarea, label, summary, table):not(...) { font-family: var(--font-ui) }` is not carried over. `.btn` and `.badge` set `var(--font-ui)` themselves (Steps 9 and 11). Every other chrome container that holds controls sets `font-family: var(--font-ui)` itself: the nav, the material toolbar, fields, tables, panels.
 6. **Motion.** Every chrome `transition` or `animation` is declared inside `@media (prefers-reduced-motion: no-preference)`, so a reader who asks for less motion gets instant state changes and no movement.
 7. **Font weights on offer.** Newsreader roman 350–600, Newsreader italic 400–500, MM Sans 400–700. A weight outside a face's range draws at the nearest weight inside it. Newsreader has no small caps (`font-variant: small-caps` is synthesised) and no arrow glyphs (→ falls back per glyph). MM Sans has no italic (it is slanted synthetically).
 8. **Icons.** Use `<Icon name="…" />` from `src/components/Icon.tsx` (Step 8). A control that shows an icon keeps its text as the accessible name. The button pattern is `<button className="btn has-icon"><Icon name="print" /><span className="btn-label">Print</span></button>`. The guard test from Step 10 fails if an emoji appears anywhere in `src/`.
 9. **Stylesheet order.** After Steps 3, 12, 15 and 16, `src/main.tsx` imports, in this order: `fonts.css`, `tokens.css`, `global.css`, `layout.css`, `contents.css`, `forms.css`, `print.css`, then the existing `materials.css`, `album.css`, `worksheets.css`, `guides.css`, `planner.css` and `presentation.css`. Print rules still load after every screen rule they override, and the page stylesheets (`materials.css`, `album.css`, `guides.css`) refine the shared ones on order. Don't reorder the existing imports: audit finding S6-01 (a PRD 20 candidate) depends on today's order.
-10. **Line numbers.** Every quoted line number refers to the file at `album-baseline`: `main@0faa268` plus the four bug-fix commits. Earlier steps in this PRD shift lines, so always find the code by the quoted text; the numbers are only a guide. Where the bug-fix commits moved a line, both numbers are given.
+10. **Line numbers.** Every quoted line number refers to the file at `bbbdb44`, the `main` PRD 19 starts from (`main@0faa268` plus the four bug-fix commits and the error boundary). Earlier steps in this PRD shift lines, so always find the code by the quoted text; the numbers are only a guide. Where the bug-fix commits moved a line, both numbers are given.
 11. **No inline styles on pages.** Page components style through classes. The only `style={{…}}` props allowed outside the material, generator and kit components (which this PRD doesn't touch) are the logo gradient's `stopColor` in `Layout.tsx`, the SVG paint and numeral font styling in `MaterialThumb.tsx` (token values for colour and family, plus the numerals' `fontWeight: 700`) and `SheetPreview`'s measured `zoom`.
-12. **The gates.** "The print gate PASSes" means: with the PRD branch on the dev server, run `await printGate.run({ label: 'after' })` and then `await printGate.compare('before', 'after')`, and the console prints `PRINT GATE PASS`. "The stage gate PASSes" means both stage suites pass: `run({ label: 'stages-after', suite: 'stages' })` with `compare('stages-before', 'stages-after')` (1400px), then `run({ label: 'stages390-after', suite: 'stages390' })` with `compare('stages390-before', 'stages390-after')` (390px), and the console prints `STAGE GATE PASS` both times. Step 1 records the `before`, `stages-before` and `stages390-before` baselines once and explains the procedure.
+12. **Checks.** Each step ends with a **Check:** list. Besides its own items, every step's checks include *the standard check*: `npm run build` and `npm test` are green, and on `npm run dev` the pages the step names look right in a browser, plus one material (`/materials/golden-beads`) and one printable in print preview (`/worksheets/multi-digit-ops?seed=424242&key=1`) whenever the step changes shared CSS, tokens or a component that renders them. Small reflows from the Album's type inside materials and printables are expected; a clipped, overlapping, blank or unreadable result is not, and is fixed in the step. There is no regression gate (owner decision 6): how printables should look is the owner's review after PRD 19 (Step 43).
 
-### The shield probe
+## Design decisions
 
-The gates are the full check. The shield probe is the quick one for a single page, used by several **Check:** lines. Paste it into the DevTools console on the page under test. It copies one line per element inside every stage and sheet to the clipboard, and skips `.no-print` subtrees because they never reach paper. The stage box's own corner radius and box-shadow are the plate mount that Step 28 draws on it (chrome, not material), so the probe records them as `(mount)`, as the stage gate does.
+Claude's design. Later steps refer to these by number; the open questions list the ones the owner may want to change.
 
-```js
-(() => {
-  const P = ['font-family', 'font-size', 'font-weight', 'font-style', 'line-height', 'letter-spacing', 'text-transform',
-    'color', 'background-color', 'border-top-color', 'border-top-width', 'border-top-left-radius', 'box-shadow',
-    'padding-top', 'margin-top']
-  const MOUNT = ['border-top-left-radius', 'box-shadow'] // the stage's own plate mount (Step 28)
-  const rows = [...document.querySelectorAll('.material-stage, .material-stage *, .print-sheet, .print-sheet *')]
-    .filter((e) => !e.closest('.no-print'))
-    .map((e) => {
-      const s = getComputedStyle(e), r = e.getBoundingClientRect()
-      const mount = e.matches('.material-stage')
-      return `${e.tagName}.${e.getAttribute('class') ?? ''} ${r.width.toFixed(1)}x${r.height.toFixed(1)} ` +
-        P.map((p) => (mount && MOUNT.includes(p) ? '(mount)' : s.getPropertyValue(p))).join(' | ')
-    })
-    .sort()
-  copy(rows.join('\n'))
-  return `${rows.length} rows copied`
-})()
-```
+### The print gate (removed)
 
-**Procedure.** Run it on `album-baseline` and paste the output into `before.txt`. Apply the step, reload, run it again and paste into `after.txt`. `diff before.txt after.txt` must print nothing.
-
-- Screen probes use a 1400px-wide window.
-- Print probes use DevTools › Rendering › "Emulate CSS media type: print", with the window 720px wide.
-- Worksheet URLs pin the seed, e.g. `?seed=424242&key=1`.
-
-## Design decisions (locked — do not revisit)
-
-Later steps refer to these by number.
-
-### The print gate
-
-1. **The print gate lands first,** before any PRD 19 source change (Step 1), and every later **Check:** runs it. It is a console script, not a test, for two reasons: computed print styles need a real browser, and the project has no browser test dependency (hard rule 5).
-2. **The gate compares two dev servers on one origin.** The baseline worktree and then the PRD branch are each served by `npx vite --port 5199`, one after the other, so both runs land in the same IndexedDB. It does not use `npm run preview`: the production service worker answers every navigation from its cached shell (`scripts/generate-sw.mjs`, fetch handler), so after a rebuild on the same origin the gate could test the old build. The audit showed that Vite dev injects styles in the same order as the production bundle (S6-01), so dev-to-dev is a faithful comparison.
-3. **Print emulation matches Chrome's printer.** Every `@media` rule is evaluated as print would evaluate it and unwrapped **in place**, so the cascade order stays exact. Features are evaluated at the 720px frame width, the Letter printable width (8.5in − 2 × 0.5in `@page` margins). The signature records each element's box relative to its sheet, 79 computed properties, `::before`/`::after`, and the sheet's own page offset. `.no-print` subtrees inside a sheet are skipped: they never reach paper, and Step 6 deliberately gives them chrome tokens.
-   - **What else reaches paper.** Each print route also records every visible leaf element with text *outside* the sheets, and the printed document's height. Chrome that loses its `.no-print`, or a stray trailing page, is therefore a difference too.
-   - **Printables on material pages.** Besides the 13 generators, 7 kits and the planner, the print suite opens the two control-chart sheets and the hundred and thousand chains' arrow labels by pressing their buttons, in colour and B&W: 50 routes in all. PRD 19 changes everything around them (the shield exception, `PrintButton`, `SheetPreview`, the material page's structure that their print isolation depends on).
-   - **The stage suites** record every element inside each `.material-stage`, and the stage box itself, at 1400px (`stages`, all 21) and at 390px (`stages390`, 19: the bead stair and cards & counters deal a random layout that wraps differently from run to run at that width). The stage box's corner radius and box-shadow are recorded as `(plate mount)`: they are the chrome mount Step 28 draws, and Step 28 checks them itself. Everything else about the stage box, including its size and padding, is compared.
+Decisions 1–3 described the print regression gate. *Removed 2026-09-29 with Phase 0, at the owner's request (owner decision 6).* Decisions 4–34 keep their numbers.
 
 ### Shell and hub pages
 
 4. **Two new stylesheets.** The shell's CSS lives in `src/styles/layout.css` (shell, nav, colophon, PageHeader, text links; Step 12) and `src/styles/contents.css` (chapters, contents rows, plates, home, notes, `/ages` tabs; Step 15). They load right after `global.css` and before `print.css`, so print rules still win on order. The old shell, card-grid and home rules are deleted from `global.css` (Steps 12, 23 and 25).
-5. **One column.** `.container` sets `width: var(--container)` with auto side margins, **inside `@media screen` only**, on `.site-header-inner`, `main.site-main` and `.site-footer-inner`. At ≤640px `tokens.css` redefines `--container` as `calc(100% - 32px)`, a 16px gutter (was 12px). Print keeps the full Letter width: in the prototype's first print gate, an unguarded container narrowed printables to 688px.
+5. **One column.** `.container` sets `width: var(--container)` with auto side margins, **inside `@media screen` only**, on `.site-header-inner`, `main.site-main` and `.site-footer-inner`. At ≤640px `tokens.css` redefines `--container` as `calc(100% - 32px)`, a 16px gutter (was 12px). Print keeps the full Letter width: in the prototype, an unguarded container narrowed printables to 688px.
 6. **Sticky colophon.** `Layout` wraps everything in `div.site-shell`, a screen-only flex column with `min-height: 100dvh`, and `main` grows (`flex: 1 0 auto`). This keeps the 404's footer off the middle of the screen.
 7. **The nav.**
    - Every link carries `data-label`. An invisible bold copy of that label (`::after`, `height: 0`, `visibility: hidden`, alt text `''`) reserves the bold width, so the row never shifts when the active link turns bold.
@@ -288,9 +252,8 @@ Later steps refer to these by number.
     - At every width the toolbar is `nowrap`. The task group shrinks and wraps *inside itself*, and the utility group is a fixed pair pinned top right, so Exit focus is always in the same place.
     - On phones Sound and Focus are 44px icon-only buttons, and their words stay the accessible name.
     - **Deviation from the prototype.** The prototype hid every phone toolbar label with `font-size: 0`. That would also blank the visible text of the checkbox labels on five materials ("Show value", "Show product" …), and targeting only select labels needs `:has()`. So labels stay visible. On the golden-bead page at 390 the task controls take two rows: `MODE [Free build] [Hide total]` / `[Reset]`, with Sound and Focus top right.
-19. **The plate mount.** The 1px ink hairline and the paper mat are inset box-shadows inside the stage's own padding, so no material changes width. They use the twins `--chrome-ink` and `--chrome-paper`, because the stage itself re-points `--ink` and `--paper`. The stage radius is `--radius-control` (3px). The felt's own inset depth shadow is kept.
-    - The stage's radius and box-shadow are therefore chrome. The stage gates record them as `(plate mount)` and compare everything else about the stage box (decision 3).
-    - **Phones keep today's stage width.** Step 12 widens the phone gutter from 12px to 16px, so the plate bleeds 4px back into it (`margin: 0 -4px`; from Step 12 until Step 28 mounts the plate, the shell carries the same bleed). Every stage stays `viewport − 24px` wide with its 1rem padding, exactly as on `album-baseline`, and the `stages390` gate proves it. The prototype's 8px bleed and tighter stage padding would have given every material 24px more on a phone and reflowed several of them. That is material rendering, so the golden-bead bank's one-row fit stays with PRD 20 (S2-16).
+19. **The plate mount.** The 1px ink hairline and the paper mat are inset box-shadows inside the stage's own padding, so no material changes width. They use `--ink` and `--paper`. The stage radius is `--radius-control` (3px). The felt's own inset depth shadow is kept.
+    - **Phones keep today's stage width.** Step 12 widens the phone gutter from 12px to 16px, so the plate bleeds 4px back into it (`margin: 0 -4px`; from Step 12 until Step 28 mounts the plate, the shell carries the same bleed). Every stage stays `viewport − 24px` wide with its 1rem padding, as today (366px at 390). The prototype's 8px bleed and tighter stage padding would have given every material 24px more on a phone and reflowed several of them. That is material layout, which owner decision 5 leaves to PRD 20, so the golden-bead bank's one-row fit stays there (S2-16, open question 12).
 20. **The scroll veil is a layer, never a mask.**
     - A `::after` on `.material-stage-frame` fades the right edge into chrome paper while the stage has more mat to the right. It is driven by the stage's scroll position through a named scroll timeline hoisted with `timeline-scope`.
     - `mask-image` on `.material-stage` (the prototype's approach) would make the stage a stacking context and surface the stamp game's latent `z-index: -1` stack hint. So the stage and the frame get no mask, z-index, opacity, transform or filter.
@@ -332,7 +295,7 @@ Later steps refer to these by number.
 ### Builder, kits and planner
 
 30. **One home for form controls.** `forms.css` styles `.field` (label + control + help), `.field.checkbox` (a two-column grid: box | label, with help under the label), the date input, dashed disabled controls, `.field-grid` and `.panel`. Only the builder, kit and planner pages have form controls, and none sits in a stage or a sheet, so no chrome guard is needed. The rules also work with today's markup, so Step 16 can land long before Steps 39–41.
-31. **The desk is an opt-in `SheetPreview` prop.** `<SheetPreview desk>` adds `.on-desk` to the wrapper. Every desk rule is in `@media screen`. The desk padding is subtracted before the zoom-to-fit, so a page can never overflow (owner issue #1 asked for no sideways scrolling). The chart print previews (AdditionCharts, MultiplicationCharts, LongChain) don't pass `desk` and are unchanged.
+31. **The desk is an opt-in `SheetPreview` prop.** `<SheetPreview desk>` adds `.on-desk` to the wrapper. Every desk rule is in `@media screen`. The desk padding is subtracted before the zoom-to-fit, so a page can never overflow (owner issue #1 reported having to scroll sideways to see a worksheet). The chart print previews (AdditionCharts, MultiplicationCharts, LongChain) don't pass `desk` and are unchanged.
 32. **Builder and kit anatomy.**
     ```
     div.builder
@@ -364,48 +327,42 @@ Everything lives in [`plan/19-the-album/`](19-the-album/), described in its [REA
 
   The shim runs once per page load, so navigate by typing a URL (a full reload), then paste the two lines again. The README has the details.
 - **[`screens/`](19-the-album/screens/)** holds 15 screenshots at 1200×767: 12 of the prototype (home on desktop and phone, the materials index, the 21 plates, golden beads on desktop and phone, the lesson top, steps, phone and print, the scope chart and the worksheet builder) and 3 of the site before it (home, the materials index and lesson steps).
-- **`print-gate.js`** is the print and stage regression gate. Step 1 creates it; its full source is in that step.
 - **[`audit-findings.md`](19-the-album/audit-findings.md)** lists all 165 verified audit findings, grouped as resolved by this PRD (with the step), fixed by the bug-fix session, or PRD 20 candidates.
 
 ## How this plan was checked
 
-Every step's code was applied to scratch copies of the repository and checked before it was written down here:
+Every step's code was applied to scratch copies of the repository and checked before it was written down here. Those runs also included the token shield and the print gate, which were removed on 2026-09-29 (owner decisions 6–8). Their measurements of materials and printables no longer describe this plan and are left out.
 
-- **Foundations (Steps 2–11)** on a copy of `0faa268`: build and tests green, and a computed-style comparison against an unmodified build found 0 differing elements inside all 21 stages at 1400px (3,169 elements) and inside every generator, kit and planner sheet under print emulation, in colour and `bw=1` (25,290 elements). The trial fonts totalled 116.7 KB.
+- **Foundations (Steps 2–11)** on a copy of `0faa268`: build and tests green. The trial fonts totalled 116.7 KB.
 - **Shell and hubs (Steps 12–25)** with a stand-in for the foundations: `tsc`, the full test suite and `vite build` green; every hub route server-rendered (21 plates and 0 fallback plates on `/materials`); every thumbnail rasterized and compared with the prototype.
-- **Material pages, lessons and guides (Steps 26–38)** on top of that tree, with the trial woff2 files for real metrics: 0 differences in 6,296 elements inside all 21 stages at 1400 and 820. The 41 lessons and 6 guides were paginated at 18 page heights: 846 layouts, 0 stranded heads, 0 split steps. Headless Chrome PDFs gave the page counts quoted in Step 34.
-- **Builder, kits, planner and the gate (Steps 1, 16, 17, 39–41)** on a copy of the post-fix `dbe71b6`: the print gate PASSed on 42 routes and 25,582 elements, the stage gate on 21 stages. The gate also caught every deliberately injected change (a 0.36in sheet-header margin on all 42 routes, a planner preview margin on both planner routes) and ignored screen-only CSS.
-- **After review**, every step was applied to a copy of `dbe71b6` with Step 2's real woff2 files, and the revised gate (Step 1) was run in headless Chromium against an unmodified `dbe71b6`:
-  - the print gate PASSed on all 50 routes (26,846 lines), the `stages` gate on 21 stages (3,263 elements) and the `stages390` gate on 19 (2,956);
-  - the gate caught an injected change to a stage's padding and to chrome that prints (the footer shown in print), and ignored an injected change to the plate mount alone;
+- **Material pages, lessons and guides (Steps 26–38)** on top of that tree, with the trial woff2 files for real metrics. The 41 lessons and 6 guides were paginated at 18 page heights: 846 layouts, 0 stranded heads, 0 split steps. Headless Chrome PDFs gave the page counts quoted in Step 34.
+- **Builder, kits and planner (Steps 16, 17, 39–41)** on a copy of the post-fix `dbe71b6`: build and tests green.
+- **After review**, every step was applied to a copy of `dbe71b6` with Step 2's real woff2 files:
   - the route walker (with the extended selector in the Manual QA script) reported no sideways scroll and no target under 44px on 100 routes at 390 and at 820;
   - the six guides and four QA lessons printed to Letter PDFs at the page counts in Steps 34 and 38, and Step 34's snippet, run at a 720px window, reported no stranded head and no split step on all ten;
   - `tsc`, the full test suite (896 tests) and `vite build` stayed green.
 
-What could not be checked there is in the manual QA script: real Safari on an iPad and an iPhone, a B&W laser printer, font rendering on Windows and macOS, and a visual pass of every page in a real desktop browser.
+**Not yet checked:** the Album's type and tokens inside materials and printables (Steps 6, 7 and 9 as revised on 2026-09-29), the mount on plain tokens (Step 28) and the step card's sheet shadow (Step 31). Each step's standard check looks at one material and one printable (convention 12), the manual QA script covers the rest, and the owner reviews every printable after PRD 19.
+
+What could not be checked on scratch copies at all is in the manual QA script: real Safari on an iPad and an iPhone, a B&W laser printer, font rendering on Windows and macOS, and a visual pass of every page in a real desktop browser.
 
 ## Rollout
 
-Every push to `main` deploys (Workers Builds), so PRD 19 is built on one branch, `album`, as a sequence of phase commits.
+Every push to `main` deploys (Workers Builds), so PRD 19 is built on the `album` branch as a sequence of phase commits, starting with Phase 1.
 
-- Every commit builds, passes `npm test`, passes both gates, and leaves every page coherent: old layout in new type is fine; a broken page is not.
-- `main` is fast-forwarded at two release points only.
-- **What each phase does to print.** The gate proves worksheet, kit and planner print identical at every phase. Lesson and guide print is not a `.print-sheet`, so neither the shield nor the gate covers it, and it changes in two stages:
-  - from Step 6 on, its *type* changes: Newsreader, the new heading scale and weights, and the re-pointed ink and rubric tokens;
-  - in Phase 5, its *layout* becomes the album print design (owner decision 3).
-
-  The in-between print (new type on the old print layout) must stay coherent, but it never ships.
-- **Release 1** follows Phase 5 and the owner's print sign-off: the page-break QA and B&W laser test of Steps 34 and 38. Owner decision 3 requires both before any lesson or guide print change reaches the site.
-- **Release 2** follows Phase 7: the builder, kit and planner pages, the last legacy clean-up and the final gates.
-- Phase 6 depends only on Phases 1–3. If it is finished before the owner's print sign-off, it ships with Release 1.
-- If a phase fails a gate, fix it inside that phase's commit before pushing the branch. Never carry a known difference forward.
+- Every commit builds, passes `npm test`, and leaves every page coherent: old layout in new type is fine; a broken page is not. Each step's **Check:** says what to look at (convention 12).
+- **Proposal (Claude's, not an owner rule): fast-forward `main` once, after Phase 7.** The live site then goes from today's design to the finished Album in one step and never shows a half-converted page or the in-between lesson print. If the owner wants the Album live sooner, the end of Phase 3 (type, shell and hubs) is a coherent stopping point (open question 18).
+- **What each phase does to print.**
+  - Printables (worksheets, kits, the planner's plan and journal, the control charts and the arrow labels) take the new faces, lining figures and chrome tokens in Phase 1 (Steps 6–7). Nothing else about them changes in PRD 19; the desk under their previews (Phase 6) is screen only.
+  - Lessons and guides are not `.print-sheet`s. Their *type* changes in Phase 1 (Newsreader, the new heading scale and weights, ink and rubric); in Phase 5 their *layout* becomes the album print design (owner decision 3). The in-between print (new type on the old print layout) must stay coherent; under the proposal above it never ships.
+- Phase 6 depends only on Phases 1–3, so it can be built before Phase 5.
+- If a step breaks a page, fix it inside that phase's commit before pushing the branch.
+- **After Phase 7: the printables review.** The owner looks at every printable in its Album version and makes a list of changes (Step 43 adds the checklist to `plan/QA-CHECKLIST.md`). Proposal: that list, with the audit's print-content candidates, becomes the printables PRD; the owner decides its number and scope.
 
 | Phase | Steps | Commit message | What changes on screen |
 |---|---|---|---|
-| 0 | 1 | Add the PRD 19 print regression gate | nothing; the baselines are recorded and `album-baseline` is tagged on `main` |
 | 1 | 2–4 | Self-host Newsreader and MM Sans | nothing: the faces are declared, not applied; the service worker precaches them |
-| 1 | 5 | Install the token shield | nothing (the probe and the gates prove it) |
-| 1 | 6–11 | Paper, ink and rubric: the album's type, tokens, icons and meta line | new paper, type, rubric buttons, line icons and the meta line, on the old layouts; lessons and guides also *print* in the new type on their old print layout (not shipped until Release 1) |
+| 1 | 6–11 | Paper, ink and rubric: the album's type, tokens, icons and meta line | new paper, type, rubric buttons, line icons and the meta line, on the old layouts; materials and printables in the new faces with lining figures; lessons and guides also *print* in the new type on their old print layout |
 | 2 | 12–13 | Running head, colophon and PageHeader | new header, nav ribbon, colophon, shared column |
 | 2 | 14–15 | Plates and contents components | Home, which already uses `.home-hero` and `.home-cta`, gets the display-size title and stacks its three buttons on its old markup until Step 23; nothing else (the components and the rest of the CSS are unused) |
 | 2 | 16–17 | Forms, panels and the desk | every field 44px and restyled; the desk available but unused |
@@ -413,25 +370,28 @@ Every push to `main` deploys (Workers Builds), so PRD 19 is built on one branch,
 | 4 | 26–31 | Material pages as mounted plates | toolbar, help line, plate, notes, walk-through card |
 | 5 | 32–34 | The lesson album on screen and paper | lesson pages; **lesson print changes** (intended) |
 | 5 | 35–38 | Guides and the scope chart on screen and paper | guides and the scope chart; **guide print changes** (intended) |
-| — | | **Release 1:** fast-forward `main` after the owner's print sign-off (Steps 34 and 38) | |
 | 6 | 39–40 | Worksheet builder and kit pages in the album | PageHeader actions, settings panel, desk |
 | 6 | 41 | The planner in the album | shelf, picker and desk |
 | 7 | 42–43 | Retire legacy chrome and close PRD 19 | nothing |
-| — | | **Release 2:** fast-forward `main` | |
+| — | | **Release** (proposal): fast-forward `main` | |
+| — | | **Printables review** by the owner; the list becomes the printables PRD (proposal) | |
+
+### Progress
+
+- **2026-09-29.** Phase 0 (Step 1, the print regression gate) was built and then removed at the owner's request (owner decision 6): its commit, the `album-baseline` tag, the baseline checkout and the stored measurements are deleted. The token shield (Step 5), which the gate existed to prove, was removed from the plan at the same time; it had not been built. Implementation starts with Phase 1 on the `album` branch, from `bbbdb44`.
 
 ## Implementation
 
 The steps live in one file per phase, in build order:
 
-- **[Phase 0 — The print gate](19-the-album/phase-0-the-print-gate.md)** (Step 1)
-  - Step 1 — The print regression gate and the `album-baseline` tag
+- **Phase 0 — removed.** Step 1, the print regression gate: *Removed 2026-09-29* at the owner's request (owner decision 6).
 - **[Phase 1 — Foundations](19-the-album/phase-1-foundations.md)** (Steps 2–11)
   - Step 2 — Self-hosted fonts: the authoring script and the committed files
   - Step 3 — `fonts.css`: the @font-face rules and metric-matched fallbacks
   - Step 4 — Service worker: precache confirmation and the font budget
-  - Step 5 — The token shield, installed while nothing changes
+  - Step 5 — *Removed 2026-09-29* (the token shield; owner decisions 6–8)
   - Step 6 — The Album's chrome tokens, the font preload and the theme colour
-  - Step 7 — Base element styles: body, headings, paragraphs, links, selection
+  - Step 7 — Base element styles, and the Album's type in materials and printables
   - Step 8 — `Icon.tsx`: the 14-glyph line icon set
   - Step 9 — Buttons: the chrome `.btn`, the rubric primary, `.icon`, `.visually-hidden`
   - Step 10 — Replace every emoji icon, and guard against new ones
@@ -473,22 +433,21 @@ The steps live in one file per phase, in build order:
   - Step 41 — The planner
 - **[Phase 7 — Sign-off](19-the-album/phase-7-sign-off.md)** (Steps 42–43)
   - Step 42 — Retire the last legacy chrome rules
-  - Step 43 — Final gates, docs and release
+  - Step 43 — Final checks, docs and the printables hand-off
 
 ## New & modified files
 
 | Path | New/Modified | Steps | Purpose |
 |---|---|---|---|
-| `plan/19-the-album/print-gate.js` | new | 1 | Print and stage regression gate (console script) |
 | `scripts/fonts/build-fonts.py` | new | 2 | One-time font authoring script (fontTools, run outside npm) |
 | `public/fonts/newsreader-roman.woff2`, `newsreader-italic.woff2`, `mm-sans.woff2`, `OFL.txt` | new | 2 | The self-hosted fonts and their licence |
 | `src/styles/fonts.css` | new | 3 | `@font-face` rules and metric-matched local fallbacks |
 | `src/main.tsx` | modified | 3, 12, 15, 16 | Imports `fonts.css`, `layout.css`, `contents.css`, `forms.css` (convention 9) |
 | `scripts/generate-sw.mjs` | modified | 4 | 200 KB font budget and a build-log line |
-| `src/styles/tokens.css` | modified, then rewritten | 5, 6 | The token shield, chrome tokens, scales, twins |
+| `src/styles/tokens.css` | rewritten | 6 | Chrome tokens, type and space scales, `--font-numeral`; material and legacy shape tokens unchanged |
 | `index.html` | modified | 6 | Newsreader preload; theme colour `#f6f1e7` |
 | `public/manifest.webmanifest` | modified | 6 | Background and theme colour `#f6f1e7` |
-| `src/styles/global.css` | modified | 7, 9, 11, 12, 16, 23, 25, 42 | Base elements, buttons, helpers, meta line; the old shell, card-grid, home, field, `.card` and `.page-intro` rules removed |
+| `src/styles/global.css` | modified | 7, 9, 11, 12, 16, 23, 25, 42 | Base elements, the materials-and-printables type block, buttons, helpers, meta line; the old shell, card-grid, home, field, `.card` and `.page-intro` rules removed |
 | `src/components/Icon.tsx` | new | 8 | The 14-glyph line icon set |
 | `src/components/Icon.test.ts` | new | 8, 10 | Icon data test and the no-emoji guard |
 | `vite.config.ts` | modified | 10 | `test.css.include` for `?raw` stylesheets, so the no-emoji guard reads CSS |
@@ -515,7 +474,7 @@ The steps live in one file per phase, in build order:
 | `src/pages/AgesPage.tsx` | rewritten | 22 | Segmented tabs, tabpanel, contents rows |
 | `src/pages/NotFound.tsx` | rewritten | 24 | PageHeader and six hub rows |
 | `src/components/plateCaption.ts`, `plateCaption.test.ts`, `src/components/MaterialNameContext.ts` | new | 26 | The plate caption and the material-name context |
-| `src/styles/materials.css` | modified | 12, 27, 28, 29, 30 | Temporary phone shell bleed (Step 12, replaced in Step 28); plate margin; shell chrome, toolbar buttons, scroll veil, page notes. The material rules are untouched |
+| `src/styles/materials.css` | modified | 7, 12, 27, 28, 29, 30 | The number-card and stamp faces (Step 7); temporary phone shell bleed (Step 12, replaced in Step 28); plate margin; shell chrome, toolbar buttons, scroll veil, page notes. The material rules are otherwise untouched |
 | `src/materials/MaterialPage.tsx` | rewritten | 30 | PageHeader, Walk-through, two-column notes and links |
 | `src/styles/presentation.css` | modified | 31 | The walk-through step card |
 | `src/lessons/LessonPage.tsx` | rewritten | 32 | Running head, lede, sections, hung numerals |
@@ -528,11 +487,11 @@ The steps live in one file per phase, in build order:
 | `src/kits/KitPage.tsx` | rewritten | 40 | PageHeader with Print, panel, desk |
 | `src/styles/planner.css` | modified (screen half) | 41 | Planner chrome. The printed-page rules are untouched |
 | `src/planner/state.ts`, `state.test.ts` | modified | 41 | `groupByStrand` and its tests |
-| `plan/19-the-album.md`, `plan/README.md`, `PLAN.md`, `plan/QA-CHECKLIST.md` | modified | 43 | Status, overview and QA rows |
-| `CLAUDE.md` | modified | 43 | The new components and stylesheets, the token shield, the chrome guard, no emoji, plates for new materials, the gates |
+| `plan/19-the-album.md`, `plan/README.md`, `PLAN.md`, `plan/QA-CHECKLIST.md` | modified | 43 | Status, overview, and the owner's printables review checklist |
+| `CLAUDE.md` | modified | 43 | The new components and stylesheets, the materials-and-printables type block, the chrome guard, no emoji, plates for new materials |
 | `README.md` | modified | 43 | The fonts' SIL OFL 1.1 exception in the License section |
 
-**Explicitly untouched:** every file under `src/materials/<slug>/`, `src/worksheets/generators/` and `src/kits/kits/`; `beads.tsx` and `NumberCard.tsx`; `print.css`, `kits.css` and `SheetPage.tsx`; `PresentationOverlay.tsx`; the registries and `App.tsx`; `package.json`, `package-lock.json`, `public/_headers` and `wrangler.jsonc`.
+**Not edited by PRD 19:** every file under `src/materials/<slug>/`, `src/worksheets/generators/` and `src/kits/kits/`; `beads.tsx` and `NumberCard.tsx`; `print.css`, `kits.css` and `SheetPage.tsx`; `PresentationOverlay.tsx`; the registries and `App.tsx`; `package.json`, `package-lock.json`, `public/_headers` and `wrangler.jsonc`. Materials and printables still take the Album's type, through the tokens and Step 7's block; changes to their layout and content wait for PRD 20 and the owner's printables list.
 
 ## Testing
 
@@ -548,12 +507,11 @@ Eighteen new tests, all pure data or logic in the node environment. Nothing is r
 | `src/components/plateCaption.test.ts` | 4 | 26 | The caption for each surface, without a name, and for all 21 registered materials |
 | `src/planner/state.test.ts` | 2 | 41 | `groupByStrand` shows every lesson, worksheet and material once in strand order, skips empty strands and keeps item order |
 
-Existing suites are untouched and must stay green. The browser-level checks a unit test can't make (computed print styles, layout, contrast) are the print gate, the stage gate, the page-break snippet and the manual QA script.
+Existing suites are untouched and must stay green. The browser-level checks a unit test can't make (layout, print, contrast) are each step's standard check (convention 12), the page-break snippet, the manual QA script and, after PRD 19, the owner's printables review.
 
 ## Manual QA script
 
 **Setup.**
-- Before starting, the print gate and the stage gate PASS against `album-baseline` (Step 43, items 1–2).
 - `npm run build && npm run preview`, then open the LAN URL in Chrome. Clear site data before the first visit.
 - Widths are DevTools device mode: 1400×900, 820×1180 with touch emulation, and 390×844. Where a step says so, repeat it on a real iPad and a real phone over LAN or Tailscale.
 - **The page checker.** Paste once per page; both numbers must be 0. It measures every control and every stand-alone link (nav, colophon, contents rows, text links, lesson links); links inside a running sentence are exempt, as WCAG 2.5.8 allows:
@@ -619,10 +577,10 @@ Existing suites are untouched and must stay green. The browser-level checks a un
    - The ruled toolbar: MODE centred on its select at the left, Sound and Focus as ghost buttons with line glyphs at the right. The "How to use this material" line has a circled + that turns into − when open.
    - The mounted plate (an ink line and a paper mat inside the stage edge) starts near y = 459, captioned "PLATE. Golden Beads & Mat, on the felt work mat."
    - For parents | Make the real thing, then Lessons | Printable follow-up, as two ruled columns flush with the plate. Kit piece counts sit on their own grey line.
-   - Tap the bank's thousand, hundred, ten and unit: the total reads 1,111, exactly as on `album-baseline`.
+   - Tap the bank's thousand, hundred, ten and unit: the total reads 1,111.
    - Focus: the plate fills the screen, the help line and caption disappear, Exit focus is at the top right, Esc exits. Repeat on bead frame, cards & counters, teen board and decimal board: Exit focus is always at the top right.
 6. **Toolbars across materials.** `/materials/checkerboard` and `/materials/stamp-game`: Sound and Focus stay together at the top right; task controls wrap only inside their own group. On number cards, bead frame, bead chains, the multiplication bead board, the subtraction strip board and both chart materials, the toolbar's own buttons have the ink edge and 3px corners of the chrome buttons; a pressed number-cards view toggle keeps its blue outline.
-7. **Stamp game.** Compare `/materials/stamp-game` with the same page on `album-baseline`: the bank's stacked stamps look identical, with no extra pale outlines behind them.
+7. **Stamp game.** On `/materials/stamp-game`, the bank's stacked stamps show no extra pale outlines behind them (the stack hint stays hidden, decision 20).
 8. **Walk-through.** Press Walk through on golden beads: the step card has an ink edge, square corners, a Newsreader title and a spoken line in ink with rubric quotes. Step to 9 and back.
 9. **`/lessons/golden-beads-addition`.** Compare with `screens/lesson-top-after.webp` and `screens/lesson-steps-after.webp`. The running head reads THE LESSON ALBUM · THE DECIMAL SYSTEM · LESSON 5 [AGES 5–7] GRADES K–1 with a rubric "Print this lesson" on the same row. The title sits over the Oxford rule and the lede is centred. MATERIALS hangs in the margin near y = 444. Steps carry rubric italic numerals; spoken lines are italic on a 2px rule with a faint band and rubric quotes. The page ends with the fleuron. "Walk through it on the virtual Golden Beads & Mat" opens the material with the step card.
 10. **Lesson copy.** `/lessons/stamp-game-intro` reads "No materials at home? Use the virtual Stamp Game or Golden Beads & Mat." A lesson with a worksheet shows "Printable: …" on its own line.
@@ -633,6 +591,7 @@ Existing suites are untouched and must stay green. The browser-level checks a un
 15. **Planner, `/planner`.** Empty: no Print, Copy link or Clear week. Tick five items across all three lists, pick a preset and days: the shelf lists name + kind | day | ×, and Print, Copy link and Clear week appear. Copy link reads "Copied" for 1.5s and nothing shifts. Unticked rows' selects are dashed, not faded. Preset selects line up down the column. The preview lies on the desk. The shelf stays in view while the picker scrolls.
 16. **Titles.** Tabs read, for example, "Lessons · Montessori Math", "Golden Beads & Mat · Montessori Math", "Multi-Digit Operations worksheet · Montessori Math", "Addition & Subtraction Strip Boards kit · Montessori Math", "Weekly plan · Montessori Math" and "Page not found · Montessori Math". Home keeps the site title.
 17. **Offline fonts.** After clearing site data and loading `/`, Network shows only `/fonts/*.woff2` font requests and no other host; Application › Cache Storage lists all three. Go offline and reload `/lessons/golden-beads-addition`: it is still Newsreader, and the spoken lines are Newsreader italic.
+18. **Type inside materials.** On `/materials/number-cards`, `/materials/golden-beads`, `/materials/stamp-game`, `/materials/decimal-board` and `/materials/checkerboard`: labels and buttons on the mat are MM Sans; number-card figures are Newsreader and every digit sits on the baseline (a 0 never reads as o); stamp numerals are MM Sans; every Montessori colour looks as it does today. Small reflows are fine; nothing is clipped or overlapping.
 
 ### B. Tablet, 820 (touch emulation, then a real iPad)
 
@@ -649,7 +608,7 @@ Existing suites are untouched and must stay green. The browser-level checks a un
 1. **The route walker at 390** reports no sideways scroll and no control under 44px on every page.
 2. **Header.** About 110px tall, with one sideways-scrolling nav row fading at the right edge. On `/ages` the nav starts scrolled so "By Age" is visible and underlined; scrolled to its end, "By Age" is fully opaque. The gutters are 16px.
 3. **Home.** Plate I sits under the title within the first screen, and the call to action runs full width with its text left-aligned. Compare with `screens/phone-home-after.webp`.
-4. **Golden beads.** Compare with `screens/phone-golden-beads-after.webp`. Sound and Focus are 44×44 icon-only buttons at the top right; MODE, Free build and Hide total are on the first row and Reset on the second. The plate runs 4px into the gutter and the stage is exactly as wide as on `album-baseline` (366px at 390), so the bank wraps exactly as it does there (its one-row fit is PRD 20, S2-16). The mat's right edge is veiled and the veil lifts at Units. Tap THOUSAND, HUNDRED, TEN, then UNIT twice: the total reads 1,112.
+4. **Golden beads.** Compare with `screens/phone-golden-beads-after.webp`. Sound and Focus are 44×44 icon-only buttons at the top right; MODE, Free build and Hide total are on the first row and Reset on the second. The plate runs 4px into the gutter and the stage is 366px wide at 390, as today, so the bank wraps as it does today (its one-row fit is PRD 20, S2-16). The mat's right edge is veiled and the veil lifts at Units. Tap THOUSAND, HUNDRED, TEN, then UNIT twice: the total reads 1,112.
 5. **Lesson.** The title and lede are left-aligned, the heads stack above their text, and the numerals stay in the gutter. Compare with `screens/phone-lesson-after.webp`.
 6. **Scope chart.** A list of entries: numeral | lesson, `AGES 4–6  GRADES PK–K`, `MATERIALS: …`, `PRINTABLE: …`.
 7. **Builder.** New problems and Print sit under the lede, the fields are one column, and the desk sheet fits the width.
@@ -666,20 +625,18 @@ Existing suites are untouched and must stay green. The browser-level checks a un
 
 ### E. Print
 
-1. **Gates.** The print gate PASSes (50 routes, 0 differences) and both stage suites PASS (21 stages at 1400, 19 at 390).
-2. **Worksheets and kits on paper.** Ctrl+P on `/worksheets/multi-digit-ops?seed=424242` and `/kits/strip-boards?bw=1`: the Letter preview has the same page count and looks the same as `album-baseline`, side by side. Save one as PDF: the file name defaults to the page title.
-3. **Planner on paper.** Print the 13-item plan from Step 1: the plan, then two journal pages with "(continued)", identical to the baseline.
-4. **Printables on material pages.** Open "Print control charts" on `/materials/addition-charts` and on `/materials/multiplication-charts`, and the arrow labels on `/materials/bead-chains` (Hundred chain, then Thousand chain, "Show arrow labels"). In Chrome's print preview, in colour and again with "Ink-friendly B&W" ticked, each is non-blank, prints only its sheet, and has the same page count and look as `album-baseline` side by side.
-5. **Lessons print in the album design** (Step 34). In Chrome's print preview (Letter, default margins, background graphics off), `checkerboard-multiplication`, `decimal-board-operations` and `racks-and-tubes` print on 4 pages each and `golden-beads-addition` on 3 (pass: at most one page more than `album-baseline`'s 4, 4, 4 and 3; record the counts). The running head and the 3px double rule are there, margin heads are 8.5pt in the 10rem gutter, numerals and quote marks are black, no margin head is stranded at a page foot and no step splits. Step 34's snippet reports 0 stranded on the same four lessons. Compare with `screens/lesson-print-after.webp`.
-6. **Guides print** (Step 38): FAQ 3 pages, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope and sequence 3 (pass: at most one page more than `album-baseline`'s 4, 3, 4, 3, 3 and 3; record the counts). Section heads print in the margin column (the glossary's terms too), not stacked above their text. No stranded question or strand head; strand heads print as black rules and column heads repeat on every page.
-7. **B&W laser** (the owner's printer). Print `checkerboard-multiplication`, `decimal-board-operations`, `racks-and-tubes`, `/parents/scope-and-sequence` and `/worksheets/multi-digit-ops?seed=424242&bw=1` with the printer's black-and-white option. On paper: the double rule and hairlines are visible, the 8.5pt margin heads are crisp, spoken lines are distinguishable (italic, quotes, indent), the age prints as a box, numerals and quotes are solid black rather than dithered grey, nothing is grey on grey, and the worksheet matches its baseline print.
+1. **Printables still print.** Ctrl+P on `/worksheets/multi-digit-ops?seed=424242`, `/kits/strip-boards?bw=1`, the 13-item planner (Step 43's review list), "Print control charts" on `/materials/addition-charts` and `/materials/multiplication-charts`, and the Hundred and Thousand chains' arrow labels on `/materials/bead-chains`. In colour and in B&W, each prints only its sheets, non-blank, in the Album's faces with lining figures. Save one as PDF: the file name defaults to the page title. How they should look is the owner's review (Step 43), not this script.
+2. **Lessons print in the album design** (Step 34). In Chrome's print preview (Letter, default margins, background graphics off), `checkerboard-multiplication`, `decimal-board-operations` and `racks-and-tubes` print on 4 pages each and `golden-beads-addition` on 3 (pass: at most one page more than today's 4, 4, 4 and 3; record the counts). The running head and the 3px double rule are there, margin heads are 8.5pt in the 10rem gutter, numerals and quote marks are black, no margin head is stranded at a page foot and no step splits. Step 34's snippet reports 0 stranded on the same four lessons. Compare with `screens/lesson-print-after.webp`.
+3. **Guides print** (Step 38): FAQ 3 pages, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope and sequence 3 (pass: at most one page more than today's 4, 3, 4, 3, 3 and 3; record the counts). Section heads print in the margin column (the glossary's terms too), not stacked above their text. No stranded question or strand head; strand heads print as black rules and column heads repeat on every page.
+4. **B&W laser** (the owner's printer). Print `checkerboard-multiplication`, `decimal-board-operations`, `racks-and-tubes`, `/parents/scope-and-sequence` and `/worksheets/multi-digit-ops?seed=424242&bw=1` with the printer's black-and-white option. On paper: the double rule and hairlines are visible, the 8.5pt margin heads are crisp, spoken lines are distinguishable (italic, quotes, indent), the age prints as a box, numerals and quotes are solid black rather than dithered grey, nothing is grey on grey, and the worksheet's place values stay distinguishable without colour. If no printer is at hand during the build, this item moves to the owner's printables review.
 
 ## Acceptance criteria
 
 - [ ] `npm run build` and `npm test` are green on every phase commit, and the 18 new tests pass.
-- [ ] **Print gate:** PASS against `album-baseline` on all 50 printable routes (13 generators, 7 kits, the planner plan and journal, and the control charts and arrow labels on material pages, each in colour and B&W), 0 differences, with nothing new printing outside the sheets. **Stage gate:** PASS on all 21 material stages at 1400 and 19 at 390, 0 differences.
-- [ ] **Lesson print:** the three longest lessons print on at most 5 Letter pages each and `golden-beads-addition` on at most 4 (expected 4, 4, 4 and 3; `album-baseline` + 1 at most), with 0 stranded heads and 0 split steps (Step 34's snippet at a 720px window, and print preview). Guides print with margin heads, within `album-baseline` + 1 page each, and show 0 stranded heads (Step 38). The counts are recorded here, the B&W laser print is checked, and **the owner has signed off** before Release 1.
-- [ ] No material token is re-pointed ("material tokens unchanged"). No file under `src/materials/<slug>/`, `src/worksheets/generators/` or `src/kits/kits/` changed, and `print.css`, `kits.css` and `SheetPage.tsx` are byte-identical.
+- [ ] **Materials and printables take the Album's type** (owner decisions 7 and 8): inside every material stage, text, labels and buttons are MM Sans, and headings and numerals Newsreader; printable sheets are Newsreader; figures are lining on number cards, stamps, boards, kits and worksheets (S7-05). Stages and sheets keep their 16px base. Nothing inside a stage or sheet is clipped, overlapping, blank or unreadable (small reflows are fine).
+- [ ] **Printables still print:** the 13 generators, 7 kits, the planner plan and journal, and the control charts and arrow labels on material pages each print only their sheets, non-blank, in colour and in B&W (Step 43, item 2).
+- [ ] **Lesson print:** the three longest lessons print on at most 5 Letter pages each and `golden-beads-addition` on at most 4 (expected 4, 4, 4 and 3; today's `main` + 1 at most), with 0 stranded heads and 0 split steps (Step 34's snippet at a 720px window, and print preview). Guides print with margin heads, within today's count + 1 page each, and show 0 stranded heads (Step 38). The counts are recorded here, and the B&W laser print is checked (or handed to the owner's printables review).
+- [ ] **Montessori colours unchanged:** no material token is re-pointed ("material tokens unchanged"), the `.bw` overrides are untouched, and the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` keep today's values. No file under `src/materials/<slug>/`, `src/worksheets/generators/` or `src/kits/kits/` changed.
 - [ ] No new npm dependency: `package.json` and `package-lock.json` are unchanged.
 - [ ] **Fonts:** `public/fonts/` holds exactly `newsreader-roman.woff2`, `newsreader-italic.woff2`, `mm-sans.woff2` and `OFL.txt`; the woff2 files total under 200 KB (the build log says so). No font-name record in `mm-sans.woff2` (name IDs 1–6, 16, 17 and 25, and the named instances' PostScript names) contains "Source"; the upstream copyright, trademark, manufacturer, designer, vendor and designer URL, and licence records (IDs 0, 7, 8, 9, 11, 12, 13 and 14) are kept verbatim, and the description (ID 10) says it is a Modified Version of Source Sans 3. `OFL.txt` carries both copyright notices and the full licence.
 - [ ] **Offline:** `dist/sw.js` precaches the three fonts and `OFL.txt`; after one visit, a lesson renders in Newsreader and Newsreader italic with the network off.
@@ -695,7 +652,8 @@ Existing suites are untouched and must stay green. The browser-level checks a un
 - [ ] **Motion:** every chrome transition and animation is inside `prefers-reduced-motion: no-preference`. With reduce, hovers are instant, the arrow doesn't nudge and the veil is off.
 - [ ] **Never colour alone:** the active nav link is bold, the age is a boxed stamp, spoken lines are italic with quotes and an indent, disabled controls are dashed, links are underlined, and the selected `/ages` tab is ink, bold and underlined.
 - [ ] All 21 materials plus the sheet, kit and album glyphs have plates drawn with tokens only; an unknown slug gets the strand bead-bar fallback. Plate I and the golden-bead plate are in true proportion.
-- [ ] `MaterialShell` renders toolbar → help → `figure.material-plate > .material-stage-frame > .material-stage` + `figcaption.plate-caption`. Sound and Focus are never stranded and Exit focus is always the top-right control. No `mask`, `z-index`, `opacity`, `transform`, `filter` or `isolation` is set on `.material-stage` or `.material-stage-frame`. Every stage is as wide as on `album-baseline` at every width (the phone plate bleeds 4px, decision 19).
+- [ ] `MaterialShell` renders toolbar → help → `figure.material-plate > .material-stage-frame > .material-stage` + `figcaption.plate-caption`. Sound and Focus are never stranded and Exit focus is always the top-right control. No `mask`, `z-index`, `opacity`, `transform`, `filter` or `isolation` is set on `.material-stage` or `.material-stage-frame`. Every stage keeps today's width at every width (366px at 390; the phone plate bleeds 4px, decision 19).
+- [ ] **Printables hand-off:** the owner's printables review checklist is in `plan/QA-CHECKLIST.md` (Step 43). Neither the printables PRD nor PRD 20 is started without the owner's go-ahead.
 - [ ] The manual QA script passes. This PRD's status, `plan/README.md`, `PLAN.md`, `plan/QA-CHECKLIST.md`, `CLAUDE.md` and the `README.md` licence note are updated (Step 43).
 
 ## Audit findings this PRD resolves
@@ -704,6 +662,7 @@ Each entry is listed in full, with its cause and fix hint, in [`19-the-album/aud
 
 | Finding | Steps | How |
 |---|---|---|
+| S7-05+S6-04+S2-03+S3-07+S4-12+S9-18 | 6, 7 | Newsreader's lining figures replace Georgia's old-style ones on number cards, boards, kits and printables (`--font-numeral`, `--font-heading`); every stage and sheet sets `lining-nums` |
 | S1-01 | 11, 19 | Badges wrap; kit piece lists and presets are a plain `.row-note` line, so no pill overflows and no page scrolls sideways |
 | S1-02 | 41 | Planner rows wrap and the selects drop under the name at ≤560px |
 | S1-04 | 15, 18–24 | Rows, not boxes: one whole-row link per entry |
@@ -764,12 +723,12 @@ Each entry is listed in full, with its cause and fix hint, in [`19-the-album/aud
 | S2-02+S3-04+S4-02 | 29 | The scroll veil: the hidden scroll is now visible | Fluid mats that fit a phone or tablet |
 | S5-16 | 32, 33 | "Printable: …" on its own line on screen | The worksheet URL on paper |
 | S5-17 | 34 | Tighter print layout; long lessons end 30–53% down their last page | A site name and URL on printed lessons |
-| S6-13+S7-21+S6-12 | 16, 39 | A two-column field grid at 641–900px roughly halves the tablet form | The phone preview is still a ~0.41 zoom fit (owner issue #1 forbids sideways scroll) |
+| S6-13+S7-21+S6-12 | 16, 39 | A two-column field grid at 641–900px roughly halves the tablet form | The phone preview is still a ~0.41 zoom fit (owner issue #1 reported having to scroll sideways to see a worksheet) |
 | S1-10 | 41 | A three-column shelf row with a fixed day column | Grouping or sorting the shelf by day |
 
 ## Open questions for the owner
 
-Each has a default that this PRD implements. Say so if you want the other choice.
+Each has a default, Claude's proposal, that this PRD implements. Say so if you want the other choice.
 
 1. **`--line-strong` and `--link-rule` are darker than the prototype.** `--line-strong` is `#8c816f` instead of `#9c907c`, because the mock value fails WCAG 1.4.11 for field borders (2.79:1 on paper, 2.51:1 on paper-warm); it also darkens the spoken-line rule and the scope chart's link underlines slightly. `--link-rule` is `#a8705f` instead of `#c79a8b`: links are ink like the text around them, so the underline is their only mark, and the mock value gave it 2.21:1 on paper. *Default: both darker values.*
 2. **The fonts measure 116.6 KB,** against the prototype's 147.9 KB from Google-served files, because Step 2's subset is unhinted and keeps only the default OpenType features plus `tnum`, `lnum` and `case`. A side-by-side with the prototype screenshots is worthwhile, especially small sizes on Windows, where hinting mattered most. *Default: ship the unhinted subset.*
@@ -782,19 +741,26 @@ Each has a default that this PRD implements. Say so if you want the other choice
 9. **`/ages` lesson rows show each lesson's overview,** which makes the page longer but fills the empty two-thirds of the desktop (S1-21). *Default: show overviews.*
 10. **The `/ages` tabs** keep one tab stop per button, without the ARIA tabs pattern's arrow-key roving. *Default: as is.*
 11. **Phone toolbar labels stay visible** (decision 18), so the golden-bead toolbar is two rows at 390 instead of the prototype's one. Hiding only the select labels would need `:has()` or a class in each material's controls. *Default: two rows.*
-12. **No material reflows on a phone.** The prototype bled the plate 8px into the gutter and tightened the stage padding, which widened every phone stage by 24px and let the golden-bead bank's four pieces fit on one row on your MacBook. That changes how several materials lay out, which the locked scope leaves to PRD 20. So the plate bleeds only 4px, exactly offsetting the wider 16px gutter, and every stage keeps today's width (the `stages390` gate proves it). The bank wraps as it does today. *Default: no reflow; the bank's one-row fit is PRD 20 (S2-16).*
+12. **Phone stages keep today's width.** The prototype bled the plate 8px into the gutter and tightened the stage padding, which widened every phone stage by 24px and let the golden-bead bank's four pieces fit on one row on your MacBook. That is material layout, which your scope choice leaves to PRD 20, so the plate bleeds only 4px, exactly offsetting the wider 16px gutter, and every stage keeps today's width. The bank wraps as it does today. *Default: today's width; the bank's one-row fit is PRD 20 (S2-16).*
 13. **The scroll veil is off under reduced motion,** following convention 6, even though it only tracks the reader's own scroll. *Default: off.*
 14. **The glossary and FAQ layouts** refine the prototype: terms in the margin, questions heading the text column. Both were chosen from measured page-break problems, and each can be reverted by deleting one CSS block. *Default: as specified.*
 15. **Lesson chrome copy** (decision 26): "Walk through it on the virtual …" and "Printable: …". *Default: this wording.*
 16. **Four small behaviour changes** (decision 34): the preset line after edits, no Print/Copy/Clear on an empty plan, the kind label on shelf items, and the picker grouped by strand. *Default: all four.* Each can be dropped without touching the rest.
 17. **Planner tab order.** The shelf comes first in the DOM, so keyboard users reach the date and Print before the picker, even on desktop where the shelf is drawn on the right. *Default: shelf first.* The alternative would make visual order and focus order disagree on tablets.
-18. **The gate is a console ritual,** about two minutes per phase on a dev server for the print suite and both stage suites. *Default: keep it manual.* A headless runner would need an owner-approved dev dependency.
+18. **When the Album goes live.** Every push to `main` deploys. *Default (proposal): fast-forward `main` once, after Phase 7,* so the site goes from today's design to the finished Album in one step and the in-between lesson print never ships. If you'd rather see it live sooner, the end of Phase 3 (type, shell and hubs) is a coherent stopping point.
 19. **The walk-through step card is re-skinned here** (Step 31, decision 23), although no audit finding asked for it, so the card matches the lesson page. *Default: include it.* Its covering behaviour stays for PRD 20.
+20. **Material text in MM Sans.** Inside a material stage, text, labels and buttons are MM Sans, the face the site uses for everything you operate; headings and numerals are Newsreader. MM Sans ships no italic; italic notes on the mat are the browser's slanted sans. *Default: as described.* The alternative sets the materials in Newsreader throughout.
+21. **Material pieces keep their corners and depth.** The legacy shape tokens (`--radius` 10px, `--radius-sm` 6px and the two small shadows) are not re-pointed, because tiles, cards, trays and tickets draw with them and PRD 18 gave them their depth. *Default: keep them.* Squarer, flatter pieces in the Album's style would be material rendering, for PRD 20.
+22. **Label sizes on the materials.** The Album's face reaches every label on the mat, but each material keeps its own label sizes and tracking, some as small as 0.62rem (S4-19). *Default: leave sizes to PRD 20,* where a minimum label size can be set per material.
+23. **Monospace records stay.** The written records on the multiplication bead board, racks and tubes and the decimal board, and several worksheets, use `--font-mono`, and racks and tubes lines up its long-division record by character (S4-20, S6-21). *Default: `--font-mono` unchanged in PRD 19;* PRD 20 or your printables list can replace it.
+24. **The focus ring on felt and wood** is nearly invisible (S9-22). It is inside the materials, but it is focus styling, not type or labels. *Default: leave it for PRD 20.*
+25. **Bold numerals draw at Newsreader 600.** Number cards, kits and plates ask for weight 700; Step 2's subset stops at 600, so they draw at 600. *Default: accept 600.* Widening the subset to 700 would make the roman file larger, still under Step 4's 200 KB cap.
+26. **Materials take the Album's paper, card, ink and rubric.** Without the shield, the eight chrome tokens materials share with the page take the Album's values inside every stage: card stock `#fffdf8` instead of white on pieces and trays, darker ink and hairlines, and rubric instead of terracotta for the notices and buttons seven materials draw in the accent (stamp game, division board, racks and tubes, fraction circles, bead frame and both strip boards). *Decided by the owner on 2026-09-29: take them (owner decision 9).*
 
 ## Out of scope
 
-- **The four functional bugs,** fixed in the separate session and merged before Step 1: the Hundred chain crash (S3-01), the blank "Print control charts" (S3-02+S4-01+S3-16), number fields clamping each keystroke (S9-02), and the answer-key number glued to its operand (S6-02+S7-02).
-- **PRD 20 candidates:** 104 findings about how materials render (fixed-width mats, number-card stacking, Georgia's old-style numerals, bead sizes, focus mode, the walk-through covering the mat), what printables contain (page density, write-on space, answer-key columns, the planner's pagination, kit layout, site URLs on paper), and things the redesign doesn't touch (content passes over lesson text, in-page navigation, install icons). They are listed with cause and fix hint in [`19-the-album/audit-findings.md`](19-the-album/audit-findings.md).
-- Any change inside `.material-stage` or `.print-sheet`, including lining figures on number cards (S7-05) and a visible focus ring on felt and wood (S9-22): both change computed styles inside materials or printables and need their own approval and a new print baseline.
+- **The four functional bugs,** fixed in the separate session and merged before PRD 19 implementation began: the Hundred chain crash (S3-01), the blank "Print control charts" (S3-02+S4-01+S3-16), number fields clamping each keystroke (S9-02), and the answer-key number glued to its operand (S6-02+S7-02).
+- **PRD 20 candidates:** 103 findings about how materials render (fixed-width mats, number-card stacking, bead sizes, focus mode, the walk-through covering the mat), what printables contain (page density, write-on space, answer-key columns, the planner's pagination, kit layout, site URLs on paper), and things the redesign doesn't touch (content passes over lesson text, in-page navigation, install icons). They are listed with cause and fix hint in [`19-the-album/audit-findings.md`](19-the-album/audit-findings.md).
+- Inside materials and printables, anything beyond their type and the shared chrome tokens: Montessori colours, sizes, spacing, layout, the focus ring on felt and wood (S9-22), and what printables contain. Material changes are PRD 20 candidates; printable changes come from the owner's review after PRD 19 (Step 43).
 - The planner's day grouping (S1-10's second half), mode-aware builder fields (S6-20), a tap-to-enlarge phone preview (S6-12), a page-break line in previews (S9-10), and showing a kit's piece page before its calibration page on screen.
 - Dark mode, new ornaments or motion beyond decision 16, a headless test runner, and any new dependency.

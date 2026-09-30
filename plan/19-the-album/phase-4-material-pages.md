@@ -3,7 +3,7 @@
 Part of [PRD 19 — The Album: visual redesign](../19-the-album.md). Steps 26–31. Steps are numbered across the whole PRD; read the PRD’s decisions, conventions and rollout first.
 
 
-Each material sits on a mounted plate under a ruled toolbar, with the page's own actions in the PageHeader and the notes in two ruled columns below. Nothing inside `.material-stage` changes, at desktop or phone width, and the stage gate proves it after every step. The phase ends with the walk-through step card.
+Each material sits on a mounted plate under a ruled toolbar, with the page's own actions in the PageHeader and the notes in two ruled columns below. Inside `.material-stage` only the type and the shared chrome tokens changed (Phase 1, Steps 6–7): this phase changes nothing inside a stage, and every phone stage keeps today's width. The phase ends with the walk-through step card.
 
 ## Step 26 — The plate caption and the material-name context
 
@@ -91,7 +91,7 @@ export const MaterialNameContext = createContext<string | null>(null)
 
 **Files:** `src/components/MaterialShell.tsx` (modified: full new content), `src/styles/materials.css` (modified: one rule inserted).
 
-This builds the markup that `shim.js` faked in lines 230–242. The toolbar splits into the material's own task controls (left) and a Sound/Focus group (right). The how-to disclosure moves under the toolbar and gains a drawn marker. The stage is wrapped in a captioned figure. Nothing inside `.material-stage` changes: `{children}` is rendered exactly as before, into the same `div.material-stage.mat-*`.
+This builds the markup that `shim.js` faked in lines 230–242. The toolbar splits into the material's own task controls (left) and a Sound/Focus group (right). The how-to disclosure moves under the toolbar and gains a drawn marker. The stage is wrapped in a captioned figure. This step changes nothing inside `.material-stage`: `{children}` is rendered exactly as before, into the same `div.material-stage.mat-*`.
 
 Step 10 swapped the toggle emoji for `<Icon/>` plus `<span className="btn-label">` and reworded the doc comment's "Esc or ✕ exits". Step 10 moved the return block by a few lines (an import and the longer toggles), so locate it by its text (convention 10). It is:
 
@@ -141,8 +141,8 @@ export interface MaterialShellProps {
  * Consistent frame around every interactive material's work area (The Album,
  * PRD 19): a ruled toolbar (the material's own controls left, Sound and Focus
  * right), the how-to disclosure line, then the material on a mounted plate
- * with a caption. Everything inside .material-stage is the material itself
- * and keeps the legacy tokens (the token shield), so no material changes.
+ * with a caption. Everything inside .material-stage is the material itself:
+ * it takes the Album's type (global.css) and keeps its own colours and layout.
  *
  * Focus mode fills the viewport with the material and hides every written
  * instruction (help box, plate caption and on-stage notes) — a calm, wordless
@@ -250,7 +250,7 @@ Step 28 replaces this block together with the lines around it and keeps the rule
 **Check:**
 - `npm run build` is green.
 - On each of the 21 `/materials/<slug>` pages (plus the thousand chain on `/materials/bead-chains`), this returns `1`: `document.querySelectorAll('.material-shell > .material-plate > .material-stage-frame > .material-stage').length`.
-- The shield probe prints identical before/after output on `/materials/golden-beads`, `/materials/stamp-game` and `/materials/checkerboard`, and the stage gate PASSes. The chrome around the stage looks unstyled until Step 28; that's expected.
+- On `/materials/golden-beads`, `/materials/stamp-game` and `/materials/checkerboard` the material inside the stage looks as it did after Step 7. The chrome around the stage looks unstyled until Step 28; that's expected.
 
 ## Step 28 — The shell stylesheet: toolbar, help line, plate mount, focus mode, phone
 
@@ -260,7 +260,7 @@ Step 28 replaces this block together with the lines around it and keeps the rule
 3. Lines 193–228 are replaced.
 4. A phone block is appended.
 
-Lines 67–192 and 229–253 stay byte-for-byte. They draw the mats, stamp tiles, number cards, bank tray, stage notes and the exchange ceremony.
+Lines 67–192 and 229–253 are not touched here. They draw the mats, stamp tiles, number cards, bank tray, stage notes and the exchange ceremony; the only change among them since `bbbdb44` is Step 7's stamp-tile and number-card font lines.
 
 This is the prototype's §11, written against the real classes:
 - a ruled toolbar (ink rule above, hairline below) with small-capital labels vertically centred on their fields;
@@ -269,7 +269,7 @@ This is the prototype's §11, written against the real classes:
 - the stage mounted with an inset ink hairline and a 6px paper mat;
 - a focus mode that stretches the plate.
 
-**Edit 1.** The current lines 1–66 (line numbers at `album-baseline`; Step 27's `.material-plate` rule and Step 12's phone `.material-shell` bleed, each with its comment, now sit after `.material-shell`) begin:
+**Edit 1.** The current lines 1–66 (line numbers at `bbbdb44`; Step 27's `.material-plate` rule and Step 12's phone `.material-shell` bleed, each with its comment, now sit after `.material-shell`) begin:
 
 ```css
 /* ---------- Interactive material shell ---------- */
@@ -319,8 +319,8 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 /* ---------- Interactive material shell (The Album, PRD 19) ----------
    The shell is chrome: a ruled toolbar (the material's own controls left,
    Sound and Focus right), the how-to disclosure line, and the mounted plate.
-   Everything inside .material-stage is the material itself and keeps the
-   legacy tokens through the token shield, so no material changes. */
+   Everything inside .material-stage is the material itself: it takes the
+   Album's type (global.css) and keeps its own colours and layout. */
 
 .material-shell {
   margin-top: 0;
@@ -366,6 +366,8 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 .material-toolbar {
   display: flex;
   font-family: var(--font-ui);
+  /* material buttons in the toolbar that ask for --font-body get the UI face */
+  --font-body: var(--font-ui);
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: space-between;
@@ -443,11 +445,13 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 }
 
 /* Seven materials put buttons with their own classes in the toolbar. Those
-   rules live in each material's stylesheet (never edited here) and read the
-   chrome tokens out here, so they would show a faint --line edge (1.57:1 on
-   card) and a 2px corner beside the ink-edged .btn. Give them the chrome
-   edge and corner; their fill, hover, pressed outline and the strip board's
-   primary variant stay their own. */
+   rules live in each material's stylesheet (never edited here) and draw
+   with --card, --line and the legacy --radius-sm, so they would show a
+   faint --line edge (1.57:1 on card) and a 6px corner beside the ink-edged
+   .btn. Give them the chrome edge and corner; their fill, hover, pressed
+   outline and the strip board's primary variant stay their own. The chart
+   materials' Close button in the .no-print bar inside their sheet preview
+   is chrome too, so it gets the same. */
 .material-toolbar
   :is(
     .addition-charts-btn,
@@ -540,8 +544,7 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 
 /* The plate: the stage is mounted with a 1px ink hairline and a paper mat,
    both drawn as inset rings inside the stage's own padding, so every
-   material keeps exactly today's width. The stage re-points --ink and
-   --paper (the token shield), so the mount uses the chrome twins. */
+   material keeps exactly today's width. */
 .material-plate {
   margin: 0;
 }
@@ -559,8 +562,8 @@ Replace all of them, Step 27's and Step 12's rules included, with:
   min-height: 320px;
   overflow-x: auto;
   box-shadow:
-    inset 0 0 0 1px var(--chrome-ink),
-    inset 0 0 0 6px var(--chrome-paper),
+    inset 0 0 0 1px var(--ink),
+    inset 0 0 0 6px var(--paper),
     inset 0 2px 10px 6px rgba(0, 0, 0, 0.18);
 }
 
@@ -572,10 +575,10 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 
 - Lines 29–58 (`.material-controls` and its label, checkbox and select rules) appear unchanged inside this block. LongChain's print row still uses them.
 - The toolbar carries both classes, so each `.material-toolbar` rule has the same specificity as its `.material-controls` twin and wins on order.
-- `font-family: var(--font-ui)` on the toolbar follows convention 5 (no blanket UI-font rule). The labels and fields set their own face.
+- `font-family: var(--font-ui)` on the toolbar follows convention 5 (no blanket UI-font rule). The labels and fields set their own face. The toolbar also re-scopes `--font-body` to `--font-ui`, as Step 7 does inside a stage, because the chart materials' and the multiplication bead board's toolbar buttons set their own `font-family: var(--font-body)` and would otherwise draw in Newsreader beside the MM Sans `.btn`s.
 - `.material-plate` and `.material-stage-frame` set no inherited text property (convention 4).
-- **The toolbar's material buttons.** Seven materials pass buttons with their own classes as `controls`: `.addition-charts-btn`, `.multiplication-charts-btn`, `.bead-chains-btn`, `.bead-frame-btn`, `.multiplication-bead-board-btn`, `.number-cards-btn` and `.subtraction-strip-board-button`. (Cards & counters' toolbar button is already a `.btn`.) Their rules are in the materials' own stylesheets, which this PRD doesn't edit. In the toolbar they sit outside the shield, so they read the chrome `--card`, `--line` and `--radius-sm`, and would be the only chrome controls whose edge is the decorative `--line`. The rule above gives them the ink edge and 3px corner, and so does the chart materials' Close button in the print bar (the shield exception). It leaves their fill and hover to the material, and skips a pressed number-cards toggle (its `--focus` border and outline are the pressed state) and the strip board's primary variant (drawn inside the stage today, but excluded in case it ever moves to the toolbar). Specificity is (0,3,0), so a material's own `:hover:not(:disabled)` border (bead frame) still wins on order. The same classes inside a stage are untouched.
-- **The mount is chrome.** The stage's corner radius and box-shadow change here on purpose. The stage gates record exactly those two as `(plate mount)` on the stage box, so they are outside the gate; the box-shadow check below tests the mount itself. Everything else on the stage box (size, padding, background, font) and everything inside it is still compared.
+- **The toolbar's material buttons.** Seven materials pass buttons with their own classes as `controls`: `.addition-charts-btn`, `.multiplication-charts-btn`, `.bead-chains-btn`, `.bead-frame-btn`, `.multiplication-bead-board-btn`, `.number-cards-btn` and `.subtraction-strip-board-button`. (Cards & counters' toolbar button is already a `.btn`.) Their rules are in the materials' own stylesheets, which this PRD doesn't edit. In the toolbar they read the Album's `--card` and `--line` and the legacy `--radius-sm` (6px), and would be the only chrome controls whose edge is the decorative `--line`. The rule above gives them the ink edge and 3px corner, and so does the chart materials' Close button in the `.no-print` bar inside the chart sheet preview. It leaves their fill and hover to the material, and skips a pressed number-cards toggle (its `--focus` border and outline are the pressed state) and the strip board's primary variant (drawn inside the stage today, but excluded in case it ever moves to the toolbar). Specificity is (0,3,0), so a material's own `:hover:not(:disabled)` border (bead frame) still wins on order. The same classes inside a stage are untouched.
+- **The mount is chrome.** The stage's corner radius and box-shadow change here on purpose. The mount is drawn inside the stage's own padding, so no material changes size; the box-shadow check below tests it.
 
 **Edit 2.** After line 88 (the end of `.mat-paper { … }`), insert:
 
@@ -583,8 +586,8 @@ Replace all of them, Step 27's and Step 12's rules included, with:
 /* A paper mat keeps its legacy border and gets the mount without the felt's depth. */
 .material-stage.mat-paper {
   box-shadow:
-    inset 0 0 0 1px var(--chrome-ink),
-    inset 0 0 0 6px var(--chrome-paper);
+    inset 0 0 0 1px var(--ink),
+    inset 0 0 0 6px var(--paper);
 }
 ```
 
@@ -732,9 +735,9 @@ body.has-focus-mode {
   }
 
   /* The phone gutter grew from 12px to 16px (Step 12). The plate bleeds 4px
-     back into it, so every stage keeps exactly today's width (viewport − 24px)
-     and its 1rem padding: no material reflows on a phone. The mat ring is
-     3px here instead of 6px. */
+     back into it, so every stage keeps today's width (viewport − 24px) and
+     its 1rem padding; wider phone mats are PRD 20 layout work. The mat ring
+     is 3px here instead of 6px. */
   .material-plate {
     margin: 0 -4px;
   }
@@ -745,14 +748,14 @@ body.has-focus-mode {
 
   .material-stage {
     box-shadow:
-      inset 0 0 0 1px var(--chrome-ink),
-      inset 0 0 0 3px var(--chrome-paper),
+      inset 0 0 0 1px var(--ink),
+      inset 0 0 0 3px var(--paper),
       inset 0 2px 10px 3px rgba(0, 0, 0, 0.18);
   }
 }
 ```
 
-- **No material changes width on a phone** (decision 19). On `album-baseline` a phone stage is `viewport − 24px` wide (12px main padding each side) with 16px padding. Step 12 made the gutter 16px, and the 4px bleed gives the stage back exactly those 8px: 366px at 390, with the same 1rem padding. Until now the shell carried that bleed (Step 12, item 5); Edit 1 removed it, so the bleed is on the plate alone and the toolbar and help line sit back on the 16px gutter. The `stages390` gate proves nothing inside a stage moved. The prototype's 8px bleed with tighter padding would have widened every phone stage by 24px and reflowed several materials. The golden-bead bank's one-row fit is material work for PRD 20 (S2-16, open question 12). `golden-beads.css` is not touched.
+- **Phone stages keep today's width** (decision 19). Today a phone stage is `viewport − 24px` wide (12px main padding each side) with 16px padding. Step 12 made the gutter 16px, and the 4px bleed gives the stage back exactly those 8px: 366px at 390, with the same 1rem padding. Until now the shell carried that bleed (Step 12, item 5); Edit 1 removed it, so the bleed is on the plate alone and the toolbar and help line sit back on the 16px gutter. The prototype's 8px bleed with tighter padding would have widened every phone stage by 24px and reflowed several materials, which is layout work for PRD 20 (S2-16, open question 12). `golden-beads.css` is not touched.
 - `min-width` on the task buttons keeps short labels (the checkerboard's "Set") at 44px once the phone padding tightens.
 
 **Measured contrast:**
@@ -771,14 +774,14 @@ body.has-focus-mode {
 There are no transitions here. The `.btn-utility .btn-label` phone rule repeats `.visually-hidden`'s declarations (Step 9) because it applies only inside the media query.
 
 **Check:**
-- At 1400 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage').getBoundingClientRect().top)` is about 459 (the baseline was about 466).
+- At 1400 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage').getBoundingClientRect().top)` is about 459 (today it is about 466).
 - The MODE label is centred on its select. Sound and Focus are right-aligned ghost buttons with line icons. The help line has a circled + that becomes − when open.
 - The stage shows a 1px ink line and a 6px paper mat inside its edge, and `getComputedStyle(document.querySelector('.material-stage')).boxShadow` starts with `rgb(38, 34, 29) 0px 0px 0px 1px inset, rgb(246, 241, 231) 0px 0px 0px 6px inset`.
 - On `/materials/checkerboard` at 820, the task controls wrap into three rows inside their group, and the Sound/Focus group's top equals the task group's top: nothing stranded (S2-08).
-- At 390 on `/materials/golden-beads`, Sound and Focus are 44×44 icon-only buttons at the top right. The first task row is `MODE [Free build] [Hide total]`, and Reset sits on the second. `Math.round(document.querySelector('.material-stage').getBoundingClientRect().width)` is `366`, the same as on `album-baseline`.
-- On `/materials/number-cards`, `/materials/bead-frame`, `/materials/bead-chains`, `/materials/multiplication-bead-board`, `/materials/subtraction-strip-board`, `/materials/addition-charts` and `/materials/multiplication-charts`, the toolbar's own buttons have a 1px ink edge and 3px corners like the chrome buttons. A pressed number-cards view toggle keeps its blue border and outline, and `/materials/checkerboard`'s "Set" is 44px wide at 390.
+- At 390 on `/materials/golden-beads`, Sound and Focus are 44×44 icon-only buttons at the top right. The first task row is `MODE [Free build] [Hide total]`, and Reset sits on the second. `Math.round(document.querySelector('.material-stage').getBoundingClientRect().width)` is `366`, as today.
+- On `/materials/number-cards`, `/materials/bead-frame`, `/materials/bead-chains`, `/materials/multiplication-bead-board`, `/materials/subtraction-strip-board`, `/materials/addition-charts` and `/materials/multiplication-charts`, the toolbar's own buttons have a 1px ink edge and 3px corners like the chrome buttons, and on the two chart materials "Print control charts" and Reset compute to MM Sans like the Sound and Focus buttons beside them. A pressed number-cards view toggle keeps its blue border and outline, and `/materials/checkerboard`'s "Set" is 44px wide at 390.
 - Press Focus on `/materials/bead-frame`, `/materials/cards-and-counters`, `/materials/teen-board` and `/materials/decimal-board` at 1400 and at 390. Exit focus sits at the top right every time (S9-33). The help line and caption are hidden, and the felt fills the screen. Esc exits.
-- The stage gate PASSes.
+- The standard check (convention 12) passes: on golden beads, stamp game and number cards nothing inside the stage moved apart from the mount.
 
 ## Step 29 — The scroll veil on wide mats
 
@@ -854,7 +857,7 @@ and, at the very end of the file:
 }
 ```
 
-**Focus under the veil.** A browser scrolls a focused control into the scrollport, and the veiled strip is inside it, so without help a control could take focus while it shows only under the veil. `scroll-padding-inline-end: 2.75rem` makes the strip count as out of view, so such a control is scrolled clear (WCAG 2.4.11, focus not obscured). It sits in the same `@supports` block as the veil, so it applies exactly when the veil does. It is a scroll-only property: it changes no layout or paint, creates no stacking context, and is not among the gate's recorded properties. (Chrome leaves a control where it is when part of it already shows outside the strip, so that part, with its focus ring, stays clear of the veil.)
+**Focus under the veil.** A browser scrolls a focused control into the scrollport, and the veiled strip is inside it, so without help a control could take focus while it shows only under the veil. `scroll-padding-inline-end: 2.75rem` makes the strip count as out of view, so such a control is scrolled clear (WCAG 2.4.11, focus not obscured). It sits in the same `@supports` block as the veil, so it applies exactly when the veil does. It is a scroll-only property: it changes no layout or paint, and creates no stacking context. (Chrome leaves a control where it is when part of it already shows outside the strip, so that part, with its focus ring, stays clear of the veil.)
 
 **Why a layer and not the prototype's mask.** `mask-image` (and `opacity`, `transform`, `filter`, `isolation`, or a `z-index` on a positioned box) makes `.material-stage` a stacking context. The stamp game's `.stamp-game-bank-stack::before/::after` have `z-index: -1` (`stamp-game.css:32–41`). Today they paint *under* the stage background and are invisible. Inside a stacking context they would paint over it, a visible change to a material. `timeline-scope` and `scroll-timeline` create no stacking context.
 
@@ -871,7 +874,7 @@ and, at the very end of the file:
   stage.scrollLeft === stage.scrollWidth - stage.clientWidth // true (306 at 390): the mat scrolled to its end, so the button is clear and the veil has lifted
   ```
   With `scroll-padding-inline-end` unticked in DevTools, the same lines leave `scrollLeft` at 150 and the button under the veil.
-- On `/materials/stamp-game` at 390 and 1400, this returns `[]` (no stacking-context ancestor between the stamp stack and `<body>`), and the bank's stacked stamps look exactly as they do on `album-baseline`. It flags every stacking-context trigger, and any `z-index` at all (on a flex or grid item a `z-index` creates one without `position`):
+- On `/materials/stamp-game` at 390 and 1400, this returns `[]` (no stacking-context ancestor between the stamp stack and `<body>`), and the bank's stacked stamps show no extra pale outlines behind them (the stack hint stays hidden). It flags every stacking-context trigger, and any `z-index` at all (on a flex or grid item a `z-index` creates one without `position`):
   ```js
   (() => { const out = []; for (let n = document.querySelector('.stamp-game-bank-stack').parentElement; n && n !== document.body; n = n.parentElement) { const c = getComputedStyle(n); if (c.zIndex !== 'auto' || c.position === 'fixed' || c.position === 'sticky' || c.opacity !== '1' || c.transform !== 'none' || c.filter !== 'none' || c.backdropFilter !== 'none' || c.clipPath !== 'none' || c.maskImage !== 'none' || c.mixBlendMode !== 'normal' || c.isolation === 'isolate' || c.perspective !== 'none' || c.containerType !== 'normal' || c.willChange !== 'auto' || c.contain !== 'none') out.push(n.className) } return out })()
   ```
@@ -1238,7 +1241,7 @@ Then append to `src/styles/materials.css`:
 ```
 
 **Check:**
-- `npm run build` is green, and the stage gate PASSes.
+- The standard check (convention 12) passes.
 - At 1400 on `/materials/golden-beads`:
   - The header reads `Golden Beads & Mat`, then `[AGES 4–7] GRADES PK–1 · THE DECIMAL SYSTEM`, then the 21px ink lede. "▶ Walk through: Golden Bead Addition" sits at the top right.
   - `document.title` is `Golden Beads & Mat · Montessori Math`.
@@ -1250,7 +1253,7 @@ Then append to `src/styles/materials.css`:
   - `document.querySelectorAll('.material-notes [style], .material-links [style], main > [style]').length` is `0`.
   - After opening "Print control charts" on `/materials/addition-charts`, `document.querySelector('main.site-main > .sheet-preview')` is not `null`, so the print-isolation rules still see the sheet as a child of `main`.
   - On `/materials/bead-chains`, choose "Hundred chain" and press "Show arrow labels": `document.querySelector('main.site-main > .bead-chains-long-wrap')` is not `null`. `bead-chains.css` hides every other child of `main` while the labels print, so a wrapper here would print a blank page.
-- The print gate PASSes: it prints both chart sheets and both chains' arrow labels from these pages.
+- In print preview, "Print control charts" on `/materials/addition-charts` and `/materials/multiplication-charts`, and the Hundred and Thousand chains' arrow labels on `/materials/bead-chains`, each print only their sheet, non-blank, in colour and with "Ink-friendly B&W".
 - At 760 both grids stack into one column.
 - The Walk-through button opens the step card and shows `aria-pressed="true"`.
 
@@ -1258,7 +1261,7 @@ Then append to `src/styles/materials.css`:
 
 **Files:** `src/styles/presentation.css` (modified). `src/lessons/PresentationOverlay.tsx` does not change.
 
-The walk-through step card (PRD 11) is chrome that sits over the mat while a lesson is presented. After Step 6 it already has the new card stock, radius and shadow through the re-pointed tokens, but its title is still a bold wood-dark serif and its spoken line is rubric-dark italic, unlike the spoken lines on the lesson page (Step 33). This step finishes it as the prototype's §18 does (decision 23): an ink hairline with square corners, a Newsreader title in ink, and the spoken line in ink with rubric quote marks. It also deletes `.presentation-launch`, which no markup uses after Step 30.
+The walk-through step card (PRD 11) is chrome that sits over the mat while a lesson is presented. After Step 6 it already has the new card stock through the re-pointed `--card`, but it keeps its 10px top corners and small shadow, because the legacy shape tokens `--radius` and `--shadow-md` are not re-pointed (Step 6: material pieces draw with them). Its title is still a bold wood-dark serif and its spoken line is rubric-dark italic, unlike the spoken lines on the lesson page (Step 33). This step finishes it as the prototype's §18 does (decision 23): an ink hairline with square corners, the soft sheet shadow (`--shadow-sheet`), a Newsreader title in ink, and the spoken line in ink with rubric quote marks. It also deletes `.presentation-launch`, which no markup uses after Step 30.
 
 The card renders outside `.material-stage` (MaterialPage draws it after the notes), so its Previous, Next and Close buttons already get the chrome `.btn` from Step 9: card stock, and a rubric Next. Nothing in `PresentationOverlay.tsx` changes, and its "← Previous" and "Next →" text arrows are not emoji, so the guard test from Step 10 allows them.
 
@@ -1321,7 +1324,7 @@ Replace them with:
   border: 1px solid var(--ink);
   border-bottom: none;
   border-radius: 0;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sheet);
   padding: 0.9rem 1.2rem;
   z-index: 50;
 }
@@ -1410,4 +1413,3 @@ Replace them with:
 - At 1400 and at 390, open `/materials/golden-beads?present=golden-beads-addition`. The card has a 1px ink edge on its top and sides, square corners and the soft sheet shadow. The title "Golden Bead Addition" is Newsreader 500 in ink. The spoken line "First we lay out one thousand two hundred thirty-four." is italic ink with rubric quote marks. Previous is card stock with an ink edge, Next is rubric, and Close is card stock; all three are 44px tall.
 - Press Next until the card reads "Step 9 of 9", then Previous three times: the mat shows exactly the state PRD 11's QA script describes for its step 6.
 - Print preview on the same URL: the card does not appear.
-- The stage gate PASSes (the card is outside every stage).
