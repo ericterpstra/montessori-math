@@ -1,0 +1,686 @@
+/* ------------------------------------------------------------------
+   Contents pages: The Album (PRD 19).
+   Every hub reads like a book's table of contents: strand chapter heads,
+   whole-row contents entries with mounted plates (MaterialThumb), the
+   home page's title page, parts and age bands, and notes.
+   Components: src/components/Contents.tsx, MaterialThumb.tsx.
+   ------------------------------------------------------------------ */
+
+/* ---------- Section heads (home, /ages) ---------- */
+
+.section-head {
+  margin: var(--space-7) 0 var(--space-4);
+  font-family: var(--font-text);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Chapters: one per strand ---------- */
+
+.chapter {
+  margin-top: var(--space-7);
+}
+
+.chapter.minor {
+  margin-top: var(--space-5);
+}
+
+.chapter-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.chapter-head.minor {
+  padding-bottom: var(--space-2);
+  font-size: var(--fs-lede);
+}
+
+.chapter-num {
+  min-width: 0.8em;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.strand-bar {
+  flex: none;
+  display: block;
+}
+
+.chapter-name {
+  flex: 0 1 auto;
+  text-wrap: balance;
+}
+
+.chapter-meta {
+  margin-left: auto;
+  font: 600 var(--fs-caps) / 1.2 var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.chapter-desc {
+  max-width: var(--measure);
+  margin: var(--space-2) 0;
+  font-size: var(--fs-read-sm);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- Plates: MaterialThumb ---------- */
+
+.plate {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 48px;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: inset 0 0 0 3px var(--card), inset 0 0 0 4px var(--line);
+}
+
+.plate-art {
+  display: block;
+  width: 62px;
+  height: 38px;
+}
+
+/* the nested beads.tsx primitives keep their own geometry */
+.plate-art svg {
+  max-width: none;
+}
+
+/* ---------- Contents rows ---------- */
+
+.contents {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contents > li {
+  display: flex;
+}
+
+/* the first list right under a PageHeader (no chapter head above it) */
+.contents-first {
+  border-top: 1px solid var(--ink);
+}
+
+.contents-row {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 20px;
+  column-gap: var(--space-5);
+  align-items: start;
+  min-height: 72px;
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.contents-row.lead-num {
+  grid-template-columns: 2.5rem minmax(0, 1fr) 20px;
+  align-items: baseline;
+}
+
+.contents-row.lead-none {
+  grid-template-columns: minmax(0, 1fr) 20px;
+}
+
+.row-num {
+  justify-self: end;
+  font: italic 400 1.5rem / 1.2 var(--font-text);
+  color: var(--accent);
+}
+
+.row-text {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr) 11rem;
+  column-gap: var(--space-6);
+  align-items: baseline;
+}
+
+.row-title {
+  grid-column: 1;
+  font-family: var(--font-text);
+  font-size: var(--fs-lede);
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* the one visible "this is a link" cue at rest: a faint underline */
+.row-title-text {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--link-rule);
+}
+
+.row-title-meta {
+  display: block;
+  margin-top: 0.2rem;
+  font: 600 var(--fs-caps) / 1.3 var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.row-summary {
+  grid-column: 2;
+  max-width: 36rem;
+  font-size: var(--fs-read-sm);
+  line-height: 1.5;
+  text-wrap: pretty;
+  color: var(--ink);
+}
+
+.row-meta {
+  grid-column: 3;
+  text-align: right;
+  line-height: 1.9;
+}
+
+/* presets, piece counts: plain run-in text that wraps, never a pill */
+.row-note {
+  grid-column: 2 / -1;
+  margin-top: var(--space-1);
+  font: 500 var(--fs-ui) / 1.5 var(--font-ui);
+  color: var(--ink-soft);
+}
+
+.row-arrow {
+  justify-self: end;
+  align-self: center;
+  color: var(--ink-soft);
+}
+
+/* hover / focus: a paper-warm wash 8px past the plate; only the title and arrow turn rubric */
+.contents-row:hover,
+.contents-row:focus-visible {
+  background: var(--paper-warm);
+  box-shadow: -0.5rem 0 0 var(--paper-warm), 0.5rem 0 0 var(--paper-warm);
+  color: var(--ink);
+}
+
+.contents-row:hover .row-title,
+.contents-row:focus-visible .row-title {
+  color: var(--accent);
+}
+
+.contents-row:hover .row-title-text,
+.contents-row:focus-visible .row-title-text {
+  text-decoration-color: currentColor;
+}
+
+.contents-row:hover .row-arrow,
+.contents-row:focus-visible .row-arrow {
+  color: var(--accent);
+}
+
+.contents-row:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---------- Home: the title page ---------- */
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title title'
+    'body plate';
+  column-gap: var(--space-8);
+  align-items: start;
+  margin: var(--space-2) 0 var(--space-7);
+}
+
+.hero-title {
+  grid-area: title;
+}
+
+.hero-body {
+  grid-area: body;
+}
+
+.home-hero h1 {
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-display);
+  font-weight: 350;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.hero-body .page-lede {
+  max-width: 36rem;
+}
+
+.promise {
+  display: inline-block;
+  margin: var(--space-5) 0;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font: 700 var(--fs-caps) / 1.3 var(--font-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* one primary action on its own line; the two quiet links share the next */
+.home-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.home-cta .btn.primary {
+  padding: 0.7rem 1.4rem;
+  font-size: 1.0625rem;
+}
+
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-5);
+  margin: 0;
+}
+
+/* Plate I: the golden bead family on a double-framed card-stock plate */
+.plate-hero {
+  grid-area: plate;
+  align-self: center;
+  margin: 6px;
+  padding: var(--space-6) var(--space-7) var(--space-4);
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 6px var(--ink);
+}
+
+.plate-hero-art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+.plate-caption {
+  margin-top: var(--space-4);
+  font: italic 400 var(--fs-ui) / 1.35 var(--font-text);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.plate-no {
+  margin-right: 0.2em;
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+/* Parts I–III */
+.parts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.parts > li {
+  display: flex;
+}
+
+.part-entry {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3) var(--space-5);
+  border-top: 1px solid var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.part-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.part-num {
+  font: italic 400 2.25rem / 1 var(--font-text);
+  color: var(--accent);
+}
+
+.part-entry h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.part-kind {
+  display: block;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+  text-decoration-color: var(--link-rule);
+}
+
+.part-sub {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--fs-lede);
+  font-style: italic;
+}
+
+.part-text {
+  display: block;
+  font-size: var(--fs-read-sm);
+  line-height: 1.55;
+}
+
+.part-go {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  margin-top: auto;
+  font: 600 var(--fs-ui) / 1.2 var(--font-ui);
+}
+
+.part-go .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.part-entry:hover,
+.part-entry:focus-visible {
+  background: var(--paper-warm);
+  color: var(--ink);
+}
+
+.part-entry:hover .part-kind,
+.part-entry:hover .part-go,
+.part-entry:focus-visible .part-kind,
+.part-entry:focus-visible .part-go {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.part-entry:focus-visible {
+  outline-offset: -3px;
+}
+
+/* Age bands: two text columns (title + grades | blurb) */
+.bands .row-text {
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+}
+
+/* ---------- Notes: an aside under a bead fleuron (was: white card) ---------- */
+
+.note {
+  max-width: 42rem;
+  margin: var(--space-8) auto 0;
+}
+
+.note h2 {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-h2);
+  font-style: italic;
+  text-align: center;
+}
+
+.note p {
+  margin: 0;
+  font-size: var(--fs-body);
+}
+
+.note .note-action {
+  margin-top: var(--space-3);
+  text-align: center;
+}
+
+/* ---------- /ages: band tabs ---------- */
+
+.band-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 var(--space-2);
+  border-bottom: 1px solid var(--ink);
+}
+
+.band-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  padding: var(--space-2) var(--space-2) var(--space-3);
+  border: 0;
+  background: none;
+  font-family: var(--font-ui);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.band-tab-ages {
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.band-tab-grades {
+  font-size: var(--fs-caps);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.band-tab:hover {
+  background: var(--paper-warm);
+  color: var(--accent);
+}
+
+/* selected: ink, bold, and a 3px ink underline (never colour alone) */
+.band-tab[aria-selected='true'] {
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--ink);
+}
+
+.band-tab[aria-selected='true'] .band-tab-ages {
+  font-weight: 700;
+}
+
+.band-tab:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---------- Tablet and phone ---------- */
+
+@media (max-width: 1020px) {
+  .row-text {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--space-1);
+  }
+
+  .row-text > .row-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .row-text > .row-meta {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .row-text > .row-summary {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .row-text > .row-note {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  .bands .row-text {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-hero {
+    column-gap: var(--space-6);
+  }
+
+  .plate-hero {
+    padding: var(--space-5) var(--space-5) var(--space-3);
+  }
+
+  .plate-hero-art {
+    zoom: 0.8;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'title'
+      'plate'
+      'body';
+  }
+
+  .home-hero h1 {
+    margin-bottom: var(--space-4);
+  }
+
+  .plate-hero {
+    justify-self: stretch;
+    margin: 6px 6px var(--space-5);
+    padding: var(--space-5) var(--space-3) var(--space-3);
+  }
+
+  .plate-hero-art {
+    zoom: 0.75;
+  }
+
+  .parts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .home-hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .home-cta .btn.primary {
+    align-self: stretch;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .contents-row {
+    grid-template-columns: 72px minmax(0, 1fr);
+    column-gap: var(--space-4);
+    padding-right: 0;
+  }
+
+  .contents-row.lead-num {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+  }
+
+  .contents-row.lead-none {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contents-row > .row-arrow {
+    display: none;
+  }
+
+  .row-text > .row-meta {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    text-align: left;
+  }
+
+  .row-text > .row-note {
+    grid-row: 4;
+  }
+
+  .chapter-head {
+    flex-wrap: wrap;
+    row-gap: var(--space-1);
+    font-size: 1.5rem;
+  }
+
+  .chapter-head.minor {
+    font-size: var(--fs-lede);
+  }
+
+  .chapter-meta {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ---------- Motion (only when the reader has not asked for less) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .contents-row {
+    transition: background-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .row-arrow {
+    transition: transform 120ms ease, color 120ms ease;
+  }
+
+  .part-entry {
+    transition: background-color 120ms ease;
+  }
+
+  .part-go .icon {
+    transition: transform 120ms ease;
+  }
+
+  /* the 3px arrow nudge on hover and focus */
+  .contents-row:hover .row-arrow,
+  .contents-row:focus-visible .row-arrow,
+  .part-entry:hover .part-go .icon,
+  .part-entry:focus-visible .part-go .icon {
+    transform: translateX(3px);
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  .strand-bar,
+  .row-arrow {
+    display: none;
+  }
+
+  /* rubric numerals print in the ink of the page (black), never tinted */
+  .chapter-num,
+  .row-num {
+    color: inherit;
+  }
+}

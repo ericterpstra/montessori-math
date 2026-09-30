@@ -2,7 +2,7 @@ import type { CSSProperties, MouseEventHandler } from 'react'
 
 export type StampValue = 1 | 10 | 100 | 1000
 
-const STAMP_COLOR: Record<StampValue, string> = {
+export const STAMP_COLOR: Record<StampValue, string> = {
   1: 'var(--pv-unit)',
   10: 'var(--pv-ten)',
   100: 'var(--pv-hundred)',
