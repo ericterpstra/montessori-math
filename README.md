@@ -74,10 +74,12 @@ worksheet builders, guides — works with no network at all.
 
 ## Deploying
 
-The site is published to **Cloudflare Workers static assets** — the whole build
-is uploaded to Cloudflare's edge and served as files. There is no server code,
-no bindings, and no runtime network calls, so the site stays as static in
-production as it is locally.
+The site is published to **Cloudflare Workers static assets** at
+**https://montessori-math.org** — the whole build is uploaded to Cloudflare's
+edge and served as files. There is no server code, no bindings, and no runtime
+network calls, so the site stays as static in production as it is locally.
+`www.montessori-math.org` and https://montessori-math.eterps.workers.dev serve
+the same build.
 
 **Deploys happen automatically.** The Worker is connected to this repository via
 [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/), so
@@ -104,8 +106,12 @@ not yet pushed:
 CLOUDFLARE_API_TOKEN=<token> npm run deploy
 ```
 
-Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Two details matter:
+Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Three details matter:
 
+- **`routes`** — the custom domains (`montessori-math.org` and `www.`). Each
+  deploy replaces the Worker's routes with this list, so add or remove domains
+  here, never only in the dashboard. `workers_dev: true` keeps the workers.dev
+  URL alive, which declaring routes would otherwise switch off.
 - **`not_found_handling: "single-page-application"`** — deep links like
   `/materials/golden-beads` are client-side routes that exist in no file, so
   unmatched paths return `index.html` and React Router resolves them. Without

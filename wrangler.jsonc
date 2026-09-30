@@ -13,5 +13,16 @@
     // that exist in no file, so unmatched paths must return index.html and let
     // React Router resolve them. Without this every shared link 404s.
     "not_found_handling": "single-page-application"
-  }
+  },
+  // The public domain (registered with Cloudflare Registrar). Custom Domains
+  // create their own DNS records and certificates. Every deploy rewrites the
+  // Worker's routes from this list, so a domain added only in the dashboard
+  // would be dropped — this file is the source of truth.
+  "routes": [
+    { "pattern": "montessori-math.org", "custom_domain": true },
+    { "pattern": "www.montessori-math.org", "custom_domain": true }
+  ],
+  // Declaring routes turns the workers.dev URL off by default; keep it so
+  // existing links to montessori-math.eterps.workers.dev still work.
+  "workers_dev": true
 }

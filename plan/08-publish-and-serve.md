@@ -6,7 +6,9 @@
 
 Public GitHub repo + LAN/Tailscale test URL. Public web hosting was initially
 deferred (owner decision); the site now deploys to **Cloudflare Workers static
-assets** at https://montessori-math.eterps.workers.dev.
+assets** at https://montessori-math.org (registered with Cloudflare Registrar
+in September 2026; `www.` and https://montessori-math.eterps.workers.dev serve
+the same build). The domains are declared in `wrangler.jsonc` `routes`.
 
 Deployment is **Git-connected via Workers Builds**: every push to `main` builds
 and deploys automatically, so no API token lives on a developer machine. The
