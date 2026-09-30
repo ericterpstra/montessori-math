@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import type { FocusEvent } from 'react'
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
 
@@ -28,6 +29,26 @@ const COLOPHON = [
   { to: '/parents', label: 'For Parents' },
   { to: '/parents/scope-and-sequence', label: 'Scope & sequence' },
 ]
+
+/**
+ * Phones: keep a focused nav link fully clear of the 16px gutter and the
+ * 2.5rem right-hand fade. Chrome's focus scrolling ignores scroll-padding
+ * for a link that is already partly in view, so without this "Kits" and
+ * "By Age" could take focus half under the fade or past the screen edge.
+ */
+function keepFocusedLinkClear(event: FocusEvent<HTMLElement>) {
+  const nav = event.currentTarget
+  if (nav.scrollWidth <= nav.clientWidth) return
+  const style = getComputedStyle(nav)
+  const fade = parseFloat(style.paddingRight) // 2.5rem
+  const gutter = parseFloat(style.paddingLeft) // 16px
+  const navBox = nav.getBoundingClientRect()
+  const linkBox = (event.target as HTMLElement).getBoundingClientRect()
+  const over = linkBox.right - (navBox.right - fade)
+  const under = navBox.left + gutter - linkBox.left
+  if (over > 0) nav.scrollLeft += over
+  else if (under > 0) nav.scrollLeft -= under
+}
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -65,7 +86,7 @@ export default function Layout() {
             </svg>
             Montessori Math
           </Link>
-          <nav className="site-nav" aria-label="Main" ref={navRef}>
+          <nav className="site-nav" aria-label="Main" ref={navRef} onFocus={keepFocusedLinkClear}>
             {NAV.map((item) => (
               <NavLink key={item.to} to={item.to} data-label={item.label} className={({ isActive }) => (isActive ? 'active' : '')}>
                 {item.label}

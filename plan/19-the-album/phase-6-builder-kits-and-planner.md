@@ -1142,7 +1142,7 @@ export default function PlannerPage() {
 }
 ```
 
-**`src/styles/planner.css`.** Replace current lines 1–21, from `/* ---------- Planner screen UI ---------- */` through `.planner-preview { overflow-x: auto; margin-top: 2rem; }`:
+**`src/styles/planner.css`.** Replace current lines 1–21 (1–20 on `album`: the Phase 2 review already deleted the `.planner-row select:disabled { opacity: 0.45; }` line, see Step 16), from `/* ---------- Planner screen UI ---------- */` through `.planner-preview { overflow-x: auto; margin-top: 2rem; }`:
 
 ```css
 /* ---------- Planner screen UI ---------- */

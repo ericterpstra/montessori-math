@@ -174,6 +174,14 @@ main.site-main {
   }
 }
 
+/* Just above the phone breakpoint the seven links need a tighter gap to
+   stay on one row (at 641px with 16px gaps "By Age" wrapped alone). */
+@media screen and (min-width: 641px) and (max-width: 700px) {
+  .site-nav {
+    column-gap: var(--space-3);
+  }
+}
+
 /* Phone: one title line plus one sideways-scrolling nav row (about 110px
    in all instead of 160px). The right edge fades while more links lie
    beyond; the end padding lets the last link scroll clear of the fade. */
@@ -403,12 +411,14 @@ Leave the line above them: Step 7 already rewrote the old line 292 as the scoped
 - adds `container` to the three inner boxes;
 - gives every `NavLink` a `data-label`;
 - keeps the active link in view on phones;
+- keeps a focused link clear of the gutter and the right-hand fade on phones (`keepFocusedLinkClear`, added by the Phase 2 review: Chrome's focus scrolling ignores `scroll-padding` for a link that is already partly in view, so "Kits" took focus 9px into the fade and "By Age" ran past the screen edge);
 - adds the fleuron and the colophon links (`nav[aria-label="Footer"]`).
 
 `ScrollToTop`, `NAV`, the `ErrorBoundary` around the `Outlet`, the logo bead SVG and the two footer paragraphs are unchanged.
 
 ```tsx
 import { useEffect, useRef } from 'react'
+import type { FocusEvent } from 'react'
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
 
@@ -438,6 +448,26 @@ const COLOPHON = [
   { to: '/parents', label: 'For Parents' },
   { to: '/parents/scope-and-sequence', label: 'Scope & sequence' },
 ]
+
+/**
+ * Phones: keep a focused nav link fully clear of the 16px gutter and the
+ * 2.5rem right-hand fade. Chrome's focus scrolling ignores scroll-padding
+ * for a link that is already partly in view, so without this "Kits" and
+ * "By Age" could take focus half under the fade or past the screen edge.
+ */
+function keepFocusedLinkClear(event: FocusEvent<HTMLElement>) {
+  const nav = event.currentTarget
+  if (nav.scrollWidth <= nav.clientWidth) return
+  const style = getComputedStyle(nav)
+  const fade = parseFloat(style.paddingRight) // 2.5rem
+  const gutter = parseFloat(style.paddingLeft) // 16px
+  const navBox = nav.getBoundingClientRect()
+  const linkBox = (event.target as HTMLElement).getBoundingClientRect()
+  const over = linkBox.right - (navBox.right - fade)
+  const under = navBox.left + gutter - linkBox.left
+  if (over > 0) nav.scrollLeft += over
+  else if (under > 0) nav.scrollLeft -= under
+}
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -475,7 +505,7 @@ export default function Layout() {
             </svg>
             Montessori Math
           </Link>
-          <nav className="site-nav" aria-label="Main" ref={navRef}>
+          <nav className="site-nav" aria-label="Main" ref={navRef} onFocus={keepFocusedLinkClear}>
             {NAV.map((item) => (
               <NavLink key={item.to} to={item.to} data-label={item.label} className={({ isActive }) => (isActive ? 'active' : '')}>
                 {item.label}
@@ -548,7 +578,8 @@ Focus mode is unaffected: `.material-shell.focus-mode { margin: 0 }` is more spe
 - Record `[...document.querySelectorAll('.site-nav a')].map(a => a.getBoundingClientRect().left)` on `/materials` and again on `/ages`. The two arrays are identical, so there is no bold shift.
 - At 390px on `/ages`, `document.querySelector('.site-header').offsetHeight` is ≤ 112. "By Age" is scrolled into view with a golden underline.
 - At 1400 and at 390, `[...document.querySelectorAll('.site-nav a')].every((a) => a.offsetWidth >= 44 && a.offsetHeight >= 44)` is `true` ("Kits" is the narrowest).
-- At 390 on `/materials/golden-beads`, press Tab from the top of the page: when "Planner", which starts under the fade, takes focus, the nav scrolls it clear of the fade.
+- At 390 on `/materials/golden-beads`, press Tab from the top of the page through all seven nav links, then Shift+Tab back: every link, including "Kits" and "By Age" (partly in view) and "Planner" (under the fade), takes focus fully clear of the 16px gutter and the fade, with its whole ring on screen. `(() => { const n = document.querySelector('.site-nav'), r = document.activeElement.getBoundingClientRect(), b = n.getBoundingClientRect(); return r.left >= b.left + 16 && r.right <= b.right - parseFloat(getComputedStyle(n).paddingRight) + 0.5 })()` is `true` for each (the 0.5 allows the last link's subpixel scroll clamp).
+- At 641 and at 700 on `/parents`, the seven links sit on one row and the header is 113px, as at 820.
 - `/this-page-does-not-exist` at 1400×900: the footer's bottom equals the viewport bottom.
 
 ## Step 13 — `PageHeader`: one header pattern for every page type
@@ -2291,7 +2322,8 @@ The hover transitions and the arrow nudge are declared only inside `prefers-redu
 - `src/styles/forms.css` (new);
 - `src/main.tsx` (one line);
 - `src/styles/global.css` (delete current lines 226–245);
-- `src/styles/worksheets.css` (delete current lines 35–52).
+- `src/styles/worksheets.css` (delete current lines 35–52);
+- `src/styles/planner.css` (delete current line 14, the disabled selects' fade; Phase 2 review).
 
 Today the fields are 35–39px tall and checkbox rows 25px (S6-14). Values inherit the label's 600 weight. The date input matches no rule, so it stays inline, in monospace, glued to its label (S1-11). The planner's disabled selects fade to 45% (the audit asked for dashed).
 
@@ -2521,7 +2553,13 @@ label.field.checkbox input {
 }
 ```
 
-Until Step 41 lands, the planner's selects keep their old look. `planner.css` loads later and its `.planner-row select` rule (current line 13) wins on order. Step 41 replaces that rule.
+**`src/styles/planner.css`.** Delete current line 14 (added by the Phase 2 review, a one-line pull-forward from Step 41):
+
+```css
+.planner-row select:disabled { opacity: 0.45; }
+```
+
+Until Step 41 lands, the planner's enabled selects keep their old 38px look: `planner.css` loads later and its `.planner-row select` rule (current line 13) wins on order. Disabled ones take this step's dashed skin, because `.planner-row select:disabled` above outranks that base rule. Without the deletion, the old rule, of equal specificity and later, would also fade them to 45% (ink-soft text at 2.03:1 on paper, a 1.63:1 dashed edge), which is neither the old look nor the Album's. With it, an unticked row's select is dashed at full opacity in ink-soft (6.50:1). Step 41 replaces the rest of the planner's screen rules.
 
 **Check:**
 - `npm run build` is green.
@@ -2529,6 +2567,7 @@ Until Step 41 lands, the planner's selects keep their old look. `planner.css` lo
 - On `/worksheets/multi-digit-ops` at 1400, this is true: `[...document.querySelectorAll('.builder-form select, .builder-form input:not([type=checkbox])')].every(e => e.offsetHeight >= 44)`.
 - `[...document.querySelectorAll('label.field.checkbox')].every(l => l.offsetHeight >= 44)` is true, and each help line starts under the label text, not under the box.
 - On `/planner` the "Week of (optional)" label sits above a full-width 44px date box in the sans, not in monospace.
+- On `/planner`, `getComputedStyle(document.querySelector('.planner-row select:disabled')).opacity` is `"1"`, and the unticked rows' selects are dashed with readable ink-soft text.
 - The standard check (convention 12) passes. The forms are `no-print`, so nothing on paper changes.
 
 ## Step 17 — The desk: `<SheetPreview desk>`

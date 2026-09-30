@@ -158,6 +158,14 @@ main.site-main {
   }
 }
 
+/* Just above the phone breakpoint the seven links need a tighter gap to
+   stay on one row (at 641px with 16px gaps "By Age" wrapped alone). */
+@media screen and (min-width: 641px) and (max-width: 700px) {
+  .site-nav {
+    column-gap: var(--space-3);
+  }
+}
+
 /* Phone: one title line plus one sideways-scrolling nav row (about 110px
    in all instead of 160px). The right edge fades while more links lie
    beyond; the end padding lets the last link scroll clear of the fade. */

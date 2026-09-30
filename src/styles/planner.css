@@ -11,7 +11,6 @@
 .planner-row input[type='checkbox'] { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
 .planner-row .planner-row-name { flex: 1 1 auto; }
 .planner-row select { font: inherit; padding: 0.35rem 0.4rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); min-height: 2.4rem; }
-.planner-row select:disabled { opacity: 0.45; }
 
 .planner-shelf { position: sticky; top: 1rem; }
 .planner-shelf ul { list-style: none; padding: 0; margin: 0 0 1rem; }
