@@ -188,27 +188,6 @@ a:where(:not(.material-stage *, .print-sheet *)):hover {
   padding: 1rem 1.2rem;
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  padding: 0;
-  margin: 1rem 0;
-  list-style: none;
-}
-
-a.card {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 120ms ease, transform 120ms ease;
-}
-
-a.card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
 /* ---------- Meta line: badges and the age stamp ----------
    Not pills: a small-caps run of facts separated by middots. The age is the
    one framed item, an ink stamp, so it is findable without colour. Badges
@@ -364,35 +343,6 @@ a.card:hover {
   text-transform: uppercase;
   color: var(--ink);
   margin: var(--space-6) 0 var(--space-3);
-}
-
-/* ---------- Home ---------- */
-
-.home-hero {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0.5rem 0 2rem;
-}
-
-.home-hero-beads {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.8rem;
-  flex-shrink: 0;
-}
-
-.home-cta {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 760px) {
-  .home-hero-beads {
-    display: none;
-  }
 }
 
 @media (max-width: 640px) {

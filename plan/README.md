@@ -43,7 +43,7 @@ A page-by-page visual audit (September 2026) checked all 97 routes in real Chrom
 
 | # | PRD | Effort | Status |
 |---|---|---|---|
-| 19 | [The Album — visual redesign](19-the-album.md) ([assets, prototype & audit findings](19-the-album/)) | L | In progress (Phases 1–2 on `album`) |
+| 19 | [The Album — visual redesign](19-the-album.md) ([assets, prototype & audit findings](19-the-album/)) | L | In progress (Phases 1–3 on `album`) |
 
 ## Post-wave-2 — issue fixes
 

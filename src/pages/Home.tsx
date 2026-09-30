@@ -1,108 +1,127 @@
 import { Link } from 'react-router-dom'
 import { Bead, TenBar, HundredSquare, ThousandCube } from '../components/beads'
+import { ContentsRow } from '../components/Contents'
+import { Icon } from '../components/Icon'
+import { MaterialThumb } from '../components/MaterialThumb'
+import { AGE_BANDS } from './ageBands'
 
-const BANDS = [
+/** The three kinds of pages, numbered like the parts of a book. */
+const PARTS = [
   {
-    band: '4-6',
-    title: 'Ages 4–6 · PK–K',
-    blurb: 'Counting real things, the bead stair, teens and tens, and the first golden beads.',
+    numeral: 'I.',
+    to: '/lessons',
+    thumb: 'album',
+    kind: 'Lessons',
+    sub: 'you read, then show',
+    text: 'Album-style presentations: what to gather, exactly what to do and say, and how the child checks their own work. Print one, read it with coffee, present it in ten quiet minutes.',
+    go: 'Open the lessons',
   },
   {
-    band: '6-9',
-    title: 'Ages 6–9 · Grades 1–3',
-    blurb: 'The four operations with beads and stamps, memorizing facts, first fractions.',
+    numeral: 'II.',
+    to: '/materials',
+    thumb: 'golden-beads',
+    kind: 'Materials',
+    sub: "the child's hands",
+    text: 'Golden beads, the stamp game, bead frames, the checkerboard and more — virtual stand-ins that behave like the real materials, exchanges and all. Real beads are better; these fill the gaps.',
+    go: 'Open the materials',
   },
   {
-    band: '9-12',
-    title: 'Ages 9–12 · Grades 4–6',
-    blurb: 'Long multiplication and division, the checkerboard, racks & tubes, and decimals.',
+    numeral: 'III.',
+    to: '/worksheets',
+    thumb: 'sheet',
+    kind: 'Worksheets',
+    sub: 'practice on paper',
+    text: 'Generate exactly the sheet your child needs — operation, ranges, regrouping or not, how many problems — with an answer key, in Montessori color or ink-friendly B&W.',
+    go: 'Make a worksheet',
   },
 ]
+
+/* Plate I: one bead unit (11px) sets every piece, so the bar, the square's
+   side and the cube's face are all ten beads long, as in the real material. */
+const BEAD = 11
 
 export default function Home() {
   return (
     <>
-      <section className="home-hero">
-        <div>
-          <h1>Montessori Math at Home</h1>
-          <p className="page-intro">
+      <section className="home-hero" aria-labelledby="home-title">
+        <div className="hero-title">
+          <p className="page-kicker">A free Montessori album for families · Ages 4–12</p>
+          <h1 id="home-title">Montessori Math at Home</h1>
+        </div>
+        <figure className="plate-hero">
+          <div className="plate-hero-art">
+            <ThousandCube size={Math.round(BEAD * 12.4)} />
+            <HundredSquare size={BEAD * 10} />
+            <TenBar beadSize={BEAD} vertical />
+            <Bead size={BEAD} />
+          </div>
+          <figcaption className="plate-caption">
+            <span className="plate-no">Plate I.</span> A thousand, a hundred, a ten and a unit.
+          </figcaption>
+        </figure>
+        <div className="hero-body">
+          <p className="page-lede">
             A complete, free resource for teaching mathematics the Montessori way, ages 4–12: full lessons written for
             untrained parents, printable worksheets you can tune to your child, and faithful on-screen versions of the
             classic materials for when you don't own the real ones.
           </p>
-          <p className="page-intro">No accounts. No tracking. Nothing to buy. Print freely.</p>
-          <p className="home-cta">
+          <p className="promise">No accounts. No tracking. Nothing to buy. Print freely.</p>
+          <div className="home-cta">
             <Link className="btn primary" to="/parents/montessori-math-overview">
               New here? Start with the five-minute overview
             </Link>
-            <Link className="btn" to="/parents/scope-and-sequence">
-              See the full PK–6 path
-            </Link>
-            <Link className="btn" to="/planner">
-              Plan a week of work
-            </Link>
-          </p>
-        </div>
-        <div className="home-hero-beads" aria-hidden="true">
-          <ThousandCube size={104} />
-          <HundredSquare size={72} />
-          <TenBar beadSize={13} vertical />
-          <Bead size={16} />
+            <p className="home-links">
+              <Link className="text-link" to="/parents/scope-and-sequence">
+                See the full PK–6 path <Icon name="arrow" />
+              </Link>
+              <Link className="text-link" to="/planner">
+                Plan a week of work <Icon name="arrow" />
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 
-      <p className="section-label">Three kinds of pages, one method</p>
-      <ul className="card-grid">
-        <li>
-          <Link className="card" to="/lessons">
-            <h3>Lessons — you read, then show</h3>
-            <p style={{ marginBottom: 0 }}>
-              Album-style presentations: what to gather, exactly what to do and say, and how the child checks their own
-              work. Print one, read it with coffee, present it in ten quiet minutes.
-            </p>
-          </Link>
-        </li>
-        <li>
-          <Link className="card" to="/materials">
-            <h3>Materials — the child's hands</h3>
-            <p style={{ marginBottom: 0 }}>
-              Golden beads, the stamp game, bead frames, the checkerboard and more — virtual stand-ins that behave like
-              the real materials, exchanges and all. Real beads are better; these fill the gaps.
-            </p>
-          </Link>
-        </li>
-        <li>
-          <Link className="card" to="/worksheets">
-            <h3>Worksheets — practice on paper</h3>
-            <p style={{ marginBottom: 0 }}>
-              Generate exactly the sheet your child needs — operation, ranges, regrouping or not, how many problems —
-              with an answer key, in Montessori color or ink-friendly B&amp;W.
-            </p>
-          </Link>
-        </li>
-      </ul>
-
-      <p className="section-label">Find your child's starting point</p>
-      <ul className="card-grid">
-        {BANDS.map((b) => (
-          <li key={b.band}>
-            <Link className="card" to={`/ages?band=${b.band}`}>
-              <h3>{b.title}</h3>
-              <p style={{ marginBottom: 0 }}>{b.blurb}</p>
+      <h2 className="section-head">Three kinds of pages, one method</h2>
+      <ul className="parts" role="list">
+        {PARTS.map((part) => (
+          <li key={part.to}>
+            <Link className="part-entry" to={part.to}>
+              <span className="part-head">
+                <span className="part-num">{part.numeral}</span>
+                <MaterialThumb slug={part.thumb} />
+              </span>
+              <h3>
+                <span className="part-kind">{part.kind}</span>
+                <span className="part-sub">{part.sub}</span>
+              </h3>
+              <span className="part-text">{part.text}</span>
+              <span className="part-go">
+                {part.go} <Icon name="arrow" />
+              </span>
             </Link>
           </li>
         ))}
       </ul>
 
-      <section className="card" style={{ maxWidth: '46rem', marginTop: '2rem' }}>
-        <h2>A note on screens</h2>
-        <p style={{ marginBottom: 0 }}>
+      <h2 className="section-head">Find your child's starting point</h2>
+      <ul className="contents bands" role="list">
+        {AGE_BANDS.map((b) => (
+          <li key={b.id}>
+            <ContentsRow to={`/ages?band=${b.id}`} thumb={b.thumb} title={b.ages} titleMeta={b.grades} summary={b.blurb} />
+          </li>
+        ))}
+      </ul>
+
+      <section className="note" aria-labelledby="note-screens">
+        <span className="fleuron" aria-hidden="true" />
+        <h2 id="note-screens">A note on screens</h2>
+        <p>
           Montessori math lives in the hands. The on-screen materials here exist for one reason: most families don't
           own a bank of golden beads or a set of racks and tubes. Use them the way you'd use the real thing — briefly,
           purposefully, sitting beside your child — and put everything else on paper. Every lesson's follow-up work is
-          printable or pencil-and-paper by design. See{' '}
-          <Link to="/parents/using-this-site">using this site</Link> for inexpensive ways to make the physical
-          materials yourself.
+          printable or pencil-and-paper by design. See <Link to="/parents/using-this-site">using this site</Link> for
+          inexpensive ways to make the physical materials yourself.
         </p>
       </section>
     </>
