@@ -11,9 +11,9 @@ Lessons become album pages: a running head with Print, the title over an Oxford 
 
 This step is the markup half of the album page. It replaces the prototype's `shim.js` lines 249–262 (running-head regrouping, `[style]` removal, `.album-aside`) and its CSS counters for step numerals. Changes, in page order:
 
-- **Header.** One running-head row: `p.album-meta.meta-line` (THE LESSON ALBUM · strand · lesson N · boxed age · grades), with Print in `div.album-actions.no-print` on the same row. The h1 follows the running head. This replaces the inline `marginLeft: 'auto'` span that wrapped Print beside a stranded chip (S5-03).
+- **Header.** One running-head row: `p.album-meta.meta-line` (THE LESSON ALBUM · strand · lesson N · boxed age · grades), with Print in `div.album-actions.no-print` on the same row. The h1 follows the running head. This replaces the inline `marginLeft: 'auto'` span that wrapped Print beside a stranded chip (S5-03). The strand badge carries `album-strand`, so Step 33 can put the gap before the stamp on it (Phase 5 review).
 - **Overview.** It becomes `p.album-lede` (it was `style={{ fontSize: '1.05rem' }}`).
-- **Headings.** Each section gets `aria-labelledby` pointing at its h2 id, so later in-page links have anchors. "Direct" and "Indirect" become `h3` subheads.
+- **Headings.** Each section's h2 gets an id, so later in-page links have anchors. The sections are not named with `aria-labelledby`: that would make a lesson's 10–12 sections as many `region` landmarks and clutter the landmark list (Phase 5 review). "Direct" and "Indirect" become `h3` subheads.
 - **Presentation.** Steps carry `<span className="step-num">{n}</span>`, and the `ol` gets `role="list"` (decision 25).
 - **Chrome copy.** The virtual-material line, the Walk-through link and the "Printable:" line follow decision 26. The virtual-material line and Walk-through link are `p.album-aside.no-print`, and the Printable line is `span.album-printable`.
 - **Lesson links.** Before-this-lesson links (`ul.album-links`) and next-in-strand links become 44px tap targets in Step 33.
@@ -169,7 +169,7 @@ export default function LessonPage() {
         <div className="album-runhead">
           <p className="album-meta meta-line">
             <span className="badge album-name">The Lesson Album</span>
-            <span className="badge">
+            <span className="badge album-strand">
               {strand.name} · lesson {lesson.sequence}
             </span>
             <span className="badge age">
@@ -186,7 +186,7 @@ export default function LessonPage() {
 
       <p className="album-lede">{lesson.overview}</p>
 
-      <section aria-labelledby="album-materials">
+      <section>
         <h2 id="album-materials">Materials</h2>
         <ul>
           {lesson.materialsNeeded.map((m, i) => (
@@ -218,7 +218,7 @@ export default function LessonPage() {
       </section>
 
       {lesson.prerequisites.length > 0 && (
-        <section aria-labelledby="album-before">
+        <section>
           <h2 id="album-before">Before this lesson</h2>
           <ul className="album-links">
             {lesson.prerequisites.map((slug) => {
@@ -229,7 +229,7 @@ export default function LessonPage() {
         </section>
       )}
 
-      <section aria-labelledby="album-aims">
+      <section>
         <h2 id="album-aims">Aims</h2>
         <div className="album-aims">
           <div>
@@ -251,7 +251,7 @@ export default function LessonPage() {
         </div>
       </section>
 
-      <section aria-labelledby="album-presentation">
+      <section>
         <h2 id="album-presentation">Presentation</h2>
         {/* role="list": list-style is none (the numerals are real text), and
             Safari drops list semantics from unstyled lists without it. */}
@@ -265,7 +265,7 @@ export default function LessonPage() {
         </ol>
       </section>
 
-      <section aria-labelledby="album-interest">
+      <section>
         <h2 id="album-interest">Points of interest</h2>
         <ul>
           {lesson.pointsOfInterest.map((p, i) => (
@@ -274,7 +274,7 @@ export default function LessonPage() {
         </ul>
       </section>
 
-      <section aria-labelledby="album-control">
+      <section>
         <h2 id="album-control">Control of error</h2>
         <ul>
           {lesson.controlOfError.map((c, i) => (
@@ -284,7 +284,7 @@ export default function LessonPage() {
       </section>
 
       {lesson.vocabulary.length > 0 && (
-        <section aria-labelledby="album-vocabulary">
+        <section>
           <h2 id="album-vocabulary">Vocabulary</h2>
           <ul className="vocab" role="list">
             {lesson.vocabulary.map((v, i) => (
@@ -295,7 +295,7 @@ export default function LessonPage() {
       )}
 
       {lesson.variations.length > 0 && (
-        <section aria-labelledby="album-variations">
+        <section>
           <h2 id="album-variations">Variations</h2>
           <ul>
             {lesson.variations.map((v, i) => (
@@ -306,7 +306,7 @@ export default function LessonPage() {
       )}
 
       {lesson.extensions.length > 0 && (
-        <section aria-labelledby="album-extensions">
+        <section>
           <h2 id="album-extensions">Extensions</h2>
           <ul>
             {lesson.extensions.map((e, i) => (
@@ -317,7 +317,7 @@ export default function LessonPage() {
       )}
 
       {lesson.followUpWork.length > 0 && (
-        <section aria-labelledby="album-follow-up">
+        <section>
           <h2 id="album-follow-up">Follow-up work (pencil &amp; paper)</h2>
           <ul>
             {lesson.followUpWork.map((f, i) => {
@@ -338,7 +338,7 @@ export default function LessonPage() {
         </section>
       )}
 
-      <section aria-labelledby="album-next">
+      <section>
         <h2 id="album-next">What comes next</h2>
         <p>{lesson.whatComesNext}</p>
         {next.length > 0 && (
@@ -444,6 +444,18 @@ Replace the whole file with:
   color: var(--ink);
 }
 
+/* The gap before the age stamp is the strand badge's trailing margin, not
+   the stamp's leading one, so a meta line that wraps just before the stamp
+   starts its second line flush (a trailing margin at a line end indents
+   nothing). */
+.album-meta .album-strand {
+  margin-right: 0.75em;
+}
+
+.album-meta .badge.age {
+  margin-left: 0;
+}
+
 .album-actions {
   flex: none;
   display: flex;
@@ -536,14 +548,22 @@ Replace the whole file with:
 
 /* lesson-to-lesson and "Printable:" links are 44px tap targets without
    taller lines: 24px of 16px sans (or 28.8px of 18px serif) plus 20px of
-   padding, taken back by the negative margin. The leading .album lets this
-   outrank `.album li > :last-child` above, which would otherwise zero the
-   bottom margin of a "Before this lesson" link and add 10px to its row. */
+   padding, taken back by the negative margin. The padding is on all four
+   sides, so the focus ring can be pulled back in to hug the text instead of
+   circling the padded box across the lines above and below. The leading
+   .album lets this outrank `.album li > :last-child` above, which would
+   otherwise zero the bottom margin of a "Before this lesson" link and add
+   10px to its row. */
 .album .album-links a,
 .album .album-printable a {
   display: inline-block;
-  padding-block: 0.625rem;
-  margin-block: -0.625rem;
+  padding: 0.625rem;
+  margin: -0.625rem;
+}
+
+.album .album-links a:focus-visible,
+.album .album-printable a:focus-visible {
+  outline-offset: calc(2px - 0.625rem);
 }
 
 .album-links li {
@@ -632,6 +652,7 @@ Replace the whole file with:
 
 .album .vocab li + li::before {
   content: '\2002\00B7\2002';
+  content: '\2002\00B7\2002' / '';
   font-style: normal;
   color: var(--ink-soft);
 }
@@ -725,7 +746,9 @@ The text column is 56rem − 11rem − 2.75rem = 42.25rem. At 18px that is about
 - Spoken lines show the faint band, the 2px rule and rubric quotes (compare `plan/19-the-album/screens/lesson-steps-after.webp`).
 - At 390, the heads sit above their lists, the title is left-aligned, and `document.documentElement.scrollWidth === innerWidth`. Compare `phone-lesson-after.webp`.
 - On `/lessons/golden-beads-addition` and `/lessons/stamp-game-addition` (both have "Before this lesson", "Next in this strand" and "Printable:" links), `[...document.querySelectorAll('.album-links a, .album-printable a')].every((a) => a.getBoundingClientRect().height >= 44)` is `true` (S1-22/S5-15, the in-lesson half). The line spacing around them is unchanged.
-- Links inside a running sentence (the "No materials at home? Use the virtual …" aside, and the scope chart's cells in Step 37) stay inline text, under WCAG 2.5.8's exception for targets in a sentence.
+- With keyboard focus, the 3px ring around "Printable: Multi-Digit Operations" and each "Before this lesson" link hugs the link text (2px out from its line), clear of the lines above and below and of the colon of "Printable:" (Phase 5 review; before, it circled the padded box).
+- At 641–720px, where a Passage to Abstraction meta line wraps just before the boxed age (`/lessons/stamp-game-addition` at 700), the stamp starts its line flush.
+- Links inside a running sentence (the "No materials at home? Use the virtual …" aside, and the scope chart's cells in the desktop table, 641px and up, Step 37) stay inline text, under WCAG 2.5.8's exception for targets in a sentence. When the chart stacks at 640px and below, each of its links stands on its own line and is a 44px target (Step 37).
 
 ## Step 34 — The lesson print design and page-break QA
 
@@ -767,6 +790,11 @@ Append:
 
   .album-lede {
     font-size: 12.5pt;
+  }
+
+  /* the printable aside sits a step below the 11pt text, not above it */
+  .album-printable {
+    font-size: 9.5pt;
   }
 
   /* the margin column narrows to a 7.5rem head in a 10rem gutter */
@@ -1390,6 +1418,17 @@ Replace the whole file with:
   border-left: 1px solid var(--line-strong);
 }
 
+/* Guide children are grid items, so their margins don't collapse: a list
+   that opens a section starts level with its head, and one that follows a
+   paragraph sits one paragraph space below it. */
+.guide dl > dt:first-child {
+  margin-top: 0;
+}
+
+.guide > p + dl {
+  margin-top: 0;
+}
+
 /* a note: roman, on a 2px ink rule */
 .guide blockquote {
   margin: var(--space-4) 0;
@@ -1651,6 +1690,26 @@ Replace the whole file with:
   .scope-table td.scope-print {
     font-size: var(--fs-ui);
   }
+
+  /* Stacked, every link stands on its own line, so each is a 44px tap
+     target (the lesson links' pattern, album.css): padding taken back by a
+     negative margin, so the lines don't grow, and the focus ring pulled
+     back in to hug the text. The chart's lines are 1.45, so 16px sans needs
+     0.7rem a side (23.2px + 22.4px), not the album's 0.625rem. */
+  .scope-table td.scope-mats,
+  .scope-table td.scope-print {
+    margin-top: var(--space-2);
+  }
+
+  .scope-table .scope-row a {
+    display: inline-block;
+    padding: 0.7rem;
+    margin: -0.7rem;
+  }
+
+  .scope-table .scope-row a:focus-visible {
+    outline-offset: calc(2px - 0.7rem);
+  }
 }
 ```
 
@@ -1669,12 +1728,14 @@ Replace the whole file with:
 - `grep -rn 'guide-lede' src` prints nothing: the last users were `scope-and-sequence.tsx` (Step 36) and the old `guides.css`.
 - **Guides at 1400:**
   - `/parents/how-to-present` is a centred page: section heads in the left margin on ink rules, each beside a hairline over its text. The "You place the ten-bar…" scene is italic and the overview's note is roman.
+  - A list after a paragraph sits one paragraph space (18px) below it: "Three small habits make every presentation go better:" and its first term, and both paragraph-to-list gaps on `/parents/using-this-site`. (Where the margin head beside the paragraph is taller, as "Prepare yourself first" on two lines is, the grid row follows the head: 21px.) Under "The three kinds of pages" the first term sits 4px below the head's first line, like every other section's text.
   - `/parents/glossary`: each term hangs in the margin column beside its definition.
   - `/parents/faq`: questions head the text column at 21px.
 - **Scope at 1400:** `/parents/scope-and-sequence` spans the full 1068px column (S8-01). Strand rows are dark on light with a rubric number and the strand's bead bar (S8-03). Compare `plan/19-the-album/screens/scope-after.webp`.
 - **At 760 and below** (the stacking breakpoint, decision 28): the guides are single-column with each head above its text, and there is no stray hairline under a head. At 820 (and down to 761) the margin heads still hang beside the text, as on the lessons.
 - **At 390:**
   - The scope chart is a list of entries: numeral | lesson, `AGES 4–6  GRADES PK–K`, `MATERIALS: …`, `PRINTABLE: …`.
+  - Every lesson, material and printable link in the entries is at least 44px tall (`[...document.querySelectorAll('.scope-row a')].every((a) => a.getBoundingClientRect().height >= 44)`), the materials and printable lines sit `--space-2` apart, and a focused link's ring hugs its text.
   - `document.documentElement.scrollWidth === innerWidth` (S8-02).
   - The glossary shows each term above its definition in a single column.
 
@@ -1682,7 +1743,7 @@ Replace the whole file with:
 
 **Files:** `src/styles/guides.css` (modified: appended).
 
-Guides print as they read: the same face, margin heads narrowed to an 8rem column with a 1.5rem gap, 11pt/1.5 text, and heads kept with their text. The scope chart prints at 9pt with narrow Ages and Grades columns. Strand rows get a 2px black top rule, numbers print black, and no row splits. `contents.css` (Step 15) already hides the bead bars in print.
+Guides print as they read: the same face, margin heads narrowed to an 8rem column with a 1.5rem gap, 11pt/1.5 text, and heads kept with their text. The header prints like a lesson's, a 26pt title over a 12.5pt lede, and notes print at 11pt (the scene at 12pt), rather than at their rem-based screen sizes. The scope chart prints at 9pt with narrow Ages and Grades columns. Strand rows get a 2px black top rule, numbers print black, and no row splits. `contents.css` (Step 15) already hides the bead bars in print.
 
 Append:
 
@@ -1732,8 +1793,22 @@ Append:
     widows: 3;
   }
 
+  /* the header and notes in print sizes, as on a printed lesson */
+  .guide-header h1 {
+    font-size: 26pt;
+  }
+
+  .guide-header .page-lede {
+    font-size: 12.5pt;
+  }
+
   .guide blockquote {
+    font-size: 11pt;
     border-left-color: #000;
+  }
+
+  .guide blockquote.guide-scene {
+    font-size: 12pt;
   }
 
   .scope-table {
@@ -1773,7 +1848,7 @@ Append:
   }
 
   .scope-strand-row th {
-    padding-top: 0.8rem;
+    padding: 0.8rem 0 0;
     border-top: 2px solid #000;
   }
 
@@ -1785,7 +1860,8 @@ Append:
 
 **Check:**
 - In print preview (Letter, default margins, background graphics off), every guide except the FAQ prints with its h2s in the 8rem margin column beside a hairline, and the glossary's terms hang in that column. (That is the Step 37 block being screen-only: before that fix, paper got the stacked phone layout.)
-- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). Today's `main` prints them on 4, 3, 4, 3, 3 and 3. **Measured (2026-09-29, Step 38 as landed): 3, 3, 4, 3, 3 and 3** (headless Chromium on Linux, Letter, 0.5in margins, background graphics off). **Pass** if each count is at most today's plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit.
+- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). Today's `main` prints them on 4, 3, 4, 3, 3 and 3. **Measured (2026-09-29, Step 38 as landed): 3, 3, 4, 3, 3 and 3** (headless Chromium on Linux, Letter, 0.5in margins, background graphics off). **Measured again (2026-09-30, after the Phase 5 review fixes: print header and note sizes, the list gaps): 3, 3, 4, 3, 3 and 3.** **Pass** if each count is at most today's plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit.
 - With the DevTools device toolbar at 720px wide (Step 34, item 2), the console snippet from Step 34 prints "No stranded heads, no split steps." on each guide (S9-25/S8-12).
-- On the scope chart, the column heads repeat on every page, no lesson row splits across a page, and strand heads never end a page.
+- On the scope chart, the column heads repeat on every page, no lesson row splits across a page, and strand heads never end a page. Each strand head's ink underline and ages meta run to the table's right edge (720px), as the 2px rule above them does.
+- Printed guides match printed lessons: the title is 26pt, the lede 12.5pt, the overview's note 11pt and how-to-present's scene 12pt.
 - The standard check (convention 12) passes.

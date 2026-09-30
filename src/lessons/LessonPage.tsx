@@ -34,7 +34,7 @@ export default function LessonPage() {
         <div className="album-runhead">
           <p className="album-meta meta-line">
             <span className="badge album-name">The Lesson Album</span>
-            <span className="badge">
+            <span className="badge album-strand">
               {strand.name} · lesson {lesson.sequence}
             </span>
             <span className="badge age">
@@ -51,7 +51,7 @@ export default function LessonPage() {
 
       <p className="album-lede">{lesson.overview}</p>
 
-      <section aria-labelledby="album-materials">
+      <section>
         <h2 id="album-materials">Materials</h2>
         <ul>
           {lesson.materialsNeeded.map((m, i) => (
@@ -83,7 +83,7 @@ export default function LessonPage() {
       </section>
 
       {lesson.prerequisites.length > 0 && (
-        <section aria-labelledby="album-before">
+        <section>
           <h2 id="album-before">Before this lesson</h2>
           <ul className="album-links">
             {lesson.prerequisites.map((slug) => {
@@ -94,7 +94,7 @@ export default function LessonPage() {
         </section>
       )}
 
-      <section aria-labelledby="album-aims">
+      <section>
         <h2 id="album-aims">Aims</h2>
         <div className="album-aims">
           <div>
@@ -116,7 +116,7 @@ export default function LessonPage() {
         </div>
       </section>
 
-      <section aria-labelledby="album-presentation">
+      <section>
         <h2 id="album-presentation">Presentation</h2>
         {/* role="list": list-style is none (the numerals are real text), and
             Safari drops list semantics from unstyled lists without it. */}
@@ -130,7 +130,7 @@ export default function LessonPage() {
         </ol>
       </section>
 
-      <section aria-labelledby="album-interest">
+      <section>
         <h2 id="album-interest">Points of interest</h2>
         <ul>
           {lesson.pointsOfInterest.map((p, i) => (
@@ -139,7 +139,7 @@ export default function LessonPage() {
         </ul>
       </section>
 
-      <section aria-labelledby="album-control">
+      <section>
         <h2 id="album-control">Control of error</h2>
         <ul>
           {lesson.controlOfError.map((c, i) => (
@@ -149,7 +149,7 @@ export default function LessonPage() {
       </section>
 
       {lesson.vocabulary.length > 0 && (
-        <section aria-labelledby="album-vocabulary">
+        <section>
           <h2 id="album-vocabulary">Vocabulary</h2>
           <ul className="vocab" role="list">
             {lesson.vocabulary.map((v, i) => (
@@ -160,7 +160,7 @@ export default function LessonPage() {
       )}
 
       {lesson.variations.length > 0 && (
-        <section aria-labelledby="album-variations">
+        <section>
           <h2 id="album-variations">Variations</h2>
           <ul>
             {lesson.variations.map((v, i) => (
@@ -171,7 +171,7 @@ export default function LessonPage() {
       )}
 
       {lesson.extensions.length > 0 && (
-        <section aria-labelledby="album-extensions">
+        <section>
           <h2 id="album-extensions">Extensions</h2>
           <ul>
             {lesson.extensions.map((e, i) => (
@@ -182,7 +182,7 @@ export default function LessonPage() {
       )}
 
       {lesson.followUpWork.length > 0 && (
-        <section aria-labelledby="album-follow-up">
+        <section>
           <h2 id="album-follow-up">Follow-up work (pencil &amp; paper)</h2>
           <ul>
             {lesson.followUpWork.map((f, i) => {
@@ -203,7 +203,7 @@ export default function LessonPage() {
         </section>
       )}
 
-      <section aria-labelledby="album-next">
+      <section>
         <h2 id="album-next">What comes next</h2>
         <p>{lesson.whatComesNext}</p>
         {next.length > 0 && (

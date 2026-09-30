@@ -38,6 +38,18 @@
   color: var(--ink);
 }
 
+/* The gap before the age stamp is the strand badge's trailing margin, not
+   the stamp's leading one, so a meta line that wraps just before the stamp
+   starts its second line flush (a trailing margin at a line end indents
+   nothing). */
+.album-meta .album-strand {
+  margin-right: 0.75em;
+}
+
+.album-meta .badge.age {
+  margin-left: 0;
+}
+
 .album-actions {
   flex: none;
   display: flex;
@@ -130,14 +142,22 @@
 
 /* lesson-to-lesson and "Printable:" links are 44px tap targets without
    taller lines: 24px of 16px sans (or 28.8px of 18px serif) plus 20px of
-   padding, taken back by the negative margin. The leading .album lets this
-   outrank `.album li > :last-child` above, which would otherwise zero the
-   bottom margin of a "Before this lesson" link and add 10px to its row. */
+   padding, taken back by the negative margin. The padding is on all four
+   sides, so the focus ring can be pulled back in to hug the text instead of
+   circling the padded box across the lines above and below. The leading
+   .album lets this outrank `.album li > :last-child` above, which would
+   otherwise zero the bottom margin of a "Before this lesson" link and add
+   10px to its row. */
 .album .album-links a,
 .album .album-printable a {
   display: inline-block;
-  padding-block: 0.625rem;
-  margin-block: -0.625rem;
+  padding: 0.625rem;
+  margin: -0.625rem;
+}
+
+.album .album-links a:focus-visible,
+.album .album-printable a:focus-visible {
+  outline-offset: calc(2px - 0.625rem);
 }
 
 .album-links li {
@@ -226,6 +246,7 @@
 
 .album .vocab li + li::before {
   content: '\2002\00B7\2002';
+  content: '\2002\00B7\2002' / '';
   font-style: normal;
   color: var(--ink-soft);
 }
@@ -329,6 +350,11 @@
 
   .album-lede {
     font-size: 12.5pt;
+  }
+
+  /* the printable aside sits a step below the 11pt text, not above it */
+  .album-printable {
+    font-size: 9.5pt;
   }
 
   /* the margin column narrows to a 7.5rem head in a 10rem gutter */

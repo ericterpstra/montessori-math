@@ -60,6 +60,17 @@
   border-left: 1px solid var(--line-strong);
 }
 
+/* Guide children are grid items, so their margins don't collapse: a list
+   that opens a section starts level with its head, and one that follows a
+   paragraph sits one paragraph space below it. */
+.guide dl > dt:first-child {
+  margin-top: 0;
+}
+
+.guide > p + dl {
+  margin-top: 0;
+}
+
 /* a note: roman, on a 2px ink rule */
 .guide blockquote {
   margin: var(--space-4) 0;
@@ -321,6 +332,26 @@
   .scope-table td.scope-print {
     font-size: var(--fs-ui);
   }
+
+  /* Stacked, every link stands on its own line, so each is a 44px tap
+     target (the lesson links' pattern, album.css): padding taken back by a
+     negative margin, so the lines don't grow, and the focus ring pulled
+     back in to hug the text. The chart's lines are 1.45, so 16px sans needs
+     0.7rem a side (23.2px + 22.4px), not the album's 0.625rem. */
+  .scope-table td.scope-mats,
+  .scope-table td.scope-print {
+    margin-top: var(--space-2);
+  }
+
+  .scope-table .scope-row a {
+    display: inline-block;
+    padding: 0.7rem;
+    margin: -0.7rem;
+  }
+
+  .scope-table .scope-row a:focus-visible {
+    outline-offset: calc(2px - 0.7rem);
+  }
 }
 
 /* ---------- Print: guides print as they read ---------- */
@@ -368,8 +399,22 @@
     widows: 3;
   }
 
+  /* the header and notes in print sizes, as on a printed lesson */
+  .guide-header h1 {
+    font-size: 26pt;
+  }
+
+  .guide-header .page-lede {
+    font-size: 12.5pt;
+  }
+
   .guide blockquote {
+    font-size: 11pt;
     border-left-color: #000;
+  }
+
+  .guide blockquote.guide-scene {
+    font-size: 12pt;
   }
 
   .scope-table {
@@ -409,7 +454,7 @@
   }
 
   .scope-strand-row th {
-    padding-top: 0.8rem;
+    padding: 0.8rem 0 0;
     border-top: 2px solid #000;
   }
 
