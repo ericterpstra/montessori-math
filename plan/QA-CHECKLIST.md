@@ -123,7 +123,7 @@ Honest limitation: install/offline needs HTTPS or localhost — the plain LAN IP
 
 The Album redesign is complete, and every printable now carries the Album's type and tokens: Newsreader for sheet text and numerals (the command-card stamps are MM Sans), lining figures, and the Album's ink and hairlines. Their content and layout did not change. Look at each one in Chrome's print preview (Letter, default margins, background graphics off, scale 100%), in colour and then in black and white, print the ones you want to see on paper, and jot down what you'd change. Your list becomes the printables PRD. The audit's print findings ([PRD 20 candidates: printables and print content](19-the-album/audit-findings.md#prd-20-candidates-printables-and-print-content)) are there to draw on.
 
-- Site: `npm run preview`, then the LAN URL (for example `http://192.168.1.208:4173`).
+- Site: `npm run preview`, then the LAN URL (for example `http://192.168.1.210:4173`, or over Tailscale `http://100.76.25.42:4173`).
 
 ### Throughout
 - [ ] Operator signs: Newsreader's + − × ÷ = are x-height sized next to its lining figures (PRD 19 open question 27), in problems, answer keys ("216 + 316 = 532") and headers. Keep them, or draw the five signs from MM Sans?

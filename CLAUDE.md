@@ -22,6 +22,7 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 
 - `src/lib/` — pure logic: `placeValue.ts` (decompose/compose/exchange/normalize, powers −3…6, integer-scaled decimal math), `rng.ts` (seeded mulberry32 — all worksheet randomness goes through it), `strands.ts` (the 7 curriculum strands).
 - `src/components/` — shared primitives: `beads.tsx` (Bead, BeadBar, TenBar, HundredSquare, ThousandCube, Skittle, BeadShape), `NumberCard.tsx`, `StampTile.tsx`, `MaterialShell.tsx`, `PrintButton.tsx`. Reuse these; don't reinvent bead rendering.
+- The Album (PRD 19) chrome: `Icon.tsx` (line icons, with `IconGlyph`), `PageHeader.tsx` (the one page-header pattern, with `useDocumentTitle`), `Contents.tsx` (chapter heads and contents rows for the hub pages), `MaterialThumb.tsx` (a mounted plate drawing per material), `plateCaption.ts` and `MaterialNameContext.ts`. Stylesheets: `fonts.css`, `tokens.css`, `global.css`, `layout.css`, `contents.css`, `forms.css`, then `print.css` and the page stylesheets (import order in `src/main.tsx` matters). The web fonts (Newsreader, MM Sans) live in `public/fonts/` and are rebuilt with `scripts/fonts/build-fonts.py`.
 - `src/materials/<slug>/` — one folder per virtual material: `model.ts` (pure, no React), `model.test.ts`, `<Name>.tsx` (UI), `lessons.ts` (album Lesson objects for that material). Registered centrally in `src/materials/registry.ts`.
 - `src/worksheets/generators/<slug>.tsx` — each exports a `GeneratorDef`: pure `generate(params, rng)` + `Sheet` + `AnswerKey` components + presets. Registered in `src/worksheets/registry.ts`.
 - `src/lessons/` — `types.ts` (Lesson album schema — all fields required and non-empty), registry, index/detail pages.
@@ -35,12 +36,16 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 - Plain CSS only, tokens from `src/styles/tokens.css`. Print rules in `print.css`; wrap printed pages in `.sheet-page` inside `.print-sheet`; UI chrome gets `.no-print`.
 - Lessons: parent-facing tone (reader is an untrained parent), US grade labels, suggested spoken language goes in `PresentationStep.say`. Follow-up work must be pencil-and-paper, linking worksheet generator slugs where a printable fits.
 - Prose/content: US English; numbers formatted with commas via `formatNumber`.
+- Materials and printables take the Album's type through the materials-and-printables block in `global.css` (a 16px base and lining figures in every `.material-stage` and `.print-sheet`, MM Sans for stage text, `--font-numeral` for number cards). Never re-point a material token, or the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` that material pieces draw with; chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet`.
+- Chrome guard: a chrome rule written as an element selector ends in `:where(:not(.material-stage *, .print-sheet *))`, and one on `.btn` in `:where(:not(.material-stage *))`, so chrome styling never leaks into materials or printouts.
+- No emoji anywhere in `src/`: use `<Icon>` with a text label (a test enforces it). A new material needs a `MaterialThumb` drawing (`MaterialThumb.test.ts` fails without one).
 
 ## Workflow
 
 - Track progress in `plan/` — one PRD per major feature with a Status line and acceptance checklists. Update the relevant PRD when landing work; keep `PLAN.md` as the overview.
 - Commit per completed phase with a clear message; the owner wants git history to tell the project's story. Repo will be public at `ericterpstra/montessori-math`.
 - The owner values being asked before scope changes and expects "stop" to mean stop immediately.
-- Serve for testing on the LAN (dev machine IP e.g. 192.168.1.208) or over Tailscale.
+- Serve for testing on the LAN (dev machine IP e.g. 192.168.1.210) or over Tailscale (100.76.25.42).
+- After PRD 19 the owner reviews every printable personally and makes a list of changes (checklist in `plan/QA-CHECKLIST.md`); print changes follow that list.
 - Public hosting is Cloudflare Workers static assets (`wrangler.jsonc`), deployed automatically by Workers Builds on every push to `main` — `npm run deploy` is only a manual escape hatch. The site stays fully static — no server code, no bindings, no runtime network calls; adding any would break hard rule 4.
 - The Worker name in Cloudflare must stay in sync with `name` in `wrangler.jsonc`, or Git builds fail.
