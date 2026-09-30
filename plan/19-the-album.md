@@ -1,6 +1,6 @@
 # PRD 19 — The Album: visual redesign
 
-**Status:** Not started
+**Status:** In progress — Phase 1 under way on `album` (Steps 2–4 done)
 **Effort:** L — about 8–9 working days. The prototype's estimate for the re-skin, the 21 plate thumbnails and print QA is 7–8 days; testing on a real iPad, phone and B&W laser printer adds up to one more.
 **Depends on:** PRDs 00–18 (all Done; 16 was removed). The four functional fixes from the separate bug-fix session are merged to `main` (PR #7: `84ff957`, `e24aa01`, `477ac70`, `dbe71b6`), and so is an error boundary around the routed page (PR #8: `d769872`), which Step 12 keeps. Implementation starts from that `main`, `bbbdb44`, on the `album` branch, and Step 39 is written against the post-fix `BuilderPage.tsx`.
 
@@ -379,6 +379,7 @@ Every push to `main` deploys (Workers Builds), so PRD 19 is built on the `album`
 ### Progress
 
 - **2026-09-29.** Phase 0 (Step 1, the print regression gate) was built and then removed at the owner's request (owner decision 6): its commit, the `album-baseline` tag, the baseline checkout and the stored measurements are deleted. The token shield (Step 5), which the gate existed to prove, was removed from the plan at the same time; it had not been built. Implementation starts with Phase 1 on the `album` branch, from `bbbdb44`.
+- **2026-09-29.** Steps 2–4 landed as "Self-host Newsreader and MM Sans": the fonts total 116.5 KB (48.1 + 38.6 + 29.8), the fallback overrides match Step 3 exactly, and `dist/sw.js` precaches 54 assets. No code deviations. One check note: `vite preview` sends `Vary: Origin`, so its precached fonts don't match the browser's font requests and fail offline; on a plain static server all three load offline from the cache. Confirm Cloudflare sends no `Vary: Origin` on `/fonts/` (manual QA A17).
 
 ## Implementation
 

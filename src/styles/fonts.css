@@ -1,0 +1,82 @@
+/* ------------------------------------------------------------------
+   Self-hosted fonts (PRD 19 "The Album"). The files live in public/fonts/
+   and are produced once by scripts/fonts/build-fonts.py; see OFL.txt there.
+   Same-origin only: no font CDN, no runtime request to another host. The
+   service worker precaches all three files (scripts/generate-sw.mjs keeps
+   them under a 200 KB budget).
+
+   Newsreader (SIL OFL 1.1): reading and display text, variable weight.
+   MM Sans: Source Sans 3 (SIL OFL 1.1) subset and renamed, because
+   "Source" is a Reserved Font Name. Buttons, labels, nav, meta.
+
+   A weight outside a face's range draws at the nearest weight inside it
+   (a 700 request on Newsreader draws at 600), so keep chrome CSS to
+   Newsreader 350-600 (italic 400-500) and MM Sans 400-700.
+   ------------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-roman.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 350 600;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2190-2194, U+2212, U+2215, U+2248, U+2260, U+2264-2265, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2190-2194, U+2212, U+2215, U+2248, U+2260, U+2264-2265, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'MM Sans';
+  src: url('/fonts/mm-sans.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2190-2194, U+2212, U+2215, U+2248, U+2260, U+2264-2265, U+FEFF, U+FFFD;
+}
+
+/* Metric-matched local fallbacks: while a web font is still loading (or if it
+   never arrives) text is drawn in a local font scaled to the same average
+   width and line box, so the page does not jump when the web font swaps in.
+   Values come from build-fonts.py (measured against Gelasio and Arimo, which
+   are metric-compatible with Georgia and Arial, over the site's own prose).
+   Browsers without ascent/descent-override support simply ignore them. */
+
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Georgia'), local('Gelasio');
+  font-style: normal;
+  size-adjust: 91.66%;
+  ascent-override: 80.19%;
+  descent-override: 28.91%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Georgia Italic'), local('Georgia-Italic'), local('Gelasio Italic'), local('Gelasio-Italic');
+  font-style: italic;
+  size-adjust: 83.23%;
+  ascent-override: 88.31%;
+  descent-override: 31.84%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'MM Sans Fallback';
+  src: local('Arial'), local('ArialMT'), local('Arimo'), local('Liberation Sans'), local('LiberationSans');
+  font-style: normal;
+  size-adjust: 93.84%;
+  ascent-override: 109.13%;
+  descent-override: 42.63%;
+  line-gap-override: 0%;
+}

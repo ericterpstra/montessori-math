@@ -49,8 +49,29 @@ const entries = walk(distDir)
   })
   .sort((a, b) => (a.url < b.url ? -1 : 1))
 
+// Self-hosted fonts (PRD 19) are precached like every other file above — they
+// sit in public/fonts/, which Vite copies to dist/fonts/. Their combined size
+// has a hard budget so a careless re-subset cannot bloat the first visit.
+const FONT_BUDGET_BYTES = 200 * 1024
+const fontBytes = entries
+  .filter((e) => e.url.startsWith('/fonts/') && e.url.endsWith('.woff2'))
+  .reduce((sum, e) => sum + e.size, 0)
+const fontKB = (fontBytes / 1024).toFixed(1)
+if (fontBytes > FONT_BUDGET_BYTES) {
+  console.error(
+    `generate-sw: fonts total ${fontKB} KB, over the ${FONT_BUDGET_BYTES / 1024} KB budget — re-run scripts/fonts/build-fonts.py.`,
+  )
+  process.exit(1)
+}
+
 const hash = crypto.createHash('sha256')
 hash.update(entries.map((e) => `${e.url}:${e.size}`).join('\n'))
+// The font files keep their names when build-fonts.py regenerates them and are
+// served cache-first, so hash their bytes too: even a same-size change to a
+// font reaches returning visitors through a new cache version.
+for (const e of entries) {
+  if (e.url.startsWith('/fonts/')) hash.update(fs.readFileSync(path.join(distDir, e.url.slice(1))))
+}
 const VERSION = hash.digest('hex').slice(0, 12)
 
 // One asset per line, two-space indent, double-quoted — the QA parity check
@@ -114,4 +135,6 @@ self.addEventListener("fetch", (event) => {
 `
 
 fs.writeFileSync(path.join(distDir, 'sw.js'), sw)
-console.log(`generate-sw: wrote dist/sw.js (cache mm-${VERSION}, ${entries.length} assets)`)
+console.log(
+  `generate-sw: wrote dist/sw.js (cache mm-${VERSION}, ${entries.length} assets; fonts ${fontKB} KB of ${FONT_BUDGET_BYTES / 1024} KB)`,
+)
