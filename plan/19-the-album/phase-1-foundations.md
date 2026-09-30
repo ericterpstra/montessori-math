@@ -3,9 +3,9 @@
 Part of [PRD 19 — The Album: visual redesign](../19-the-album.md). Steps 2–11. Steps are numbered across the whole PRD; read the PRD’s decisions, conventions and rollout first.
 
 
-Self-hosted fonts, the token shield, the chrome tokens, base type, the icon set, buttons and the meta line. Everything later builds on these. With only this phase applied, the site is in a coherent in-between state: new paper, type, rubric buttons, line icons and the meta line, on the old page layouts.
+Self-hosted fonts, the chrome tokens, base type (including the Album's type inside materials and printables), the icon set, buttons and the meta line. Everything later builds on these. With only this phase applied, the site is in a coherent in-between state: new paper, type, rubric buttons, line icons and the meta line, on the old page layouts, and materials and printables in the new faces with lining figures.
 
-Order matters inside the phase: the shield (Step 5) must land before the chrome tokens are re-pointed (Step 6), so no material or printout ever sees a new value.
+Order matters inside the phase: the fonts (Steps 2–4) land before the tokens point at them (Step 6). Step 5 was removed on 2026-09-29 with the print gate (owner decisions 6–8).
 
 ## Step 2 — Self-hosted fonts: the authoring script and the committed files
 
@@ -487,123 +487,27 @@ The one-asset-per-line format that the QA parity check greps (`grep -c '^  "' di
 
 **Check:**
 
-- `npm run build` ends with `generate-sw: wrote dist/sw.js (cache mm-…, 54 assets; fonts 116.7 KB of 200 KB)`. That is the 50 assets at `album-baseline` plus the 4 font files; your KB figure is whatever Step 2 produced.
+- `npm run build` ends with `generate-sw: wrote dist/sw.js (cache mm-…, 54 assets; fonts 116.7 KB of 200 KB)`. That is the 50 assets at `bbbdb44` plus the 4 font files; your KB figure is whatever Step 2 produced.
 - `grep '/fonts/' dist/sw.js` lists the four files.
 - Temporarily change `200 * 1024` to `100 * 1024`, and `npm run build` exits 1 with the budget message. Revert the change.
 - Note the `mm-…` version in `dist/sw.js`. Change one byte of `dist/fonts/OFL.txt` without changing its size (for example `printf 'X' | dd of=dist/fonts/OFL.txt bs=1 seek=10 conv=notrunc`), run `node scripts/generate-sw.mjs`, and the version is different. Rebuild afterwards.
 - In `npm run preview`, load `/` once, then check DevTools, Application, Cache Storage, `mm-…`: it contains the three woff2 files. With Network set to Offline, reload: the page still renders in Newsreader (after Step 6).
 
-## Step 5 — The token shield, installed while nothing changes
+## Step 5 — Removed
 
-**Files:** `src/styles/tokens.css` (modified).
-
-The shield is installed *before* any chrome value changes, so this step has to be a visual no-op. It adds the legacy values as `--mat-*` source tokens. Then, on every `.material-stage` and `.print-sheet`, it pins the 17 chrome tokens that material and print CSS read to those values. It also resets the text metrics that a stage or sheet inherits from `<body>`. Once Step 6 re-points the chrome tokens and Step 7 restyles the body, every material and printout still resolves to exactly today's values.
-
-This list is complete. A grep of every material, generator, kit and planner stylesheet and component (`src/materials`, `src/worksheets/generators`, `src/kits`, `src/planner`, `materials.css`, `print.css`, `worksheets.css`, `planner.css`) finds only these chrome tokens in use:
-
-- 14 that change and are pinned: `--paper`, `--paper-warm`, `--card`, `--ink`, `--ink-soft`, `--line`, `--accent`, `--accent-dark`, `--radius`, `--radius-sm`, `--shadow-sm`, `--shadow-md`, `--font-heading`, `--font-body`;
-- 5 that never change: `--touch-target`, `--focus`, `--ok`, `--error`, `--font-mono`.
-
-`--on-accent`, `--font-text` and `--font-ui` are pinned as well, because Step 9 and later chrome rules read them. No stylesheet re-declares any of these properties locally, so the pins can't be outranked.
-
-In `:root`, directly after the bead-rendering block (current lines 57–62) and before `/* Shape & depth */` (line 64), insert:
-
-```css
-  /* ---------- Legacy chrome values (source of the shield) ----------
-     Exactly what the chrome tokens were before PRD 19. The shield gives
-     these back to every .material-stage and .print-sheet. Changing one of
-     them changes every material and every printable: don't. */
-  --mat-paper: #faf7f0;
-  --mat-paper-warm: #f3ecdd;
-  --mat-card: #ffffff;
-  --mat-ink: #33302a;
-  --mat-ink-soft: #6f6759;
-  --mat-line: #e4ddcc;
-  --mat-accent: #b0523c;
-  --mat-accent-dark: #8d3f2e;
-  --mat-on-accent: #ffffff;
-  --mat-radius: 10px;
-  --mat-radius-sm: 6px;
-  --mat-shadow-sm: 0 1px 3px rgba(51, 48, 42, 0.12);
-  --mat-shadow-md: 0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12);
-  --font-numeral: Georgia, 'Times New Roman', serif; /* number cards and stamps keep Georgia figures */
-  --font-material: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-```
-
-Each value is copied from the current `tokens.css` lines 42–52 and 65–72. `#ffffff` for `--mat-on-accent` replaces the `#fff` literal that `.btn.primary` uses today (global.css line 214; Step 9 switches it to the token).
-
-At the end of the file, after the closing `}` of `:root`, append:
-
-```css
-/* ------------------------------------------------------------------
-   The token shield
-   Every virtual material (.material-stage) and every printable sheet
-   (.print-sheet) gets the legacy chrome values back. Material tokens are
-   not listed: they are never re-pointed. The shared material primitives
-   (NumberCard, StampTile, beads.tsx) are only ever rendered inside a stage
-   or a sheet; if a chrome page ever shows one inline, add its class here.
-   ------------------------------------------------------------------ */
-.material-stage,
-.print-sheet {
-  --paper: var(--mat-paper);
-  --paper-warm: var(--mat-paper-warm);
-  --card: var(--mat-card);
-  --ink: var(--mat-ink);
-  --ink-soft: var(--mat-ink-soft);
-  --line: var(--mat-line);
-  --accent: var(--mat-accent);
-  --accent-dark: var(--mat-accent-dark);
-  --on-accent: var(--mat-on-accent);
-  --radius: var(--mat-radius);
-  --radius-sm: var(--mat-radius-sm);
-  --shadow-sm: var(--mat-shadow-sm);
-  --shadow-md: var(--mat-shadow-md);
-  --font-heading: var(--font-numeral);
-  --font-body: var(--font-material);
-  --font-text: var(--font-material);
-  --font-ui: var(--font-material);
-}
-
-/* A stage or sheet inherits its text metrics from the body, which the album
-   sets to Newsreader 18px/1.6. Reset them to the legacy body. :where() keeps
-   specificity at zero, so any real rule in materials.css, print.css or a
-   material's or generator's own CSS still wins. */
-:where(.material-stage, .print-sheet) {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.55;
-}
-
-:where(.material-stage) {
-  color: var(--ink);
-}
-```
-
-**How it works:** a custom property set on an element overrides the inherited `:root` value for that element and all its descendants. It also applies to the element's own properties: `.material-stage { border-radius: var(--radius) }` in materials.css line 61 keeps its 10px.
-
-`print.css` line 72 (`.print-sheet { font-family: var(--font-body) }`) and line 71 (`color: #000`) are class rules, so they still win over the zero-specificity reset. They now resolve through the pinned `--font-body`. The `.print-sheet.bw` block (print.css lines 120–147) overrides only material tokens, at higher specificity, and is untouched.
-
-The `:root` values still equal the legacy values at this point, so every pin and reset resolves to what the element already had.
-
-**Check:**
-
-- `npm run build` is green.
-- The shield probe gives identical before and after output on `/materials/golden-beads` and `/materials/stamp-game` (screen), and on `/worksheets/multi-digit-ops?seed=424242&key=1` (screen and print).
-- Every page looks identical. Spot-check `/`, a lesson and a builder; nothing may move.
+*Removed 2026-09-29.* This step installed the token shield, which handed the old chrome values back to every material and printable so the print gate could prove nothing changed. The owner removed the gate and wants materials and printables to take the Album's type (owner decisions 6–8), so there is no shield: Step 6 re-points the chrome tokens directly, and Step 7 gives materials and printables their type.
 
 ## Step 6 — The Album's chrome tokens, the font preload and the theme colour
 
 **Files:** `src/styles/tokens.css` (full new content below), `index.html` (modified), `public/manifest.webmanifest` (modified).
 
-This step re-points the chrome to paper, ink and rubric, and adds the eight-step type scale, the space scale, the radii and the ornament tokens. The values are verbatim from `plan/19-the-album/prototype/mock.css` §1, with five deliberate changes:
+This step re-points the chrome to paper, ink and rubric, and adds the eight-step type scale, the space scale, the radii and the ornament tokens. Material stages and printable sheets read the same names, so they take these values too (owner decision 7 for the printables' type and tokens, owner decision 8 for the materials' type; for the materials' paper, card, ink, hairlines and rubric this is Claude's default, open question 26), except the Montessori colours and the legacy shape tokens, which don't change. The values are verbatim from `plan/19-the-album/prototype/mock.css` §1, with five deliberate changes:
 
 1. **`--line-strong` is darkened** from the mock's `#9c907c` to `#8c816f`. The mock value gives 2.79:1 on paper and 2.51:1 on the planner's paper-warm panel, which fails WCAG 1.4.11 for field borders. `#8c816f` gives 3.77:1 on card, 3.40:1 on paper and 3.06:1 on paper-warm.
 2. **`--link-rule` is darkened** from the mock's `#c79a8b` to `#a8705f`. Links are ink like the text around them, so the underline is the only thing that marks them, and the mock value gave it 2.21:1 on paper, 1.99:1 on paper-warm and 2.45:1 on card. `#a8705f` gives 3.62:1, 3.26:1 and 4.01:1 and still reads as a faint rubric.
-3. **`--shadow-sm` is `0 0 0 transparent` instead of `none`**, so it stays valid inside a `box-shadow` list.
+3. **The legacy shape tokens are not re-pointed.** The mock aliases `--radius` and `--radius-sm` to 2px, sets `--shadow-sm` to `none` and `--shadow-md` to the sheet shadow, and relies on its own token shield to hand the old values back to materials. PRD 19 has no shield (owner decisions 6–8), and material pieces draw their corners, drop shadows and hover lift with these four names, so they keep today's values. The chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet`; legacy chrome rules still on the old names keep their rounded look until the step that replaces them. The mock's shield source tokens (its `--mat-*` block and `--font-material`) are left out with it.
 4. **The font stacks name the metric-matched fallbacks from Step 3.** The mock's `'Source Sans 3'` entry is dropped from `--font-ui`: it is the Reserved Font Name, and a locally installed copy must not stand in for MM Sans.
-5. **The legacy `#fff` button text becomes `--mat-on-accent`.**
-
-The step also adds the **chrome twins** (convention 3), and the shield exception that gives chrome back to the `.no-print` print bars sitting inside the addition- and multiplication-chart sheet previews. Those bars are chrome, never reach paper, and contain a `PrintButton`.
+5. **`--font-numeral` is Newsreader,** where the mock keeps Georgia: number cards and plate numerals get Newsreader's lining figures (audit S7-05, owner decision 8).
 
 Replace the whole of `src/styles/tokens.css` with:
 
@@ -616,11 +520,11 @@ Replace the whole of `src/styles/tokens.css` with:
    materials. Never re-point them for a look-and-feel change.
 
    CHROME tokens (paper, ink, rubric, rules, type, space) dress the site
-   around the materials: PRD 19 "The Album".
-
-   THE TOKEN SHIELD (bottom of this file) hands the legacy chrome values
-   (--mat-*) back to every material stage and every printable sheet, so
-   re-skinning the chrome cannot change a material or a printout.
+   around the materials: PRD 19 "The Album". Material stages and printable
+   sheets read the same names, so they take the Album's faces, paper and
+   ink too (global.css, "Materials and printables"). The legacy shape
+   tokens (--radius, --radius-sm, --shadow-sm, --shadow-md) keep their
+   values: material pieces draw their corners and depth with them.
    ------------------------------------------------------------------ */
 :root {
   /* Place-value hierarchy (repeats per family: 1/1k/1M green, 10/10k blue, 100/100k red) */
@@ -675,26 +579,6 @@ Replace the whole of `src/styles/tokens.css` with:
   --bead-wire: #9a9a9a; /* the wire a bar is threaded on */
   --bead-outline: rgba(0, 0, 0, 0.55); /* keeps the white 7-bar visible in print */
 
-  /* ---------- Legacy chrome values (source of the shield) ----------
-     Exactly what the chrome tokens were before PRD 19. The shield gives
-     these back to every .material-stage and .print-sheet. Changing one of
-     them changes every material and every printable: don't. */
-  --mat-paper: #faf7f0;
-  --mat-paper-warm: #f3ecdd;
-  --mat-card: #ffffff;
-  --mat-ink: #33302a;
-  --mat-ink-soft: #6f6759;
-  --mat-line: #e4ddcc;
-  --mat-accent: #b0523c;
-  --mat-accent-dark: #8d3f2e;
-  --mat-on-accent: #ffffff;
-  --mat-radius: 10px;
-  --mat-radius-sm: 6px;
-  --mat-shadow-sm: 0 1px 3px rgba(51, 48, 42, 0.12);
-  --mat-shadow-md: 0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12);
-  --font-numeral: Georgia, 'Times New Roman', serif; /* number cards and stamps keep Georgia figures */
-  --font-material: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-
   /* ---------- Chrome: paper and ink ----------
      Contrast is WCAG 2.x, measured against the surface named. */
   --paper: #f6f1e7; /* the album page; ink on paper 14.04:1 */
@@ -724,6 +608,7 @@ Replace the whole of `src/styles/tokens.css` with:
   --font-ui: 'MM Sans', 'MM Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-heading: var(--font-text);
   --font-body: var(--font-text);
+  --font-numeral: var(--font-text); /* figures on number cards and plate drawings: Newsreader's lining figures (audit S7-05) */
   --font-mono: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
   --fs-caps: 0.875rem; /* 14  sans capitals: margin heads, labels, meta, kickers */
   --fs-ui: 1rem; /* 16  nav, buttons, fields, help, tables */
@@ -751,38 +636,16 @@ Replace the whole of `src/styles/tokens.css` with:
   --margin-col: 11rem; /* album and guide margin heads */
   --gutter: 2.75rem;
 
-  /* Legacy names, re-pointed for the chrome (the shield restores them) */
-  --radius: var(--radius-chrome);
-  --radius-sm: var(--radius-chrome);
-  --shadow-sm: 0 0 0 transparent; /* no card shadows; still valid inside a box-shadow list */
-  --shadow-md: var(--shadow-sheet);
+  /* Legacy shape tokens: unchanged. Material pieces (tiles, cards, trays,
+     tickets) draw their corners, depth and hover lift with them, so they
+     are not re-pointed. Chrome rules use the three tokens above. */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(51, 48, 42, 0.12);
+  --shadow-md: 0 1px 2px rgba(51, 48, 42, 0.1), 0 6px 18px rgba(51, 48, 42, 0.12);
 
   /* Interaction */
   --touch-target: 44px;
-
-  /* ---------- Chrome twins ----------
-     A custom property inherits its computed value, so each twin is resolved
-     HERE, to the chrome value, and keeps it inside a shielded element. Use a
-     twin only for chrome drawn on or inside a shielded element (the plate
-     mount on .material-stage; the no-print control bars inside a sheet
-     preview). Everywhere else use the plain name. */
-  --chrome-paper: var(--paper);
-  --chrome-paper-warm: var(--paper-warm);
-  --chrome-card: var(--card);
-  --chrome-ink: var(--ink);
-  --chrome-ink-soft: var(--ink-soft);
-  --chrome-line: var(--line);
-  --chrome-accent: var(--accent);
-  --chrome-accent-dark: var(--accent-dark);
-  --chrome-on-accent: var(--on-accent);
-  --chrome-radius: var(--radius);
-  --chrome-radius-sm: var(--radius-sm);
-  --chrome-shadow-sm: var(--shadow-sm);
-  --chrome-shadow-md: var(--shadow-md);
-  --chrome-font-heading: var(--font-heading);
-  --chrome-font-body: var(--font-body);
-  --chrome-font-text: var(--font-text);
-  --chrome-font-ui: var(--font-ui);
 }
 
 /* Phones: one 16px gutter, and album/guide margin heads stack above their text. */
@@ -793,81 +656,13 @@ Replace the whole of `src/styles/tokens.css` with:
     --gutter: 0px;
   }
 }
-
-/* ------------------------------------------------------------------
-   The token shield
-   Every virtual material (.material-stage) and every printable sheet
-   (.print-sheet) gets the legacy chrome values back. Material tokens are
-   not listed: they are never re-pointed. The shared material primitives
-   (NumberCard, StampTile, beads.tsx) are only ever rendered inside a stage
-   or a sheet; if a chrome page ever shows one inline, add its class here.
-   ------------------------------------------------------------------ */
-.material-stage,
-.print-sheet {
-  --paper: var(--mat-paper);
-  --paper-warm: var(--mat-paper-warm);
-  --card: var(--mat-card);
-  --ink: var(--mat-ink);
-  --ink-soft: var(--mat-ink-soft);
-  --line: var(--mat-line);
-  --accent: var(--mat-accent);
-  --accent-dark: var(--mat-accent-dark);
-  --on-accent: var(--mat-on-accent);
-  --radius: var(--mat-radius);
-  --radius-sm: var(--mat-radius-sm);
-  --shadow-sm: var(--mat-shadow-sm);
-  --shadow-md: var(--mat-shadow-md);
-  --font-heading: var(--font-numeral);
-  --font-body: var(--font-material);
-  --font-text: var(--font-material);
-  --font-ui: var(--font-material);
-}
-
-/* A stage or sheet inherits its text metrics from the body, which the album
-   sets to Newsreader 18px/1.6. Reset them to the legacy body. :where() keeps
-   specificity at zero, so any real rule in materials.css, print.css or a
-   material's or generator's own CSS still wins. */
-:where(.material-stage, .print-sheet) {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.55;
-}
-
-:where(.material-stage) {
-  color: var(--ink);
-}
-
-/* Shield exception: chrome control bars that sit inside a sheet preview but
-   never print (.no-print: today the addition- and multiplication-chart print
-   bars, with their PrintButton) get the chrome values back through the twins.
-   Nothing in a .no-print subtree reaches paper. */
-.print-sheet .no-print {
-  --paper: var(--chrome-paper);
-  --paper-warm: var(--chrome-paper-warm);
-  --card: var(--chrome-card);
-  --ink: var(--chrome-ink);
-  --ink-soft: var(--chrome-ink-soft);
-  --line: var(--chrome-line);
-  --accent: var(--chrome-accent);
-  --accent-dark: var(--chrome-accent-dark);
-  --on-accent: var(--chrome-on-accent);
-  --radius: var(--chrome-radius);
-  --radius-sm: var(--chrome-radius-sm);
-  --shadow-sm: var(--chrome-shadow-sm);
-  --shadow-md: var(--chrome-shadow-md);
-  --font-heading: var(--chrome-font-heading);
-  --font-body: var(--chrome-font-body);
-  --font-text: var(--chrome-font-text);
-  --font-ui: var(--chrome-font-ui);
-  font-family: var(--font-ui);
-}
 ```
 
 **What changed from today's file:**
 
-- **Unchanged, in value and order:** every material token, `--focus`, `--ok`, `--error`, the bead-rendering tokens, `--font-mono` and `--touch-target`. `--wood`, `--wood-dark` and `--felt` move out of the old "Surfaces & ink" block into "Material surfaces", with the same values.
-- **Re-pointed:** `--paper`, `--paper-warm`, `--card`, `--ink`, `--ink-soft`, `--line`, `--accent`, `--accent-dark` get new hex values. `--radius`, `--radius-sm`, `--shadow-sm`, `--shadow-md`, `--font-heading` and `--font-body` now alias the new chrome scale.
-- **Why `--shadow-sm` is a transparent zero shadow rather than `none`:** it stays valid inside a list. `materials.css` line 129 writes `box-shadow: inset …, var(--shadow-sm)`, and `none` there would invalidate the whole declaration. That rule is shielded, but future chrome might copy the pattern.
+- **Unchanged, in value and order:** every material token, `--focus`, `--ok`, `--error`, the bead-rendering tokens, `--font-mono`, `--touch-target`, and the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` (moved into the space, shape and depth block with a comment, same values). `--wood`, `--wood-dark` and `--felt` move out of the old "Surfaces & ink" block into "Material surfaces", with the same values.
+- **Re-pointed:** `--paper`, `--paper-warm`, `--card`, `--ink`, `--ink-soft`, `--line`, `--accent` and `--accent-dark` get new hex values, and `--font-heading` and `--font-body` now alias Newsreader. Material stages and printable sheets read these too (owner decision 7 for the printables' type and tokens, owner decision 8 for the materials' type; for the materials' paper, card, ink, hairlines and rubric this is Claude's default, open question 26).
+- **New:** `--desk`, `--line-strong`, `--on-accent`, `--link-rule`, the Oxford rule and the fleuron, `--font-text`, `--font-ui`, `--font-numeral`, the type and space scales, `--radius-chrome`, `--radius-control`, `--shadow-sheet`, `--container`, `--margin-col` and `--gutter`.
 
 In `index.html`, the current lines 6–8 are:
 
@@ -900,14 +695,14 @@ In `public/manifest.webmanifest`, lines 8–9 become `"background_color": "#f6f1
   grep -oE -- '--(pv|bead|golden|felt|wood|inset-frame|fraction-shade)[a-z0-9-]*: [^;]+' src/styles/tokens.css | sort > /tmp/mat-after
   diff /tmp/mat-before /tmp/mat-after && echo "material tokens unchanged"
   ```
-- The shield probe gives identical before and after output on `/materials/golden-beads`, `/materials/stamp-game`, `/materials/checkerboard`, `/worksheets/multi-digit-ops?seed=424242&key=1` (print, colour and `&bw=1`) and `/kits/golden-bead-cards` (print).
+- The legacy shape tokens are unchanged: `grep -E -- '--(radius|radius-sm|shadow-sm|shadow-md):' src/styles/tokens.css` prints `--radius: 10px`, `--radius-sm: 6px` and the two shadows exactly as `git show HEAD:src/styles/tokens.css` has them.
 - Chrome text is now Newsreader and the page background is `#f6f1e7`. On `/materials/addition-charts`, open "Print control charts": the Print button in the bar above the sheet renders rubric, not terracotta.
-- The print gate PASSes, including the chart and arrow-label sheets whose print bars the shield exception re-points, and the stage gate PASSes.
+- On `/materials/golden-beads` and `/materials/stamp-game`, every material colour (the golden beads, the place-value green, blue and red, the felt and the wood) looks as before, and the paper, card and ink around them are the Album's. On `/worksheets/multi-digit-ops?seed=424242&key=1` in print preview, in colour and with `&bw=1`, the sheet prints cleanly and B&W is still black and white (the standard check, convention 12).
 - The console shows no "preloaded but not used" warning.
 
-## Step 7 — Base element styles: body, headings, paragraphs, links, selection
+## Step 7 — Base element styles, and the Album's type in materials and printables
 
-**Files:** `src/styles/global.css` (modified: current lines 11–58 and 292).
+**Files:** `src/styles/global.css` (modified: current lines 11–58 and 292, plus a block appended after the element styles), `src/styles/materials.css` (modified: the `.stamp-tile` and `.number-card` font lines).
 
 This step sets the album page to Newsreader 18px/1.6 in ink on paper and gives the headings real presence:
 
@@ -918,7 +713,16 @@ This step sets the album page to Newsreader 18px/1.6 in ink on paper and gives t
 
 Links in running text become ink with a faint rubric underline (`--link-rule`).
 
-The legacy element rules stay exactly as they are, because they are what headings and links *inside* stages and sheets still use (through the pinned tokens). The chrome overrides come after them, carrying the chrome guard.
+This step also brings the Album's type into materials and printables (owner decisions 7 and 8). They read the same tokens as the chrome, so from Step 6 their headings and numerals are already Newsreader. Here they get:
+
+- the 16px / 1.55 base they were laid out on, so the body's new 18px reading size doesn't rescale every mat or push a worksheet onto another page;
+- lining figures everywhere (audit S7-05: Georgia's old-style figures made digits bounce off the baseline, so a 0 read as o);
+- MM Sans, the Album's label face, for everything on a material you operate or read as a label: stage text, labels and buttons (`--font-body` is re-scoped to `--font-ui` inside a stage, so material CSS that asks for the body face gets the sans);
+- `--font-numeral` (Newsreader) on number cards and MM Sans on stamps.
+
+Each material keeps its own label sizes, tracking, Montessori colours and layout; those are PRD 20 (open question 22). Small reflows from the new faces are expected. Bold numerals ask for 700 and draw at Newsreader's 600 (open question 25), and until Newsreader has loaded the metric-matched Georgia fallback still draws old-style figures; after the first visit the service worker serves the fonts from cache. MM Sans has no italic, so the few italic notes inside stages (the empty-tray notes in racks and tubes, the division board and cards and counters, the checkerboard note and the golden beads' "Total hidden" line) draw as the browser's slanted MM Sans; accepted (open question 20).
+
+The legacy element rules stay exactly as they are, because they are what headings and links *inside* stages and sheets still use, now in the Album's faces and colours at their legacy sizes. The chrome overrides come after them, carrying the chrome guard.
 
 Current lines 11–17:
 
@@ -935,9 +739,9 @@ body {
 Replace them with:
 
 ```css
-/* The album page: Newsreader at 18px on warm paper. Every material stage and
-   printable sheet resets font, size and line-height to the legacy body
-   (tokens.css, "The token shield"), so nothing inside them moves. */
+/* The album page: Newsreader at 18px on warm paper. Material stages and
+   printable sheets keep their own 16px base (below, "Materials and
+   printables"). */
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -953,8 +757,9 @@ Directly above the current line 25 (`h1,`), insert:
 ```css
 /* ---------- Legacy element styles ----------
    These are still what every heading and link INSIDE a material stage or a
-   printable sheet uses (their tokens are pinned there by the shield). Leave
-   them alone; restyle the chrome in the guarded block below. */
+   printable sheet uses: the Album's faces and colours (through the tokens)
+   at the legacy sizes. Leave them alone; restyle the chrome in the guarded
+   block below. */
 
 ```
 
@@ -1024,6 +829,58 @@ a:where(:not(.material-stage *, .print-sheet *)):hover {
 - `print.css`'s `@media print { a { color: inherit; text-decoration: none } }` loads later at (0,0,1), so printed links are still plain text, exactly as today.
 - The selection highlight is ink on golden-light, 9.88:1.
 
+Then, directly after the `::selection` rule, append the materials-and-printables block:
+
+```css
+/* ---------- Materials and printables: the Album's type ----------
+   A material stage and a printable sheet read the same tokens as the
+   chrome, so they take the Album's faces, paper, ink and rubric (PRD 19:
+   owner decisions 7 and 8, open question 26). They keep the 16px / 1.55 base they were laid
+   out on: the body's 18px reading size would rescale every mat and could
+   push a worksheet onto another page. Figures are lining everywhere (audit
+   S7-05); Newsreader and MM Sans default to lining, and this keeps it so.
+   :where() adds no specificity, so every rule in materials.css, print.css
+   or a material's or generator's own stylesheet still wins. */
+:where(.material-stage, .print-sheet) {
+  font-size: 1rem;
+  line-height: 1.55;
+  font-variant-numeric: lining-nums;
+}
+
+/* A material is something you operate: its text, labels and buttons are
+   set in MM Sans, like every other control on the site. Material CSS that
+   asks for --font-body (chart cells, labels) gets MM Sans too;
+   --font-heading (headings, numerals) stays Newsreader. */
+:where(.material-stage) {
+  --font-body: var(--font-ui);
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+
+/* Control bars that sit inside a sheet preview but never print (the chart
+   materials' print bars) are chrome: the UI face, including controls whose
+   own CSS asks for --font-body (the charts' Close button). */
+:where(.print-sheet .no-print) {
+  --font-body: var(--font-ui);
+  font-family: var(--font-ui);
+}
+```
+
+In `src/styles/materials.css`:
+
+- In `.stamp-tile { … }` (current lines 92–106), replace line 99, `  font-family: var(--font-body);`, with:
+  ```css
+    font-family: var(--font-ui);
+    font-variant-numeric: lining-nums tabular-nums;
+  ```
+- In `.number-card { … }` (current lines 122–134), replace line 130, `  font-family: var(--font-heading);`, with:
+  ```css
+    font-family: var(--font-numeral);
+    font-variant-numeric: lining-nums tabular-nums;
+  ```
+
+The `:where()` rules are zero-specificity, so the `.print-sheet` rule in `print.css` (`font-family: var(--font-body)`, Newsreader on sheets) and every material's own `font-family`, `font-size` and `font-variant-numeric` still win. The chart materials' `.no-print` print bars sit inside a sheet preview; they are chrome, so they get the UI face (`--font-body` is re-scoped there too), and their Print button is a chrome `.btn` (Step 9).
+
 In the phone block, the current line 292 is:
 
 ```css
@@ -1043,10 +900,13 @@ On phones, chrome h1s are now 36px against 28px h2s, where today they are 25.6px
 **Check:**
 
 - On `/materials` at 1400px, the h1 computes to Newsreader 52px at weight 400. At 390px it is 36px. On `/parents/glossary` at 390px, the h1 (36px) is visibly larger than an h2 (28px).
-- On `/materials/multiplication-bead-board` in Table mode, the stage's "Table of N" h3 still computes to Georgia at 16.8px, weight 600, letter-spacing `normal`. Its own CSS sets only family, size and margin; the weight comes from the legacy h3 rule, which the chrome h3 rule must not reach.
-- The shield probe gives identical output on `/materials/golden-beads`, `/materials/snake-game` and `/materials/multiplication-bead-board` (the last two have h3s inside the stage), and on `/worksheets/teens-tens?seed=424242&key=1` in print (it has h3s inside the sheet).
+- On `/materials/multiplication-bead-board` in Table mode, the stage's "Table of N" h3 computes to Newsreader at 16.8px, weight 600, letter-spacing `normal`. Its own CSS sets only family (`--font-heading`), size and margin; the weight comes from the legacy h3 rule, and the chrome h3 rule (21px, weight 500, tracked −0.01em) doesn't reach inside the stage.
+- On `/materials/golden-beads`, `getComputedStyle(document.querySelector('.material-stage'))` gives `font-size` `16px`, `line-height` `24.8px` and a `font-family` that starts with `"MM Sans"`; the bank's labels and buttons are MM Sans.
+- On `/materials/number-cards`, `getComputedStyle(document.querySelector('.number-card')).fontFamily` starts with `Newsreader`, and every digit sits on the baseline. On `/materials/stamp-game`, the stamps' numerals are MM Sans. Every Montessori colour is unchanged.
+- On `/worksheets/teens-tens?mode=mixed&seed=424242&key=1` and `/kits/large-number-cards`, in print preview, the sheet text and the figures are Newsreader with lining figures (except the worksheet's large numerals, which are `--font-mono` and stay monospace: open question 23), and nothing is clipped. The worksheet's section heads (h3s inside the sheet) keep their own 1rem size and letter-spacing `normal`. After "Print control charts" on `/materials/addition-charts`, the print bar above the sheet is MM Sans, its Close button included.
 - On `/` at 1400px, the card titles no longer end in a single stranded word ("show", "hands", "paper").
-- **Lesson and guide print in between.** These rules are not screen-scoped, so from here until Phase 5 lessons and guides print in the new type on their old print layout (see [Rollout](../19-the-album.md#rollout): this state never ships). In Chrome's print preview (Letter, default margins), check `/lessons/golden-beads-addition` and `/parents/glossary`. Both are coherent: nothing is clipped or overlapping, and headings sit with their text.
+- **Lesson and guide print in between.** These rules are not screen-scoped, so from here until Phase 5 lessons and guides print in the new type on their old print layout (see [Rollout](../19-the-album.md#rollout): under its proposal this state never ships). In Chrome's print preview (Letter, default margins), check `/lessons/golden-beads-addition` and `/parents/glossary`. Both are coherent: nothing is clipped or overlapping, and headings sit with their text.
+- The standard check (convention 12) passes.
 
 ## Step 8 — `Icon.tsx`: the 14-glyph line icon set
 
@@ -1240,17 +1100,18 @@ This is a pure-data test in the house style (compare `src/worksheets/themes.test
 
 The chrome `.btn` becomes card stock with a 1px ink edge, a 3px radius, and MM Sans 16px at weight 600. It stays at least 44px tall and keeps a visible focus ring. The page's one primary action (`.btn.primary`: home CTA, every Print, builder primary) is **rubric**: `#9a3b27` with `#fffdf8` text (6.82:1), hovering to `#7a2d1d` (9.30:1). This was the owner's decision.
 
-Materials draw `.btn` and `.btn.primary` **inside** their stages; for example Stamp Game's Combine and Golden Beads' Check. So the legacy button rules stay as they are, and the chrome rules are guarded to outside stages. The guard is `:not(.material-stage *)` only, so the Print bars inside chart sheet previews (Step 6's shield exception) get the chrome button too.
+Materials draw `.btn` and `.btn.primary` **inside** their stages; for example Stamp Game's Combine and Golden Beads' Check. So the legacy button rules stay as they are, and the chrome rules are guarded to outside stages. The guard is `:not(.material-stage *)` only, so the Print bars inside chart sheet previews get the chrome button too. Inside a stage the legacy button reads the Album's tokens (rubric primary, card stock) in MM Sans, and keeps its legacy 6px corner and 1px edge (`--line`, or `--accent-dark` on a primary): its shape is material rendering.
 
-Current lines 191–224 hold `.btn`, `.btn:hover`, `.btn.primary`, `.btn.primary:hover` and `.btn:disabled`. Step 7 inserted about 60 lines above them, so locate them by their text (convention 10). Make these changes:
+Current lines 191–224 hold `.btn`, `.btn:hover`, `.btn.primary`, `.btn.primary:hover` and `.btn:disabled`. Step 7 inserted about 100 lines above them, so locate them by their text (convention 10). Make these changes:
 
 1. Directly above `.btn {` (current line 191), insert:
    ```css
    /* ---------- Buttons ----------
-      Legacy button: what every .btn a material draws INSIDE its stage still looks
-      like (tokens pinned by the shield). Leave these five rules alone. */
+      Legacy button: what every .btn a material draws INSIDE its stage looks
+      like (the Album's colours and MM Sans, the legacy 6px corner). Leave
+      these five rules alone. */
    ```
-2. In `.btn.primary` (current lines 211–215), replace `color: #fff;` with `color: var(--on-accent);`. Inside a stage `--on-accent` is pinned to `#ffffff`, so nothing changes there, and the last hex literal leaves the button rules.
+2. In `.btn.primary` (current lines 211–215), replace `color: #fff;` with `color: var(--on-accent);`. Inside a stage that makes a primary button's text `#fffdf8` on rubric (6.82:1), as in the chrome, and the last hex literal leaves the button rules.
 3. Directly after `.btn:disabled { … }` (current line 224), insert:
 
 ```css
@@ -1303,7 +1164,7 @@ Current lines 191–224 hold `.btn`, `.btn:hover`, `.btn.primary`, `.btn.primary
 
 Order matters here. Each chrome rule has the same specificity as its legacy twin, so it wins on order. `.btn.primary:where(…)` (0,2,0) comes *after* `.btn:where(…):hover` (0,2,0), so a hovered primary stays rubric. Min-height (`--touch-target`), `display: inline-flex`, cursor and `text-decoration: none` still come from the legacy `.btn`. `.btn:disabled` (opacity 0.5) applies to both.
 
-Then, directly after the `::selection` rule added in Step 7, insert the two shared helpers:
+Then, directly after the materials-and-printables block that Step 7 appended after the `::selection` rule, insert the two shared helpers:
 
 ```css
 /* Shared helpers */
@@ -1347,7 +1208,8 @@ Then, directly after the `::selection` rule added in Step 7, insert the two shar
 - On `/worksheets/multi-digit-ops`, Print is rubric with paper-coloured text and New problems is card stock with an ink edge. Both are exactly 44px tall at 1400px and 390px.
 - Tab to each button: a 3px blue ring is visible.
 - With "Emulate CSS prefers-reduced-motion: reduce" turned on in DevTools, hovering changes the background instantly.
-- On `/materials/stamp-game` in Addition mode, Combine (drawn inside the stage) looks exactly as today: 6px radius, terracotta, the system sans. New problem, Set problem and Reset are toolbar controls outside the stage, so they are now album buttons (card stock, a 1px ink edge, 3px corners, MM Sans). The shield probe gives identical output there and on `/materials/golden-beads`, `/materials/decimal-board` and `/materials/division-board`.
+- On `/materials/stamp-game` in Addition mode, Combine (drawn inside the stage, a `.btn.primary`) keeps the legacy button's shape (6px corners, a 1px `--accent-dark` edge) in the Album's rubric, with MM Sans text. New problem, Set problem and Reset are toolbar controls outside the stage, so they are now album buttons (card stock, a 1px ink edge, 3px corners, MM Sans).
+- The standard check (convention 12) passes; on `/materials/golden-beads`, `/materials/decimal-board` and `/materials/division-board` the buttons inside the stage keep their legacy shape and read cleanly.
 
 ## Step 10 — Replace every emoji icon, and guard against new ones
 
@@ -1363,7 +1225,7 @@ A scan of `src/` for pictographic emoji, the emoji variation selector, and the t
 
 Each gets an `<Icon>` plus a `<span className="btn-label">`, which keeps the text as the accessible name. Home's three headings simply drop the emoji; Step 23's Parts I–III add plates later.
 
-The text marks that materials and printouts rely on stay, because they are content, not icons, and they sit inside shielded stages and sheets: ✓, ✗, ✂ (the kit and command-card cut marks), and × ÷ → − ▸ ◀ ▶.
+The text marks that materials and printouts rely on stay, because they are content, not icons, and they sit inside stages and sheets: ✓, ✗, ✂ (the kit and command-card cut marks), and × ÷ → − ▸ ◀ ▶.
 
 **`src/components/PrintButton.tsx`.** The whole file is currently:
 
@@ -1451,7 +1313,7 @@ with:
 
 This step changes only the toggles' contents and adds `has-icon`. Step 27 adds `btn-utility` and the `.material-utility`, `.material-task` and `.material-toolbar` grouping, and Step 28 the phone rule that visually hides `.btn-label`.
 
-**`src/worksheets/BuilderPage.tsx`.** The line numbers below are from `main@0faa268`. The bug-fix commit `477ac70` (on `album-baseline`) replaced this file's number input with a `NumberField` component, which moved the button down to lines 202–204; locate the code by content.
+**`src/worksheets/BuilderPage.tsx`.** The line numbers below are from `main@0faa268`. The bug-fix commit `477ac70` (on `bbbdb44`) replaced this file's number input with a `NumberField` component, which moved the button down to lines 202–204; locate the code by content.
 
 - After line 8 (`import { PrintButton } from '../components/PrintButton'`), add `import { Icon } from '../components/Icon'`.
 - Current lines 170–172:
@@ -1500,7 +1362,7 @@ describe('no emoji icons in src/', () => {
     eager: true,
   })
   // Pictographic emoji, the emoji variation selector, and the two glyphs the
-  // material toolbar used as icons (⛶ U+26F6, ✕ U+2715). Text marks the
+  // material toolbar used as icons (U+26F6 and U+2715). Text marks the
   // materials rely on (✓ ✗ ✂ × ÷ → −) are allowed.
   const EMOJI = /[\u{1F000}-\u{1FAFF}\u{FE0F}\u{26F6}\u{2715}]/u
 

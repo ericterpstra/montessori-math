@@ -4,12 +4,11 @@ Reference material for [PRD 19, The Album](../19-the-album.md). The PRD is the s
 
 | Path | What it is |
 |---|---|
-| [`phase-0-the-print-gate.md`](phase-0-the-print-gate.md) … [`phase-7-sign-off.md`](phase-7-sign-off.md) | The implementation steps, one file per phase in build order (Steps 1–43). The [PRD](../19-the-album.md) holds the decisions, conventions, rollout, QA script and acceptance criteria, and indexes every step. |
+| [`phase-1-foundations.md`](phase-1-foundations.md) … [`phase-7-sign-off.md`](phase-7-sign-off.md) | The implementation steps, one file per phase in build order (Steps 2–43; Phase 0 with Step 1, the print gate, and Step 5, the token shield, were removed on 2026-09-29). The [PRD](../19-the-album.md) holds the decisions, conventions, rollout, QA script and acceptance criteria, and indexes every step. |
 | [`prototype/mock.css`](prototype/mock.css) | The prototype's stylesheet. It re-skinned the live pages for the owner's review, and it is the source of the token values, type scale, spacing, component styling and print rules that PRD 19 turns into real CSS. |
 | [`prototype/shim.js`](prototype/shim.js) | The prototype's markup shim. It edits the rendered DOM to stand in for the JSX changes: the icon set, the PageHeader, the plate thumbnails, the contents rows, the toolbar groups, the plate caption and the colophon. |
 | [`screens/`](screens/) | Screenshots of the prototype and of the site before it, at 1200×767 (listed below). |
 | [`audit-findings.md`](audit-findings.md) | All 165 verified findings from the September 2026 visual audit, marked as resolved by PRD 19 (with the step), fixed in the bug-fix session, or PRD 20 candidates. |
-| `print-gate.js` | The print and stage regression gate: every worksheet, kit, planner and material-page printable under print emulation, and every material stage at 1400px and 390px. It doesn't exist yet: PRD 19's Step 1 creates it, and its full source is in that step. |
 
 ## The prototype is reference, not code
 
@@ -17,7 +16,7 @@ Neither prototype file ships, and neither should be copied into `src/`:
 
 - `mock.css` starts with an `@import` from Google Fonts, a runtime request to another host that hard rule 4 forbids. The build self-hosts the fonts instead (PRD 19, Steps 2–4).
 - `shim.js` rewrites the page after React renders it. The build puts the same markup in the components themselves.
-- PRD 19 deliberately departs from the prototype in a few places, each backed by a measurement: a darker `--line-strong` and `--link-rule` for contrast, golden beads in true proportion, a 4px phone plate bleed so no material reflows, lesson margin heads as a grid rather than floats, the scroll veil as a layer rather than a mask, visible toolbar labels on phones, and the token shield's chrome twins. The PRD's design decisions explain each one.
+- PRD 19 deliberately departs from the prototype in a few places, each backed by a measurement: a darker `--line-strong` and `--link-rule` for contrast, golden beads in true proportion, a 4px phone plate bleed that keeps every phone stage at today's width, lesson margin heads as a grid rather than floats, the scroll veil as a layer rather than a mask, and visible toolbar labels on phones. The PRD's design decisions explain each one. PRD 19 also drops the prototype's token shield (`--mat-*`) and its Georgia `--font-numeral`: materials and printables take the Album's type (PRD 19, owner decisions 7 and 8).
 
 ## Previewing the prototype on the live pages
 

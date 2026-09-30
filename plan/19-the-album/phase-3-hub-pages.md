@@ -691,4 +691,4 @@ After Steps 18–24, no markup uses `.card-grid` or `a.card`. The material page,
 - `grep -rn "section-label\|page-intro" src/pages src/materials/MaterialsIndex.tsx src/worksheets/WorksheetsIndex.tsx src/kits/KitsIndex.tsx src/lessons/LessonsIndex.tsx src/parents/ParentsIndex.tsx` returns nothing.
 - `grep -rn "style={{" src/pages src/components/Layout.tsx src/components/PageHeader.tsx src/components/Contents.tsx` finds only the logo gradient `stopColor` in Layout.tsx, which is unchanged from today.
 - `grep -rnE '<(ul|ol) className="(contents|parts)' src | grep -v 'role="list"'` prints nothing: every contents list keeps its list semantics in Safari (decision 9).
-- `npm run build` and `npm test` green, and the print gate and the stage gate PASS.
+- The standard check (convention 12) passes.

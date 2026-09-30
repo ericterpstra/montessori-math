@@ -3,7 +3,7 @@
 Part of [PRD 19 — The Album: visual redesign](../19-the-album.md). Steps 32–38. Steps are numbered across the whole PRD; read the PRD’s decisions, conventions and rollout first.
 
 
-Lessons become album pages: a running head with Print, the title over an Oxford rule, section heads hung in the left margin, rubric step numerals in the gutter and spoken lines on a rule. Guides get the same margin heads, and the scope chart unfolds across the full column. Both print in the new design (owner decision 3). That is intentional, so the print gate still has to PASS (no printable sheet may change), and the lesson and guide print is checked separately with page-break QA and a B&W laser test.
+Lessons become album pages: a running head with Print, the title over an Oxford rule, section heads hung in the left margin, rubric step numerals in the gutter and spoken lines on a rule. Guides get the same margin heads, and the scope chart unfolds across the full column. Both print in the new design (owner decision 3). That print design gets its own page-break QA and a B&W laser print; it touches no `.print-sheet`.
 
 ## Step 32 — The lesson page markup: running head, lede, sections, hung numerals
 
@@ -729,7 +729,7 @@ The text column is 56rem − 11rem − 2.75rem = 42.25rem. At 18px that is about
 
 **Files:** `src/styles/album.css` (modified: appended).
 
-Lessons print in the album design (decision 27), an owner decision. They still print from the same page with the same Print button. Nothing here touches `.print-sheet`, so worksheets, kits and the planner are unaffected.
+Lessons print in the album design (decision 27; owner decision 3). They still print from the same page with the same Print button. Nothing here touches `.print-sheet`, so worksheets, kits and the planner are unaffected.
 
 Append:
 
@@ -815,7 +815,7 @@ Append:
 
 **Page-break QA.** Run this on the three longest lessons, `/lessons/checkerboard-multiplication`, `/lessons/decimal-board-operations` and `/lessons/racks-and-tubes`, then on `/lessons/golden-beads-addition`.
 
-1. **Print preview.** Chrome, Print, destination "Save as PDF", paper Letter, margins Default, "Background graphics" **off**. Expected: 4, 4, 4 and 3 pages, the counts Chrome's own Letter PDF gave with the real Newsreader and MM Sans from Step 2 (headless Chromium on Linux). `album-baseline` prints the same four lessons on 4, 4, 4 and 3 pages. **Pass** if each count is at most its `album-baseline` count plus one and the snippet in item 2 reports no stranded head and no split step. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; anything higher goes to the owner before Release 1. On each page:
+1. **Print preview.** Chrome, Print, destination "Save as PDF", paper Letter, margins Default, "Background graphics" **off**. Expected: 4, 4, 4 and 3 pages, the counts Chrome's own Letter PDF gave with the real Newsreader and MM Sans from Step 2 (headless Chromium on Linux). Today's `main` (`bbbdb44`) prints the same four lessons on 4, 4, 4 and 3 pages. **Pass** if each count is at most today's plus one and the snippet in item 2 reports no stranded head and no split step. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit. On each page:
    - no margin head sits at the foot of a page without its first line beside it;
    - no step is split, so a numeral always stays with its step;
    - every spoken line stays with its step;
@@ -855,13 +855,13 @@ Append:
    ```
 
    Expected: `4 Letter pages. No stranded heads, no split steps.` on each of the three long lessons, and `3 Letter pages. …` on golden-beads-addition.
-3. **B&W laser test (owner's printer).** Print the three long lessons with the printer's black-and-white option. Check four things:
+3. **B&W laser test (the owner's printer).** If no printer is at hand during the build, this moves to the owner's printables review (Step 43). Print the three long lessons with the printer's black-and-white option. Check four things:
    - the 8.5pt margin heads are crisp and readable;
    - the section hairlines (`--line`) are visible as light grey;
    - the boxed age prints as a box;
    - numerals and quote marks are solid black, not dithered grey.
 
-**Check:** the three QA steps above pass, and the print gate PASSes: no printable sheet changed.
+**Check:** QA items 1 and 2 above pass (item 3 when a printer is at hand), and the standard check (convention 12) passes.
 
 ## Step 35 — Guide header and guide page
 
@@ -1783,7 +1783,7 @@ Append:
 
 **Check:**
 - In print preview (Letter, default margins, background graphics off), every guide except the FAQ prints with its h2s in the 8rem margin column beside a hairline, and the glossary's terms hang in that column. (That is the Step 37 block being screen-only: before that fix, paper got the stacked phone layout.)
-- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). `album-baseline` prints them on 4, 3, 4, 3, 3 and 3. **Pass** if each count is at most its `album-baseline` count plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; anything higher goes to the owner before Release 1.
+- Page counts. Expected: FAQ 3, using-this-site 3, glossary 4, how-to-present 3, montessori-math-overview 3, scope-and-sequence 3. These are what Chrome's own Letter PDF gave with the real Newsreader and MM Sans (headless Chromium on Linux). Today's `main` prints them on 4, 3, 4, 3, 3 and 3. **Pass** if each count is at most today's plus one and the snippet below is clean. Write the counts you get into this PRD beside the expected ones, in the Phase 5 commit; note any count above the expected one for the owner's printables review; a count above today's plus one fails the step and is fixed before the Phase 5 commit.
 - With the DevTools device toolbar at 720px wide (Step 34, item 2), the console snippet from Step 34 prints "No stranded heads, no split steps." on each guide (S9-25/S8-12).
 - On the scope chart, the column heads repeat on every page, no lesson row splits across a page, and strand heads never end a page.
-- The print gate PASSes: no printable sheet changed.
+- The standard check (convention 12) passes.

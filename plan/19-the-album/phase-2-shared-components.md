@@ -516,7 +516,7 @@ export default function Layout() {
 }
 ```
 
-**5. Keep every phone stage at today's width until Step 28.** On `album-baseline` a phone stage is `viewport − 24px` wide (12px main padding each side). The new 16px gutter would make it 8px narrower and reflow the materials, and the `stages390` gate would FAIL from here to Step 28. Step 28 mounts the plate with a 4px bleed that gives those 8px back (decision 19); until then the shell carries the same bleed. In `src/styles/materials.css`, directly after the current lines 3–5:
+**5. Keep every phone stage at today's width until Step 28.** Today a phone stage is `viewport − 24px` wide (12px main padding each side). The new 16px gutter would make it 8px narrower and reflow the materials, which is layout (PRD 20), not type. Step 28 mounts the plate with a 4px bleed that gives those 8px back (decision 19); until then the shell carries the same bleed. In `src/styles/materials.css`, directly after the current lines 3–5:
 
 ```css
 .material-shell {
@@ -539,10 +539,10 @@ insert:
 }
 ```
 
-Focus mode is unaffected: `.material-shell.focus-mode { margin: 0 }` is more specific. The toolbar and help box bleed 4px with the shell until Step 28; that in-between look never ships.
+Focus mode is unaffected: `.material-shell.focus-mode { margin: 0 }` is more specific. The toolbar and help box bleed 4px with the shell until Step 28. Under the [Rollout](../19-the-album.md#rollout) proposal that in-between look never ships; if the Album goes live at the end of Phase 3 instead (open question 18), it is a 4px offset, not a broken page.
 
-**Check:** `npm run build` green.
-- At 390 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage').getBoundingClientRect().width)` is `366`, as on `album-baseline`, and the stage gate PASSes (both suites).
+**Check:** the standard check (convention 12) passes.
+- At 390 on `/materials/golden-beads`, `Math.round(document.querySelector('.material-stage').getBoundingClientRect().width)` is `366`, as today.
 - At 1400px on `/materials`, run `['.site-header-inner', 'main.site-main', '.site-footer-inner'].map(s => document.querySelector(s).getBoundingClientRect().left)` in the console. All three values must be equal, 166 when the scrollbar overlays the page.
 - The ribbon's top is at y=0: `getComputedStyle(document.querySelector('.site-nav a.active'), '::before').top` is `-20px`, and the link's top is 20px.
 - Record `[...document.querySelectorAll('.site-nav a')].map(a => a.getBoundingClientRect().left)` on `/materials` and again on `/ages`. The two arrays are identical, so there is no bold shift.
@@ -2529,7 +2529,7 @@ Until Step 41 lands, the planner's selects keep their old look. `planner.css` lo
 - On `/worksheets/multi-digit-ops` at 1400, this is true: `[...document.querySelectorAll('.builder-form select, .builder-form input:not([type=checkbox])')].every(e => e.offsetHeight >= 44)`.
 - `[...document.querySelectorAll('label.field.checkbox')].every(l => l.offsetHeight >= 44)` is true, and each help line starts under the label text, not under the box.
 - On `/planner` the "Week of (optional)" label sits above a full-width 44px date box in the sans, not in monospace.
-- The print gate PASSes.
+- The standard check (convention 12) passes. The forms are `no-print`, so nothing on paper changes.
 
 ## Step 17 — The desk: `<SheetPreview desk>`
 
@@ -2537,10 +2537,10 @@ Until Step 41 lands, the planner's selects keep their old look. `planner.css` lo
 
 Today the preview is a white Letter page on the white `.print-sheet`, and it reads as a box rather than paper (prototype: `.builder-preview` desk). With `desk`:
 - the pages lie on a `--desk` surface (`#e2d9c7`) with the `--shadow-sheet` paper-lift shadow;
-- the white moves from the `.print-sheet` wrapper to each `.sheet-page`, so the desk shows between pages;
+- the page fill moves from the `.print-sheet` wrapper (white) to each `.sheet-page` (card stock, `--card`), so the desk shows between pages;
 - pages are 0.375in apart (before zoom), so each shadow settles before the next page.
 
-Sheet metrics (8.5in width, 11in min-height, 0.5in padding), the 1:1 print zoom and every print rule are untouched. Inside `.print-sheet` the shield pins `--card` to `#ffffff`, so the page is exactly as white as today.
+Sheet metrics (8.5in width, 11in min-height, 0.5in padding), the 1:1 print zoom and every print rule are untouched. On the desk each page is card stock (`--card`, `#fffdf8`). Every desk rule sits inside `@media screen`, so on paper nothing changes: `.print-sheet` stays white (`print.css` sets it `#fff`).
 
 `SheetPreview` now measures its **content box** (`clientWidth` minus padding) for the zoom-to-fit. Without that change the desk padding would push the page past the edge.
 
@@ -2646,10 +2646,9 @@ Insert into `src/styles/worksheets.css`, directly above `/* ---------- Shared pr
 /* ---------- The desk (screen only) ----------
    <SheetPreview desk>: the Letter pages lie on a desk with a paper-lift
    shadow. Sheet metrics (8.5in width, 11in min-height, 0.5in padding) and
-   every print rule are untouched; the page's white moves from the
+   every print rule are untouched; the page fill moves from the
    .print-sheet wrapper to each .sheet-page so the desk shows between pages.
-   Inside .print-sheet the shield pins --card to the legacy white, so the
-   paper is exactly as white as before. */
+   Each page is card stock (--card) on screen; backgrounds don't print. */
 @media screen {
   .sheet-preview.on-desk {
     padding: var(--space-5);
@@ -2684,6 +2683,6 @@ Insert into `src/styles/worksheets.css`, directly above `/* ---------- Shared pr
 The inset shadow uses `color-mix(in srgb, var(--ink) 14%, transparent)`, which is the prototype's `rgba(38, 34, 29, 0.14)` written as a token, so there is no colour literal.
 
 **Check:**
-- `npm run build` is green. No page uses `desk` yet (Steps 39–41 add it), so nothing changes on screen.
-- The print gate PASSes, including the two chart sheets and the arrow labels, which render through `SheetPreview` without `desk`.
+- The standard check (convention 12) passes. No page uses `desk` yet (Steps 39–41 add it), so nothing changes on screen.
+- The two chart sheets and the arrow labels, which render through `SheetPreview` without `desk`, look and print as they did before this step.
 - `grep -n "rgba\|#[0-9a-f]\{3,6\}" src/components/SheetPreview.tsx` prints nothing, and `sed -n '1,/Shared printed-sheet building blocks/p' src/styles/worksheets.css | grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\('` prints nothing (the Step 43 check, which also reads the desk block's comments).
