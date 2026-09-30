@@ -1,23 +1,246 @@
-/* ---------- Planner screen UI ---------- */
+/* ---------- Planner screen UI (PRD 19) ----------
+   The shelf (a paper-warm panel) and the ruled picker lists. All of it is
+   .no-print chrome except .planner-preview, whose print margin is kept
+   exactly as before (see the note on it). The printed pages below are
+   untouched. */
 
-.planner-layout { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 1.5rem; align-items: start; }
-@media (max-width: 900px) {
-  .planner-layout { grid-template-columns: minmax(0, 1fr); }
+.planner-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  grid-template-areas: 'picker shelf';
+  gap: var(--space-6);
+  align-items: start;
 }
 
-/* Picker rows: intentionally larger than the worksheet-builder form fields. */
-.planner-row { display: flex; align-items: center; gap: 0.6rem; min-height: var(--touch-target); padding: 0.15rem 0; font-size: 0.95rem; }
-.planner-row label { display: flex; align-items: center; gap: 0.6rem; flex: 1 1 auto; min-height: var(--touch-target); cursor: pointer; }
-.planner-row input[type='checkbox'] { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
-.planner-row .planner-row-name { flex: 1 1 auto; }
-.planner-row select { font: inherit; padding: 0.35rem 0.4rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); min-height: 2.4rem; }
+.planner-picker {
+  grid-area: picker;
+  min-width: 0;
+}
 
-.planner-shelf { position: sticky; top: 1rem; }
-.planner-shelf ul { list-style: none; padding: 0; margin: 0 0 1rem; }
-.planner-shelf li { display: flex; align-items: center; gap: 0.5rem; min-height: var(--touch-target); border-bottom: 1px solid var(--line); }
-.planner-remove { margin-left: auto; min-width: var(--touch-target); min-height: var(--touch-target); border: none; background: none; color: var(--ink-soft); font-size: 1.2rem; cursor: pointer; }
-.planner-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0 0.75rem; }
-.planner-preview { overflow-x: auto; margin-top: 2rem; }
+.planner-shelf {
+  grid-area: shelf;
+}
+
+@media (max-width: 900px) {
+  .planner-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'shelf'
+      'picker';
+  }
+}
+
+/* ---------- Picker: ruled lists under strand heads ---------- */
+
+.planner-group:first-child > .section-label {
+  margin-top: 0;
+}
+
+.planner-strand > h3 {
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+.planner-group > .section-label + .planner-strand > h3 {
+  margin-top: var(--space-2);
+}
+
+.planner-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.planner-pick {
+  display: flex;
+  flex: 1 1 14rem;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: var(--touch-target);
+  cursor: pointer;
+}
+
+.planner-pick > input {
+  flex: none;
+}
+
+.planner-row-name {
+  min-width: 0;
+  font-family: var(--font-text);
+  font-size: var(--fs-read-sm);
+  line-height: 1.35;
+}
+
+/* Fixed widths, so every preset and day select lines up down the column. */
+.planner-row-controls {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.planner-preset {
+  width: 12.5rem;
+}
+
+.planner-day {
+  width: 8.5rem;
+}
+
+/* Phones: the selects drop under the name, indented to the name's edge, and
+   a worksheet's preset takes the full line with the day below it (S1-02).
+   min-width: 0 lets the group be narrower than its selects' widest options. */
+@media (max-width: 560px) {
+  .planner-row-controls {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    min-width: 0;
+    margin-left: 0;
+    padding-left: calc(1.375rem + var(--space-3));
+  }
+
+  .planner-preset {
+    flex: 1 1 12.5rem;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* ---------- The shelf ---------- */
+
+.planner-shelf-title {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-lede);
+  font-weight: 500;
+}
+
+/* A full-width date box helps no one on a tablet, where the shelf spans the page. */
+.planner-shelf .field {
+  max-width: 20rem;
+}
+
+.planner-empty {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-read-sm);
+}
+
+.planner-shelf-list {
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+/* name + kind | day | remove: the day always sits in its own column (S1-10). */
+.planner-shelf-list > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.5rem var(--touch-target);
+  column-gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.planner-shelf-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--touch-target);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.planner-shelf-name {
+  font-family: var(--font-text);
+  font-size: var(--fs-read-sm);
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-rule);
+  text-underline-offset: 0.2em;
+}
+
+.planner-shelf-item:hover .planner-shelf-name {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.planner-shelf-kind {
+  font: 600 var(--fs-caps) / 1.3 var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.planner-shelf-day {
+  font: 600 var(--fs-ui) / 1.3 var(--font-ui);
+  text-align: right;
+}
+
+.planner-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.planner-remove:hover {
+  color: var(--accent);
+  background: var(--paper);
+}
+
+/* Print on its own row; Copy link and Clear week share the next, in fixed
+   halves, so "Copied" never shifts its neighbour (S1-26, S9-30). */
+.planner-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.planner-actions > .btn.primary {
+  grid-column: 1 / -1;
+}
+
+/* Desktop: the shelf stays in view beside the long picker, and scrolls
+   inside itself if a big week makes it taller than the window. */
+@media (min-width: 901px) {
+  .planner-shelf {
+    position: sticky;
+    top: var(--space-4);
+    max-height: calc(100vh - 2 * var(--space-4));
+    max-height: calc(100dvh - 2 * var(--space-4));
+    overflow-y: auto;
+  }
+}
+
+/* The 2rem top margin also applies on paper (it sets where the plan starts
+   on page 1), so it stays exactly as it was; the screen gets more air. */
+.planner-preview {
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+
+@media screen {
+  .planner-preview {
+    margin-top: var(--space-7);
+  }
+}
+
+.planner-preview-empty {
+  margin: 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
 
 /* ---------- Printed pages ---------- */
 

@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { LESSONS } from '../lessons/registry'
 import { GENERATORS } from '../worksheets/registry'
 import { MATERIALS } from '../materials/registry'
-import { chunkJournal, parsePlan, serializePlan } from './state'
+import { chunkJournal, groupByStrand, parsePlan, serializePlan } from './state'
 import type { PlanItem, PlanValidity } from './state'
+import type { StrandId } from '../lib/strands'
 
 // Fixture slugs deliberately match real registry slugs; see the 'real registries' test.
 const VALID: PlanValidity = {
@@ -128,5 +129,35 @@ describe('real registries', () => {
       realValid,
     )
     expect(plan.items).toHaveLength(3)
+  })
+})
+
+describe('groupByStrand', () => {
+  /** Every item lands in exactly one group, and groups follow strand order. */
+  const everyItemOnce = (list: readonly { strand: StrandId }[]) => {
+    const groups = groupByStrand(list)
+    const flat = groups.flatMap((g) => g.items)
+    expect(flat).toHaveLength(list.length)
+    expect(new Set(flat)).toEqual(new Set(list))
+    const orders = groups.map((g) => g.strand.order)
+    expect(orders).toEqual([...orders].sort((a, b) => a - b))
+  }
+
+  it('shows every lesson, worksheet and material once, in strand order', () => {
+    everyItemOnce(LESSONS)
+    everyItemOnce(GENERATORS)
+    everyItemOnce(MATERIALS)
+  })
+
+  it('skips empty strands and keeps item order inside a strand', () => {
+    const items = [
+      { strand: 'fractions' as const, n: 1 },
+      { strand: 'numbers-to-10' as const, n: 2 },
+      { strand: 'fractions' as const, n: 3 },
+    ]
+    expect(groupByStrand(items).map((g) => [g.strand.id, g.items.map((i) => i.n)])).toEqual([
+      ['numbers-to-10', [2]],
+      ['fractions', [1, 3]],
+    ])
   })
 })

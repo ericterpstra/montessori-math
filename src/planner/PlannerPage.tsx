@@ -4,12 +4,12 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { LESSONS, lessonBySlug } from '../lessons/registry'
 import { GENERATORS, generatorBySlug } from '../worksheets/registry'
 import { MATERIALS, materialBySlug } from '../materials/registry'
-import { STRANDS } from '../lib/strands'
 import { PrintButton } from '../components/PrintButton'
-import { Icon } from '../components/Icon'
 import { SheetPreview } from '../components/SheetPreview'
+import { PageHeader } from '../components/PageHeader'
+import { Icon } from '../components/Icon'
 import { BeadBar } from '../components/beads'
-import { DAYS, DAY_LABELS, chunkJournal, parsePlan, serializePlan } from './state'
+import { DAYS, DAY_LABELS, chunkJournal, groupByStrand, parsePlan, serializePlan } from './state'
 import type { Day, Plan, PlanItem, PlanValidity } from './state'
 
 const KIND_LABELS: Record<PlanItem['kind'], string> = {
@@ -62,19 +62,27 @@ function PickerRow({
 }) {
   return (
     <div className="planner-row">
-      <label>
+      <label className="planner-pick">
         <input type="checkbox" checked={checked} onChange={(e) => onToggle(e.target.checked)} />
         <span className="planner-row-name">{name}</span>
       </label>
-      {presetControl}
-      <select aria-label={`Day for ${name}`} value={day ?? ''} disabled={!checked} onChange={(e) => onDay(e.target.value)}>
-        <option value="">Any day</option>
-        {DAYS.map((d) => (
-          <option key={d} value={d}>
-            {DAY_LABELS[d]}
-          </option>
-        ))}
-      </select>
+      <span className="planner-row-controls">
+        {presetControl}
+        <select
+          className="planner-day"
+          aria-label={`Day for ${name}`}
+          value={day ?? ''}
+          disabled={!checked}
+          onChange={(e) => onDay(e.target.value)}
+        >
+          <option value="">Any day</option>
+          {DAYS.map((d) => (
+            <option key={d} value={d}>
+              {DAY_LABELS[d]}
+            </option>
+          ))}
+        </select>
+      </span>
     </div>
   )
 }
@@ -234,120 +242,161 @@ export default function PlannerPage() {
   }
 
   const journalPages = chunkJournal(plan.items)
+  const hasItems = plan.items.length > 0
 
   return (
     <div className="planner">
-      <div className="no-print">
-        <h1>Plan the week</h1>
-        <p className="page-intro">
-          Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a "My Work"
-          journal your child checks off in pencil as work is finished. The whole plan lives in this page's URL —
-          bookmark it or copy the link to keep it. Nothing is stored anywhere.
-        </p>
-      </div>
+      <PageHeader
+        className="no-print"
+        title="Plan the week"
+        docTitle="Weekly plan"
+        lede={
+          <>
+            Pick lessons, worksheets, and materials for the week, then print two pages: a parent plan and a "My Work"
+            journal your child checks off in pencil as work is finished. The whole plan lives in this page's URL —
+            bookmark it or copy the link to keep it. Nothing is stored anywhere.
+          </>
+        }
+      />
 
       <div className="planner-layout no-print">
-        <div>
-          <p className="section-label">Lessons</p>
-          {STRANDS.map((strand) => {
-            const items = LESSONS.filter((l) => l.strand === strand.id).sort((a, b) => a.sequence - b.sequence)
-            if (items.length === 0) return null
-            return (
-              <section key={strand.id}>
-                <h3>{strand.name}</h3>
-                {items.map((l) => renderRow('lesson', l.slug, l.name))}
-              </section>
-            )
-          })}
-
-          <p className="section-label">Worksheets</p>
-          {GENERATORS.map((g) =>
-            renderRow(
-              'sheet',
-              g.slug,
-              g.name,
-              <select
-                aria-label={`Preset for ${g.name}`}
-                value={firstItem('sheet', g.slug)?.presetId ?? ''}
-                disabled={!isChecked('sheet', g.slug)}
-                onChange={(e) => editFirst('sheet', g.slug, { presetId: e.target.value })}
-              >
-                <option value="">Default settings</option>
-                {g.presets.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>,
-            ),
-          )}
-
-          <p className="section-label">Materials</p>
-          {MATERIALS.map((m) => renderRow('material', m.slug, m.name))}
-        </div>
-
-        <aside className="card planner-shelf">
-          <h2>This week's shelf</h2>
+        {/* The shelf comes first in reading order: on a tablet or phone it sits
+            above the long picker, with Print in reach (S1-14). */}
+        <aside className="planner-shelf panel panel-warm" aria-labelledby="planner-shelf-title">
+          <h2 className="planner-shelf-title" id="planner-shelf-title">
+            This week&rsquo;s shelf
+          </h2>
           <label className="field">
-            Week of (optional)
+            <span className="field-label">Week of (optional)</span>
             <input type="date" value={plan.weekOf ?? ''} onChange={(e) => setWeekOf(e.target.value)} />
           </label>
-          {plan.items.length === 0 ? (
-            <p>Nothing picked yet — check items on the left.</p>
-          ) : (
-            <ul>
+          {hasItems ? (
+            <ul className="planner-shelf-list">
               {plan.items.map((item, i) => {
                 const name = itemName(item)
                 return (
                   <li key={`${item.kind}-${item.slug}-${i}`}>
-                    <Link to={itemHref(item)}>{name}</Link>
-                    {item.day && <span>{shortDay(item.day)}</span>}
+                    <Link className="planner-shelf-item" to={itemHref(item)}>
+                      <span className="planner-shelf-name">{name}</span>
+                      <span className="planner-shelf-kind">{KIND_LABELS[item.kind]}</span>
+                    </Link>
+                    <span className="planner-shelf-day">{item.day ? shortDay(item.day) : ''}</span>
                     <button
                       type="button"
                       className="planner-remove"
                       aria-label={`Remove ${name}`}
                       onClick={() => removeAt(i)}
                     >
-                      ×
+                      <Icon name="close" />
                     </button>
                   </li>
                 )
               })}
             </ul>
+          ) : (
+            <p className="planner-empty">Nothing picked yet — check lessons, worksheets, and materials in the lists.</p>
           )}
-          <div className="planner-actions">
-            <button type="button" className="btn has-icon" onClick={copyLink}>
-              <Icon name="link" />
-              <span className="btn-label">{copied ? 'Copied' : 'Copy link'}</span>
-            </button>
-            <PrintButton />
-            <button
-              type="button"
-              className="btn"
-              onClick={() => {
-                if (window.confirm('Clear this plan?')) setSearchParams('', { replace: true })
-              }}
-            >
-              Clear week
-            </button>
-          </div>
           <label className="field checkbox">
             <input type="checkbox" checked={bw} onChange={(e) => write(plan, e.target.checked)} />
-            Ink-friendly black &amp; white
+            <span className="field-label">Ink-friendly black &amp; white</span>
           </label>
+          {/* Nothing to print, copy or clear until something is picked (S9-05). */}
+          {hasItems && (
+            <div className="planner-actions">
+              <PrintButton />
+              <button type="button" className="btn has-icon" onClick={copyLink}>
+                <Icon name="link" />
+                <span className="btn-label">{copied ? 'Copied' : 'Copy link'}</span>
+              </button>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  if (window.confirm('Clear this plan?')) setSearchParams('', { replace: true })
+                }}
+              >
+                Clear week
+              </button>
+            </div>
+          )}
+          <p className="visually-hidden" role="status">
+            {copied ? 'Link copied.' : ''}
+          </p>
         </aside>
+
+        <div className="planner-picker">
+          <section className="planner-group" aria-labelledby="planner-pick-lessons">
+            <h2 className="section-label" id="planner-pick-lessons">
+              Lessons
+            </h2>
+            {groupByStrand(LESSONS).map(({ strand, items }) => (
+              <section key={strand.id} className="planner-strand">
+                <h3>{strand.name}</h3>
+                {[...items]
+                  .sort((a, b) => a.sequence - b.sequence)
+                  .map((l) => renderRow('lesson', l.slug, l.name))}
+              </section>
+            ))}
+          </section>
+
+          <section className="planner-group" aria-labelledby="planner-pick-sheets">
+            <h2 className="section-label" id="planner-pick-sheets">
+              Worksheets
+            </h2>
+            {groupByStrand(GENERATORS).map(({ strand, items }) => (
+              <section key={strand.id} className="planner-strand">
+                <h3>{strand.name}</h3>
+                {items.map((g) =>
+                  renderRow(
+                    'sheet',
+                    g.slug,
+                    g.name,
+                    <select
+                      className="planner-preset"
+                      aria-label={`Preset for ${g.name}`}
+                      value={firstItem('sheet', g.slug)?.presetId ?? ''}
+                      disabled={!isChecked('sheet', g.slug)}
+                      onChange={(e) => editFirst('sheet', g.slug, { presetId: e.target.value })}
+                    >
+                      <option value="">Default settings</option>
+                      {g.presets.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </select>,
+                  ),
+                )}
+              </section>
+            ))}
+          </section>
+
+          <section className="planner-group" aria-labelledby="planner-pick-materials">
+            <h2 className="section-label" id="planner-pick-materials">
+              Materials
+            </h2>
+            {groupByStrand(MATERIALS).map(({ strand, items }) => (
+              <section key={strand.id} className="planner-strand">
+                <h3>{strand.name}</h3>
+                {items.map((m) => renderRow('material', m.slug, m.name))}
+              </section>
+            ))}
+          </section>
+        </div>
       </div>
 
       <div className="planner-preview">
-        {plan.items.length > 0 ? (
-          <SheetPreview bw={bw}>
+        {hasItems ? (
+          <SheetPreview bw={bw} desk>
             <ParentPlanPage plan={plan} />
             {journalPages.map((page, pageIndex) => (
               <JournalPage key={pageIndex} page={page} pageIndex={pageIndex} />
             ))}
           </SheetPreview>
         ) : (
-          <p className="no-print">Check a few items above and the printable plan and journal will preview here.</p>
+          <p className="no-print planner-preview-empty">
+            Check a few items above and the printable plan and journal will preview here.
+          </p>
         )}
       </div>
     </div>

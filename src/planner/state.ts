@@ -3,6 +3,9 @@
  * nothing is ever stored. parse/serialize must round-trip exactly.
  */
 
+import { STRANDS } from '../lib/strands'
+import type { StrandId, StrandInfo } from '../lib/strands'
+
 export const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const
 export type Day = (typeof DAYS)[number]
 
@@ -102,4 +105,17 @@ export function chunkJournal(items: PlanItem[], perPage = 12): PlanItem[][] {
   const pages: PlanItem[][] = []
   for (let i = 0; i < items.length; i += perPage) pages.push(items.slice(i, i + perPage))
   return pages
+}
+
+/**
+ * The planner's picker groups: every strand that has at least one of `items`,
+ * in curriculum order, each holding its items in their original order.
+ */
+export function groupByStrand<T extends { strand: StrandId }>(
+  items: readonly T[],
+  strands: readonly StrandInfo[] = STRANDS,
+): { strand: StrandInfo; items: T[] }[] {
+  return strands
+    .map((strand) => ({ strand, items: items.filter((item) => item.strand === strand.id) }))
+    .filter((group) => group.items.length > 0)
 }
