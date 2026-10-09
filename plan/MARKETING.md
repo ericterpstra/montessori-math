@@ -1,6 +1,6 @@
 # Marketing Plan — Getting Montessori Math in Front of People
 
-**Status:** Draft, 2026-10-08. Step 0.1 is built ([PRD 21](21-discoverability.md)) and goes live when it merges to `main`; nothing else has been done yet.
+**Status:** Draft, 2026-10-08. Step 0.1 is live ([PRD 21](21-discoverability.md), 2026-10-08); nothing else has been done yet.
 
 The goal is to reach the people who would use the site: parents doing Montessori at
 home, families at Montessori schools, Montessori guides, homeschoolers, and the
@@ -11,7 +11,7 @@ hard rules: no analytics, no accounts, no ads.
 
 1. **Fix how the site looks to search engines and link previews.** Today every URL
    serves the same empty page, so shared links all look like the home page and
-   most crawlers see no content at all. This comes first. It's code work, now built as PRD 21.
+   most crawlers see no content at all. This comes first. It's code work, now live as PRD 21.
 2. **Register with Google Search Console and Bing Webmaster Tools.** Free, takes 30
    minutes, and needs no change to the site.
 3. **Launch in waves**, one community a week: Montessori communities, then
@@ -60,7 +60,7 @@ endorsement, and never call it certified.
 
 ## Step 0 — Before telling anyone (weeks 1–2)
 
-### 0.1 Fix discoverability (code — built as PRD 21)
+### 0.1 Fix discoverability (code — live as PRD 21)
 
 What I found on the live site (2026-10-08):
 
@@ -76,7 +76,7 @@ What I found on the live site (2026-10-08):
 - **There's no social preview image** (`og:image`).
 - `www.` already redirects to the bare domain with a 301, so that part is fine.
 
-**Built as [PRD 21](21-discoverability.md)** (2026-10-08; live once merged to `main`):
+**Live as [PRD 21](21-discoverability.md)** since 2026-10-08:
 
 - every page prerendered to its own HTML file, with its own title, description,
   canonical link, link-preview tags and content;
@@ -349,7 +349,7 @@ itself a selling point. Measure from the outside instead:
 
 | Week | Dates (2026) | Do |
 |---|---|---|
-| 1 | Oct 12–18 | Merge PRD 21 to `main` (it deploys itself) and run its after-deploy checks; Search Console and Bing (0.4); Cloudflare Email Routing |
+| 1 | Oct 12–18 | Finish PRD 21's after-deploy checks (link previews); Search Console and Bing (0.4); Cloudflare Email Routing |
 | 2 | Oct 19–25 | Submit the sitemap; review featured printables (0.3); launch kit and GitHub About (0.5) |
 | 3 | Oct 26–Nov 1 | Soft launch to 5–10 people; fix what they find |
 | 4 | Nov 2–8 | r/Montessori; first Montessori Facebook groups |

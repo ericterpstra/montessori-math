@@ -53,7 +53,7 @@ The [marketing plan](MARKETING.md) (October 2026) covers how families, schools a
 
 | # | PRD | Effort | Status |
 |---|---|---|---|
-| 21 | [Discoverability — prerendered pages, link previews, sitemap](21-discoverability.md) | M | Done (2026-10-08; live once merged to `main`) |
+| 21 | [Discoverability — prerendered pages, link previews, sitemap](21-discoverability.md) | M | Done (live 2026-10-08, `7b1274b`) |
 
 ## Post-wave-2 — issue fixes
 

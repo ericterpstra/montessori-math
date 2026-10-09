@@ -1,6 +1,6 @@
 # PRD 21 — Discoverability: prerendered pages, link previews, sitemap
 
-**Status:** Done — built and verified locally on 2026-10-08; it goes live when this branch merges to `main` (Workers Builds deploys every push).
+**Status:** Done — live on montessori-math.org since 2026-10-08 (`7b1274b`, deployed by Workers Builds).
 **Effort:** M
 **Depends on:** PRD 08 (Cloudflare hosting), PRD 17 (the service worker)
 **Numbering:** PRD 20 stays reserved for the printables and material-layout follow-up that PRD 19 and `QA-CHECKLIST.md` point to.
@@ -105,11 +105,13 @@ This is Step 0.1 of the [marketing plan](MARKETING.md): fix how the site looks t
 - [x] Offline still works after one visit, and the precache didn't grow
 - [x] `npm run build` and `npm test` green; no new dependencies; nothing requested at runtime
 
-## After deploy (owner, about 10 minutes)
+## After deploy
 
-- [ ] `curl -s https://montessori-math.org/lessons/golden-beads-intro | grep '<title>'` shows "Introduction to the Golden Beads · Montessori Math"
-- [ ] `https://montessori-math.org/sitemap.xml` and `/robots.txt` open as XML and text
-- [ ] `curl -sI https://montessori-math.org/no-such-page` shows `HTTP/2 404`
+The first three were checked on the live site right after the deploy (2026-10-08). The live pages are byte-for-byte the build that passed the browser sweep. The rest need a phone or the owner's accounts.
+
+- [x] `curl -s https://montessori-math.org/lessons/golden-beads-intro | grep '<title>'` shows "Introduction to the Golden Beads · Montessori Math"
+- [x] `https://montessori-math.org/sitemap.xml` (96 URLs) and `/robots.txt` open as XML and text
+- [x] `curl -sI https://montessori-math.org/no-such-page` shows `HTTP/2 404`
 - [ ] Paste a lesson link into iMessage or Slack: the preview shows the lesson's title, its description and the Plate I image
 - [ ] [Facebook's Sharing Debugger](https://developers.facebook.com/tools/debug/) on the home page and one lesson: no warnings about missing tags
 - [ ] Search Console: submit the sitemap (marketing plan Step 0.4)
