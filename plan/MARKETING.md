@@ -1,6 +1,6 @@
 # Marketing Plan — Getting Montessori Math in Front of People
 
-**Status:** Draft, 2026-10-08. Nothing below has been done yet.
+**Status:** Draft, 2026-10-08. Step 0.1 is built ([PRD 21](21-discoverability.md)) and goes live when it merges to `main`; nothing else has been done yet.
 
 The goal is to reach the people who would use the site: parents doing Montessori at
 home, families at Montessori schools, Montessori guides, homeschoolers, and the
@@ -11,7 +11,7 @@ hard rules: no analytics, no accounts, no ads.
 
 1. **Fix how the site looks to search engines and link previews.** Today every URL
    serves the same empty page, so shared links all look like the home page and
-   most crawlers see no content at all. This comes first. It's code work (proposed PRD 20).
+   most crawlers see no content at all. This comes first. It's code work, now built as PRD 21.
 2. **Register with Google Search Console and Bing Webmaster Tools.** Free, takes 30
    minutes, and needs no change to the site.
 3. **Launch in waves**, one community a week: Montessori communities, then
@@ -60,7 +60,7 @@ endorsement, and never call it certified.
 
 ## Step 0 — Before telling anyone (weeks 1–2)
 
-### 0.1 Fix discoverability (code, proposed PRD 20)
+### 0.1 Fix discoverability (code — built as PRD 21)
 
 What I found on the live site (2026-10-08):
 
@@ -76,29 +76,17 @@ What I found on the live site (2026-10-08):
 - **There's no social preview image** (`og:image`).
 - `www.` already redirects to the bare domain with a 301, so that part is fine.
 
-Proposed fix. It's all build time and needs no new dependencies, since `react-dom/server` and
-React Router 7's static rendering are already installed:
+**Built as [PRD 21](21-discoverability.md)** (2026-10-08; live once merged to `main`):
 
-1. **Prerender every route.** After `vite build`, a script lists every route from the
-   registries (about 96 pages: home, 7 index pages, 21 materials, 41 lessons, 13
-   worksheet builders, 7 kits, 6 guides). It writes `dist/<route>/index.html` with that page's
-   own `<title>`, meta description, canonical URL, and Open Graph/Twitter tags. The
-   descriptions already exist as the `summary`/`description` fields on every content type.
-   - *Minimum version:* inject head tags only. That fixes link previews and gives every page
-     a distinct title.
-   - *Full version:* also render the page body into the HTML. That fixes crawlers that
-     don't run JavaScript, and it's the bigger search win.
-2. **Generate `sitemap.xml` and `robots.txt`** at build time from the same route list.
-   Allow all crawlers, AI ones included. The goal is reach.
-3. **Return real 404s.** Once every real route has a file, switch `not_found_handling`
-   in `wrangler.jsonc` to `"404-page"` so typos get a true 404.
-4. **Add a 1200×630 `og-image.png`** to `public/`: a golden bead mat plus the site name.
-   Per-section variants are optional.
-5. **Precache the new HTML files.** Make sure `scripts/generate-sw.mjs` includes them so
-   offline still works.
+- every page prerendered to its own HTML file, with its own title, description,
+  canonical link, link-preview tags and content;
+- `sitemap.xml` and a `robots.txt` that welcomes every crawler;
+- real 404s for unknown paths;
+- a 1200×630 preview image drawn from the home page's Plate I.
 
-Hard-rule check: all of this happens at build time and the output is static files, so
-nothing makes a request at runtime.
+All of it happens at build time, with no new dependencies and nothing requested at
+runtime. The PRD has the details and how it was tested, plus a 10-minute check
+list for after the deploy.
 
 ### 0.2 Two small product changes (owner's call, for the review list)
 
@@ -130,7 +118,7 @@ below can start right away, since it's quiet.
 3. In the Cloudflare dashboard: **montessori-math.org → DNS → Records → Add record**,
    type `TXT`, name `@`, and paste the value. Save, then click **Verify** in Search Console.
    It can take a few minutes.
-4. After PRD 20 ships: **Sitemaps** → submit `https://montessori-math.org/sitemap.xml`.
+4. Once PRD 21 is live: **Sitemaps** → submit `https://montessori-math.org/sitemap.xml`.
 5. Use **URL Inspection** → **Request indexing** for the home page, the 6 index pages,
    and about 10 of the best lessons, such as the golden beads and stamp game lessons and
    `/parents/scope-and-sequence`.
@@ -202,7 +190,7 @@ is a draw for them rather than an identity.
 
 **2.4 Show HN (week 6).**
 
-1. Make sure PRD 20 has shipped, so links preview well, and that the printables review is done.
+1. Make sure PRD 21 is live, so links preview well, and that the printables review is done.
 2. Submit at <https://news.ycombinator.com/submit> with the title from Template B and
    the URL `https://montessori-math.org`. Do it on a weekday between 8 and 10am US Eastern.
 3. Immediately add the first comment from Template B.
@@ -241,7 +229,7 @@ because Pinterest works like a search engine for "free printable" and homeschool
    - Layout: a photo or crisp image of the printed sheet on the top two-thirds, then a
      text band such as "Free Stamp Game Worksheets: color or B&W, with answer
      keys", then the URL in small type.
-5. **Link every pin to its specific page**, not the home page. This works once PRD 20 ships.
+5. **Link every pin to its specific page**, not the home page. This works once PRD 21 is live.
 6. **Write descriptions in plain words people search for:** "montessori stamp game
    printable", "golden bead activities", "free homeschool math worksheets", "montessori
    math at home".
@@ -361,8 +349,8 @@ itself a selling point. Measure from the outside instead:
 
 | Week | Dates (2026) | Do |
 |---|---|---|
-| 1 | Oct 12–18 | Search Console and Bing (0.4); Cloudflare Email Routing; start PRD 20 |
-| 2 | Oct 19–25 | Finish PRD 20 and submit the sitemap; review featured printables (0.3); launch kit and GitHub About (0.5) |
+| 1 | Oct 12–18 | Merge PRD 21 to `main` (it deploys itself) and run its after-deploy checks; Search Console and Bing (0.4); Cloudflare Email Routing |
+| 2 | Oct 19–25 | Submit the sitemap; review featured printables (0.3); launch kit and GitHub About (0.5) |
 | 3 | Oct 26–Nov 1 | Soft launch to 5–10 people; fix what they find |
 | 4 | Nov 2–8 | r/Montessori; first Montessori Facebook groups |
 | 5 | Nov 9–15 | r/homeschool and homeschool groups; set up Pinterest (account, claim, boards, first 10 pins) |

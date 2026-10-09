@@ -9,12 +9,14 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 > exchange ceremony, PWA/offline, physicality pass) — see
 > [plan/README.md](plan/README.md) for the full list and per-PRD status. The
 > unticked "verifiable goals" in this document are the *original* acceptance
-> criteria: automated coverage for them lives in the test suite (43 files, 872
+> criteria: automated coverage for them lives in the test suite (50 files, 917
 > tests, green) and per-feature sign-off in each PRD, while the checks only a
 > human can make — paper, ears, hands — are tracked in
 > [plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md).
 >
 > **Visual redesign:** [PRD 19, The Album](plan/19-the-album.md) shipped on 2026-09-30; next is the owner's printables review ([plan/QA-CHECKLIST.md](plan/QA-CHECKLIST.md)).
+>
+> **Getting found:** the [marketing plan](plan/MARKETING.md) (October 2026) and [PRD 21, Discoverability](plan/21-discoverability.md): every page is prerendered with its own title, description and link preview, listed in a sitemap, and an unknown path is a real 404.
 
 ## Product principles (agreed with owner)
 
@@ -30,7 +32,7 @@ A complete, free Montessori mathematics resource for parents and students ages 4
 | Choice | Rationale |
 |---|---|
 | Vite + React 19 + TypeScript (strict) | Rich interactivity for manipulatives; static build; no server needed |
-| react-router | Client routing; SPA served statically |
+| react-router | Client routing; every page also prerendered to its own static HTML at build time and hydrated (PRD 21) |
 | Plain CSS + design tokens | Full control of print stylesheets and Montessori color system; zero UI-framework lock-in |
 | Vitest | Unit tests for all math models and worksheet generators |
 | Seeded RNG (mulberry32) | Reproducible worksheets — same seed → same sheet |
@@ -63,6 +65,8 @@ No backend, no database, no analytics, no external CDNs (works offline once load
 /ages                 Browse everything by age band / grade
 *                     Not found
 ```
+
+Every route above (one page per registry entry) is prerendered at build time to its own HTML file and listed in `/sitemap.xml`; an unknown path gets the Not Found page with a 404 status (PRD 21).
 
 ## Feature 1 — Interactive Montessori materials (21 shipped)
 

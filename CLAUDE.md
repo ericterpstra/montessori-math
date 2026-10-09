@@ -26,6 +26,7 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 - `src/materials/<slug>/` — one folder per virtual material: `model.ts` (pure, no React), `model.test.ts`, `<Name>.tsx` (UI), `lessons.ts` (album Lesson objects for that material). Registered centrally in `src/materials/registry.ts`.
 - `src/worksheets/generators/<slug>.tsx` — each exports a `GeneratorDef`: pure `generate(params, rng)` + `Sheet` + `AnswerKey` components + presets. Registered in `src/worksheets/registry.ts`.
 - `src/lessons/` — `types.ts` (Lesson album schema — all fields required and non-empty), registry, index/detail pages.
+- `src/prerender/` + `scripts/prerender.mjs` (PRD 21) — `npm run build` prerenders every page to its own HTML file (title, description, canonical link, preview tags, content), plus `404.html`, `sitemap.xml` and `robots.txt`; the browser hydrates the page in place. `routes.ts` lists every page from the registries, so a new top-level route goes there too. The preview image `public/og-image.png` is redrawn with `scripts/og-image/render.mjs`.
 - Registries are wired centrally by the session lead — **parallel agents must only create/edit files inside their own assigned folder** and report their registration entry back instead of editing shared files (registry, App.tsx, styles, this file).
 
 ## Code conventions
@@ -38,6 +39,7 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 - Prose/content: US English; numbers formatted with commas via `formatNumber`.
 - Materials and printables take the Album's type through the materials-and-printables block in `global.css` (a 16px base and lining figures in every `.material-stage` and `.print-sheet`, MM Sans for stage text, `--font-numeral` for number cards). Never re-point a material token, or the legacy shape tokens `--radius`, `--radius-sm`, `--shadow-sm` and `--shadow-md` that material pieces draw with; chrome uses `--radius-chrome`, `--radius-control` and `--shadow-sheet`.
 - Chrome guard: a chrome rule written as an element selector ends in `:where(:not(.material-stage *, .print-sheet *))`, and one on `.btn` in `:where(:not(.material-stage *))`, so chrome styling never leaks into materials or printouts.
+- A page's first render must be deterministic: the build renders every page twice and fails if the two differ, since hydration would break. Anything random or browser-only (a random starting state, a per-visit seed, a `window` measurement) waits for `useHydrated()` (`src/components/useHydrated.ts`) or an effect. Materials render only in the browser (`MaterialPage` gates them), so a material may start in a random state. Each page names itself once, through `PageHeader` or `useDocumentTitle`; the prerender takes the title from there.
 - No emoji anywhere in `src/`: use `<Icon>` with a text label (a test enforces it). A new material needs a `MaterialThumb` drawing (`MaterialThumb.test.ts` fails without one).
 
 ## Workflow
@@ -47,5 +49,5 @@ A free, static Montessori math resource site for parents and kids ages 4–12 (P
 - The owner values being asked before scope changes and expects "stop" to mean stop immediately.
 - Serve for testing on the LAN (dev machine IP e.g. 192.168.1.210) or over Tailscale (100.76.25.42).
 - After PRD 19 the owner reviews every printable personally and makes a list of changes (checklist in `plan/QA-CHECKLIST.md`); print changes follow that list.
-- Public hosting is Cloudflare Workers static assets (`wrangler.jsonc`), deployed automatically by Workers Builds on every push to `main` — `npm run deploy` is only a manual escape hatch. The site stays fully static — no server code, no bindings, no runtime network calls; adding any would break hard rule 4.
+- Public hosting is Cloudflare Workers static assets (`wrangler.jsonc`), deployed automatically by Workers Builds on every push to `main` — `npm run deploy` is only a manual escape hatch. Cloudflare serves each prerendered `foo.html` at `/foo` and `404.html` (status 404) for any path that matches no file. The site stays fully static — no server code, no bindings, no runtime network calls; adding any would break hard rule 4.
 - The Worker name in Cloudflare must stay in sync with `name` in `wrangler.jsonc`, or Git builds fail.

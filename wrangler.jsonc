@@ -9,10 +9,15 @@
   "compatibility_date": "2026-08-14",
   "assets": {
     "directory": "./dist",
-    // Deep links (/materials/golden-beads, /lessons/…) are client-side routes
-    // that exist in no file, so unmatched paths must return index.html and let
-    // React Router resolve them. Without this every shared link 404s.
-    "not_found_handling": "single-page-application"
+    // Every page is prerendered to its own file (scripts/prerender.mjs,
+    // PRD 21): /lessons/golden-beads-intro is lessons/golden-beads-intro.html.
+    // auto-trailing-slash (Cloudflare's default, stated here because the
+    // layout depends on it) serves foo.html at /foo and redirects /foo/ and
+    // /foo.html there.
+    "html_handling": "auto-trailing-slash",
+    // A path that matches no file is not a page: answer it with 404.html and
+    // a real 404 status, so search engines don't index typos as pages.
+    "not_found_handling": "404-page"
   },
   // The public domain (registered with Cloudflare Registrar). Custom Domains
   // create their own DNS records and certificates. Every deploy rewrites the

@@ -36,7 +36,7 @@ npm run dev        # dev server (LAN-accessible; Vite prints the Network URL)
 | Command | What it does |
 |---|---|
 | `npm run dev` | Dev server with hot reload, bound to all interfaces |
-| `npm run build` | Type-check (strict) + production build to `dist/` + offline service worker |
+| `npm run build` | Type-check (strict) + production build to `dist/` + every page prerendered, sitemap and robots.txt + offline service worker |
 | `npm run preview` | Serve the production build on port 4173, LAN-accessible |
 | `npm run deploy` | Build, then publish to Cloudflare (needs `CLOUDFLARE_API_TOKEN`) |
 | `npm test` | Run the Vitest suite (math models, generators, content schema) |
@@ -53,8 +53,11 @@ worksheet builders, guides — works with no network at all.
 
 - **How it works.** `npm run build` generates `dist/sw.js` (see
   `scripts/generate-sw.mjs`), a dependency-free service worker that precaches
-  every built file. First visit downloads the site; after that it loads from
-  the device, and the worker silently picks up new builds on later visits.
+  every file the app uses and answers every navigation with an empty app shell
+  (`/app-shell`), from which React renders the page. The prerendered pages are
+  for crawlers and first visits, so they stay out of the precache. First visit
+  downloads the site; after that it loads from the device, and the worker
+  silently picks up new builds on later visits.
 - **Install to a home screen (Android/Chrome, Edge):** open the site, browser
   menu → "Add to Home screen" / "Install". It launches standalone with the
   golden-bead icon.
@@ -112,10 +115,12 @@ Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Three details matter:
   deploy replaces the Worker's routes with this list, so add or remove domains
   here, never only in the dashboard. `workers_dev: true` keeps the workers.dev
   URL alive, which declaring routes would otherwise switch off.
-- **`not_found_handling: "single-page-application"`** — deep links like
-  `/materials/golden-beads` are client-side routes that exist in no file, so
-  unmatched paths return `index.html` and React Router resolves them. Without
-  it every shared link would 404.
+- **`html_handling` and `not_found_handling: "404-page"`** — every page is
+  prerendered to its own file (see [Search engines & link previews](#search-engines--link-previews)),
+  and Cloudflare serves `lessons/golden-beads-intro.html` at
+  `/lessons/golden-beads-intro`, redirecting the trailing-slash and `.html`
+  spellings there. A path that matches no file gets `404.html` with a real 404
+  status.
 - **[`public/_headers`](public/_headers)** — serves `sw.js` and the app shell
   with `Cache-Control: no-cache`. The browser only adopts a new build when it
   sees new bytes in `sw.js`, so caching it would strand devices on an old
@@ -127,6 +132,27 @@ Configuration lives in [`wrangler.jsonc`](wrangler.jsonc). Three details matter:
 keeps its three-package runtime footprint. (Cloudflare would otherwise use the
 wrangler version in `package.json`; adding it as a devDependency is the
 alternative if you ever want an exact pin.)
+
+## Search engines & link previews
+
+`npm run build` prerenders every page (`scripts/prerender.mjs`, [PRD 21](plan/21-discoverability.md)).
+Link previews and most crawlers don't run JavaScript, so without this every
+page looked like an empty home page to them. Each page is its own HTML file with:
+
+- its own title and description, a canonical link, and Open Graph/Twitter tags
+  pointing at the preview image `public/og-image.png`;
+- the page's content in the markup, which React then adopts in place (hydration)
+  instead of rendering it again.
+
+The build also writes `sitemap.xml`, `robots.txt` (every crawler welcome) and a
+`404.html`. It renders each page twice and fails if the two differ: a page's
+first render must not depend on anything random or browser-only. Anything that
+does (a material's shuffled starting state, a worksheet's per-visit seed) waits
+for `useHydrated()`.
+
+The preview image is the home page's Plate I, drawn by Chrome and committed. To
+redraw it after a design change: `npm run build`, then
+`CHROME=/path/to/chrome node scripts/og-image/render.mjs`.
 
 ## Printing
 

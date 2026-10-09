@@ -10,6 +10,7 @@ import { SheetPreview } from '../components/SheetPreview'
 import { Icon } from '../components/Icon'
 import { PageHeader } from '../components/PageHeader'
 import { AgeMeta } from '../components/Contents'
+import { useHydrated } from '../components/useHydrated'
 import NotFound from '../pages/NotFound'
 
 function Field({
@@ -101,6 +102,9 @@ export default function BuilderPage() {
   const def = slug ? generatorBySlug(slug) : undefined
   const [searchParams, setSearchParams] = useSearchParams()
   const fallbackSeed = useMemo(() => randomSeed(), [])
+  // The fallback seed is picked per visit, so the problems (and the seed note)
+  // wait for the browser: the prerendered page shows the form without them.
+  const hydrated = useHydrated()
 
   const rawSeed = searchParams.get('seed')
   const seed = rawSeed !== null && !Number.isNaN(Number(rawSeed)) ? Number(rawSeed) : fallbackSeed
@@ -231,16 +235,18 @@ export default function BuilderPage() {
             </label>
           </div>
           <p className="panel-note">
-            Seed {seed} — this exact sheet can be reprinted from this page's URL. Practice happens on paper: print it,
-            don't screen it. <Link to="/parents/using-this-site">Printing tips</Link>
+            {hydrated && <>Seed {seed} — this exact sheet can be reprinted from this page's URL. </>}
+            Practice happens on paper: print it, don't screen it. <Link to="/parents/using-this-site">Printing tips</Link>
           </p>
         </aside>
 
         <div className="builder-preview">
-          <SheetPreview bw={bw} desk>
-            <Sheet data={data} params={params} />
-            {showKey && <AnswerKey data={data} params={params} />}
-          </SheetPreview>
+          {hydrated && (
+            <SheetPreview bw={bw} desk>
+              <Sheet data={data} params={params} />
+              {showKey && <AnswerKey data={data} params={params} />}
+            </SheetPreview>
+          )}
         </div>
       </div>
     </div>

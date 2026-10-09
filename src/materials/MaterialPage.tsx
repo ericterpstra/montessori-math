@@ -11,6 +11,7 @@ import { PageHeader } from '../components/PageHeader'
 import { AgeMeta } from '../components/Contents'
 import { Icon } from '../components/Icon'
 import { MaterialNameContext } from '../components/MaterialNameContext'
+import { useHydrated } from '../components/useHydrated'
 import NotFound from '../pages/NotFound'
 
 export default function MaterialPage() {
@@ -21,6 +22,11 @@ export default function MaterialPage() {
   // return; the current step lives only in this useState — nothing persists.
   const [searchParams, setSearchParams] = useSearchParams()
   const [stepIndex, setStepIndex] = useState(0)
+  // The material itself renders only in the browser: several start in a
+  // random state (a shuffled chain, a fresh problem) that prerendered HTML
+  // could not match, and each one's stylesheet arrives with its lazy chunk.
+  // The prerendered page carries the loading line in its place (PRD 21).
+  const hydrated = useHydrated()
 
   const presentSlug = searchParams.get('present')
   const script = presentSlug ? material?.demos?.[presentSlug] : undefined
@@ -91,7 +97,7 @@ export default function MaterialPage() {
       <DemoContext.Provider value={demoValue}>
         <MaterialNameContext.Provider value={material.name}>
           <Suspense fallback={<p>Loading material…</p>}>
-            <Component />
+            {hydrated ? <Component /> : <p>Loading material…</p>}
           </Suspense>
         </MaterialNameContext.Provider>
       </DemoContext.Provider>

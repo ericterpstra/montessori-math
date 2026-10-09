@@ -1,22 +1,40 @@
-import { useEffect } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import type { ReactNode } from 'react'
 
-/** The site name every page title ends with (and index.html's default title). */
+/** The site name every page title ends with. */
 export const SITE_NAME = 'Montessori Math'
+
+/** The home page's title — index.html's <title> (a test keeps the two equal). */
+export const DEFAULT_TITLE = 'Montessori Math — Lessons, Materials & Worksheets'
+
+/** A page's full document title: "<name> · Montessori Math". */
+export function documentTitle(name: string): string {
+  return `${name} · ${SITE_NAME}`
+}
+
+/**
+ * Prerendering only (src/prerender/entry.tsx). Effects never run on the
+ * server, so useDocumentTitle also reports the page's name into this set
+ * while it renders, and the prerendered <title> comes from the page itself.
+ */
+export const DocumentTitleContext = createContext<Set<string> | null>(null)
 
 /**
  * Names the browser tab, bookmark and "Save as PDF" file after the page:
- * "<name> · Montessori Math" while the calling page is mounted, restoring
- * the previous title on unmount. PageHeader calls it; pages that do not
- * render a PageHeader (the lesson album) call it directly.
+ * "<name> · Montessori Math" while the calling page is mounted, back to the
+ * home page's title on unmount. (Not to whatever title came before: a
+ * prerendered page starts with its own title already in place.) PageHeader
+ * calls it; pages that do not render a PageHeader (the lesson album) call it
+ * directly.
  */
 export function useDocumentTitle(name: string | undefined): void {
+  const prerenderTitles = useContext(DocumentTitleContext)
+  if (prerenderTitles && name) prerenderTitles.add(name)
   useEffect(() => {
     if (!name) return
-    const previous = document.title
-    document.title = `${name} · ${SITE_NAME}`
+    document.title = documentTitle(name)
     return () => {
-      document.title = previous
+      document.title = DEFAULT_TITLE
     }
   }, [name])
 }

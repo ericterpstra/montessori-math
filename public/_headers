@@ -9,9 +9,18 @@
 /sw.js
   Cache-Control: no-cache
 
-# Same reasoning for the app shell — it names the current hashed bundles.
+# Same reasoning for the pages that name the current hashed bundles: the home
+# page, and the app shell the service worker answers navigations with. (Every
+# other prerendered page already gets Cloudflare's default
+# `max-age=0, must-revalidate`, which revalidates the same way.)
 /
   Cache-Control: no-cache
 
 /index.html
   Cache-Control: no-cache
+
+# The app shell is an empty page outside the app's routes: keep it out of
+# search results (PRD 21).
+/app-shell
+  Cache-Control: no-cache
+  X-Robots-Tag: noindex

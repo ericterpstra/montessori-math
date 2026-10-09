@@ -6,7 +6,7 @@
   "description": "A complete, free Montessori mathematics resource for ages 4-12: virtual materials, printable worksheets, and album-style lessons.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && node scripts/generate-sw.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/prerender.mjs && node scripts/generate-sw.mjs",
     "preview": "vite preview",
     "deploy": "npm run build && npx --yes wrangler@4 deploy",
     "test": "vitest run",

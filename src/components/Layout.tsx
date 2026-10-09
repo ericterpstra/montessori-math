@@ -3,9 +3,18 @@ import type { FocusEvent } from 'react'
 import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
 
+/**
+ * Back to the top on each navigation inside the site — but not on the first
+ * render: the browser has already placed the page (at the top, at a #hash,
+ * or where a reload left it), and a reader may have scrolled a prerendered
+ * page before the script arrived.
+ */
 function ScrollToTop() {
   const { pathname } = useLocation()
+  const shown = useRef(pathname)
   useEffect(() => {
+    if (shown.current === pathname) return
+    shown.current = pathname
     window.scrollTo(0, 0)
   }, [pathname])
   return null

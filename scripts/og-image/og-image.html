@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+  The link-preview image, public/og-image.png (PRD 21): what Facebook,
+  Pinterest, iMessage, Slack and the rest show for a shared link. Rendered at
+  1200×630 by render.mjs, which fills in the built stylesheet and the home
+  page's Plate I — the site's own fonts, tokens and golden bead drawings.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{{stylesheet}}" />
+    <style>
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        margin: 0;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      /* The home page's title-page grid: the title across the top, then the
+         words and Plate I side by side. */
+      .og {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          'title title'
+          'body plate';
+        align-content: center;
+        align-items: center;
+        column-gap: 64px;
+        width: 1200px;
+        height: 630px;
+        padding: 48px 80px;
+      }
+      .og-title {
+        grid-area: title;
+      }
+      .og-body {
+        grid-area: body;
+      }
+      .og .page-kicker {
+        margin: 0 0 14px;
+        font-size: 19px;
+      }
+      .og h1 {
+        margin: 0 0 40px;
+        font: 350 128px / 0.92 var(--font-text);
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+      .og-lede {
+        margin: 0 0 28px;
+        font: 400 34px / 1.25 var(--font-text);
+        color: var(--ink);
+      }
+      .og .promise {
+        margin: 0 0 26px;
+        font-size: 16px;
+      }
+      .og-domain {
+        margin: 0;
+        font: 600 22px / 1 var(--font-ui);
+        letter-spacing: 0.02em;
+        color: var(--ink-soft);
+      }
+      .og .plate-hero {
+        zoom: 1.2;
+        margin: 0 6px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="og">
+      <div class="og-title">
+        <p class="page-kicker">A free Montessori album for families · Ages 4–12</p>
+        <h1>Montessori Math</h1>
+      </div>
+      <div class="og-body">
+        <p class="og-lede">Lessons for parents, virtual materials, and printable worksheets.</p>
+        <p class="promise">No accounts. No tracking. Nothing to buy.</p>
+        <p class="og-domain">montessori-math.org</p>
+      </div>
+      {{plate}}
+    </main>
+  </body>
+</html>

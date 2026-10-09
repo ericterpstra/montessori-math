@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * generate-sw.mjs — generates dist/sw.js, a precaching service worker listing
- * every file in dist/. Runs as the final step of `npm run build`.
+ * every file in dist/ the app itself uses. Runs as the final step of
+ * `npm run build`, after prerender.mjs.
  * No dependencies: node:fs, node:path, node:crypto only. Do not add packages.
  *
  * Usage: node scripts/generate-sw.mjs [distDir]
@@ -17,8 +18,8 @@ const distDir = process.argv[2]
   ? path.resolve(process.argv[2])
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist')
 
-if (!fs.existsSync(path.join(distDir, 'index.html'))) {
-  console.error('generate-sw: dist/index.html not found — run `vite build` first.')
+if (!fs.existsSync(path.join(distDir, 'app-shell.html'))) {
+  console.error('generate-sw: dist/app-shell.html not found — run `vite build` and scripts/prerender.mjs first.')
   process.exit(1)
 }
 
@@ -38,15 +39,25 @@ function walk(dir) {
 // bad entry means the worker never installs and the site loses offline support.
 const NOT_ASSETS = new Set(['sw.js', '_headers', '_redirects', '.assetsignore'])
 
+// Files for crawlers and link previews (PRD 21): the prerendered pages, the
+// 404 page, sitemap.xml, robots.txt and the preview image. The app never
+// requests them — every navigation is answered by the app shell — so
+// precaching them would only add to every install.
+const isForCrawlers = (rel) =>
+  (rel.endsWith('.html') && rel !== 'app-shell.html') || ['sitemap.xml', 'robots.txt', 'og-image.png'].includes(rel)
+
+// The app shell is Vite's template with no page in it (prerender.mjs saves
+// it). It caches under /app-shell, the URL Cloudflare serves it at without a
+// redirect: a navigation must never be answered with a redirected response.
+const SHELL = '/app-shell'
+
 const entries = walk(distDir)
-  .filter((file) => !NOT_ASSETS.has(path.relative(distDir, file)))
-  .map((file) => {
-    const rel = path.relative(distDir, file).split(path.sep).join('/')
-    return {
-      url: rel === 'index.html' ? '/' : '/' + rel, // the SPA shell caches under '/'
-      size: fs.statSync(file).size,
-    }
-  })
+  .map((file) => path.relative(distDir, file).split(path.sep).join('/'))
+  .filter((rel) => !NOT_ASSETS.has(rel) && !isForCrawlers(rel))
+  .map((rel) => ({
+    url: rel === 'app-shell.html' ? SHELL : '/' + rel,
+    size: fs.statSync(path.join(distDir, rel)).size,
+  }))
   .sort((a, b) => (a.url < b.url ? -1 : 1))
 
 // Self-hosted fonts (PRD 19) are precached like every other file above — they
@@ -109,9 +120,9 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (request.mode === "navigate") {
-    // SPA: every navigation is answered by the cached shell; React Router
-    // resolves the actual route (/materials/golden-beads, etc.) client-side.
-    event.respondWith(caches.match("/").then((cached) => cached || fetch(request)));
+    // Every navigation is answered by the cached app shell; React Router
+    // renders the actual route (/materials/golden-beads, etc.) client-side.
+    event.respondWith(caches.match(${JSON.stringify(SHELL)}).then((cached) => cached || fetch(request)));
     return;
   }
 
@@ -129,7 +140,7 @@ self.addEventListener("fetch", (event) => {
             return response;
           })
       )
-      .catch(() => caches.match("/"))
+      .catch(() => caches.match(${JSON.stringify(SHELL)}))
   );
 });
 `

@@ -45,6 +45,16 @@ A page-by-page visual audit (September 2026) checked all 97 routes in real Chrom
 |---|---|---|---|
 | 19 | [The Album — visual redesign](19-the-album.md) ([assets, prototype & audit findings](19-the-album/)) | L | Done (released 2026-09-30; the owner's printables review is next) |
 
+PRD 20 is reserved for the follow-up those pages point to: the owner's printables list plus the audit's material-layout and print candidates.
+
+## Wave 4 — getting found
+
+The [marketing plan](MARKETING.md) (October 2026) covers how families, schools and teachers find the site. Its first step is code: make every page legible to search engines and link previews.
+
+| # | PRD | Effort | Status |
+|---|---|---|---|
+| 21 | [Discoverability — prerendered pages, link previews, sitemap](21-discoverability.md) | M | Done (2026-10-08; live once merged to `main`) |
+
 ## Post-wave-2 — issue fixes
 
 Small changes from the owner's QA pass. These were driven by GitHub issues rather
