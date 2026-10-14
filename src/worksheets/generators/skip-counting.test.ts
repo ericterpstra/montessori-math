@@ -155,10 +155,10 @@ describe('skip-counting: count honored', () => {
 })
 
 describe('skip-counting: page capacity', () => {
-  it('table pages hold nine rows regardless of n', () => {
-    expect(pageCapacity({ mode: 'table', n: '2' })).toBe(9)
-    expect(pageCapacity({ mode: 'table', n: '10' })).toBe(9)
-    expect(pageCapacity({ mode: 'table', n: 'mixed' })).toBe(9)
+  it('table pages hold seven rows regardless of n, leaving room for the header', () => {
+    expect(pageCapacity({ mode: 'table', n: '2' })).toBe(7)
+    expect(pageCapacity({ mode: 'table', n: '10' })).toBe(7)
+    expect(pageCapacity({ mode: 'table', n: 'mixed' })).toBe(7)
   })
 
   it('ten-ticket chain pages (beyond mode, or chains of 10s) hold six rows', () => {

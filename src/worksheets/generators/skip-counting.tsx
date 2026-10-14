@@ -103,7 +103,8 @@ function titleFor(params: SkipCountingParams): string {
  * vertically, even if a chain wraps to a second line.
  */
 export function pageCapacity(params: Pick<SkipCountingParams, 'mode' | 'n'>): number {
-  if (params.mode === 'table') return 9
+  // Seven rows plus the title/instructions fit Letter's 10in printable height.
+  if (params.mode === 'table') return 7
   if (params.mode === 'beyond' || params.n === '10') return 6
   return 8
 }

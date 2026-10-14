@@ -129,3 +129,7 @@ Four functional bugs reproduced on the live site during the Sep 2026 visual audi
   with a temporary throw on Hundred chain: header, nav and footer stayed; nav,
   the home link, Back and Reload all recovered; Print control charts still
   isolates the chart sheet.
+
+## October 2026 - pre-outreach printable audit
+
+[Digital audit and physical handoff](PRINT-AUDIT-2026-10-13.md): 40 production PDFs, representative color/B&W layouts, exact calibration/tile dimensions, and narrow fixes to card alignment, pagination, CSS overrides and kit readability. Fixes are prepared for review; the full owner review and physical printing checks remain open.

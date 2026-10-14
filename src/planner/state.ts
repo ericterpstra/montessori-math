@@ -100,8 +100,8 @@ export function serializePlan(plan: Plan): string {
   return parts.join('&')
 }
 
-/** Split journal rows into printed pages: 0→[], 12→[12], 13→[12,1], 25→[12,12,1]. */
-export function chunkJournal(items: PlanItem[], perPage = 12): PlanItem[][] {
+/** Ten 0.75in rows leave room for the name, title and footer on Letter paper. */
+export function chunkJournal(items: PlanItem[], perPage = 10): PlanItem[][] {
   const pages: PlanItem[][] = []
   for (let i = 0; i < items.length; i += perPage) pages.push(items.slice(i, i + perPage))
   return pages

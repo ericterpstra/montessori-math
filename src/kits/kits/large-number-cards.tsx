@@ -52,10 +52,14 @@ function Card({ value }: { value: number }) {
   return (
     <div
       className="kit-number-card kit-cut"
+      role="img"
+      aria-label={String(value)}
       style={{ width: `${cardWidthIn(value)}in`, '--card-color': cardColor(value) } as CSSProperties}
     >
       <span className="kit-bw-tag">{bwTag(value)}</span>
-      {value}
+      {String(value).split('').map((digit, i) => (
+        <span key={i} className="kit-number-digit" aria-hidden="true">{digit}</span>
+      ))}
     </div>
   )
 }

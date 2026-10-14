@@ -60,7 +60,7 @@ function FractionCircle({ n }: { n: number }) {
             const midDeg = ((i + 0.5) * 360) / n - 90
             const [lx, ly] = polar(LABEL_R, midDeg)
             return (
-              <text key={i} x={lx} y={ly + 4} className="kit-sector-label">
+              <text key={i} x={lx} y={ly + 4} className={`kit-sector-label${n >= 9 ? ' kit-sector-label-small' : ''}`}>
                 1/{n}
               </text>
             )

@@ -11,6 +11,9 @@
 
 .kit-number-card { position: relative; display: flex; align-items: center; justify-content: center;
   height: 1.9in; font: 700 1in var(--font-heading); color: var(--card-color); background: #fff; }
+/* Fixed digit slots keep right-aligned cards composable after cutting. The
+   centered slots include the cut-border width, just like the card dimensions. */
+.kit-number-digit { flex: 0 0 1.5in; text-align: center; }
 
 .kit-stamp-tile { position: relative; display: flex; align-items: center; justify-content: center;
   width: 1in; height: 1in; border: 3px solid var(--stamp-color); color: var(--stamp-color);
@@ -18,7 +21,7 @@
 
 .kit-hb-tile { display: flex; align-items: center; justify-content: center;
   width: 0.75in; height: 0.75in; font: 700 20pt var(--font-heading); color: var(--ink); }
-.kit-board-cell { width: 0.8in; height: 0.8in; border: 1px solid var(--line); }
+.kit-board-cell { width: 0.8in; height: 0.8in; border: 1px solid var(--ink-soft); }
 .kit-board { display: grid; border: 2px solid var(--wood-dark); width: max-content; }
 
 .kit-strip { position: relative; display: flex; align-items: center; justify-content: flex-end;
@@ -30,12 +33,15 @@
 .print-sheet.bw .kit-strip-natural { border-color: #000; color: #000; }
 .kit-strip-row { display: flex; flex-direction: column; gap: 0.12in; }
 .kit-board-head { display: flex; align-items: center; justify-content: center;
-  width: 0.5in; height: 0.5in; font: 700 13pt var(--font-heading); border: 1px solid var(--line); }
-.kit-board-square { width: 0.5in; height: 0.5in; border: 1px solid var(--line); }
+  width: 0.5in; height: 0.5in; font: 700 13pt var(--font-heading); border: 1px solid var(--ink-soft); }
+.kit-board-square { width: 0.5in; height: 0.5in; border: 1px solid var(--ink-soft); }
+.print-sheet.bw .kit-board { --ink-soft: #000; --wood-dark: #000; }
 .kit-tenline { border-right: 3px solid var(--pv-hundred); }
 
 .kit-sector { fill: var(--fraction-shade); stroke: #000; stroke-width: 1.5; }
 .kit-sector-label { font: 700 11pt var(--font-body); fill: #000; text-anchor: middle; }
+/* Keep ninths/tenths labels clear of the adjacent sector cut lines. */
+.kit-sector-label-small { font-size: 9pt; }
 .kit-frame-ring { fill: none; stroke: var(--inset-frame); stroke-width: 7; }
 .kit-cut-circle { fill: none; stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 6 5; }
 

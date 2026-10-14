@@ -12,15 +12,15 @@
   text-underline-offset: 0.16em;
 }
 
-.decimals-line-med {
+.write-line.decimals-line-med {
   min-width: 1.1in;
 }
 
-.decimals-line-long {
+.write-line.decimals-line-long {
   min-width: 2.1in;
 }
 
-.decimals-line-order {
+.write-line.decimals-line-order {
   min-width: 0.62in;
 }
 
@@ -54,6 +54,6 @@
 }
 
 /* Expanded-form and ordering answers run long — two columns keeps them readable. */
-.decimals-key {
+.answer-list.decimals-key {
   columns: 2;
 }

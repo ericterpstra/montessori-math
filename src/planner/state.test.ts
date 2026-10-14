@@ -99,16 +99,18 @@ describe('chunkJournal', () => {
   const items = (n: number): PlanItem[] =>
     Array.from({ length: n }, (_, i) => ({ kind: 'lesson' as const, slug: `l${i}` }))
 
-  it('paginates 0, 12, 13, 25 items as [], [12], [12,1], [12,12,1]', () => {
+  it('paginates at ten rows while preserving every item', () => {
     expect(chunkJournal(items(0))).toEqual([])
-    expect(chunkJournal(items(12)).map((p) => p.length)).toEqual([12])
-    expect(chunkJournal(items(13)).map((p) => p.length)).toEqual([12, 1])
-    expect(chunkJournal(items(25)).map((p) => p.length)).toEqual([12, 12, 1])
+    expect(chunkJournal(items(10)).map((p) => p.length)).toEqual([10])
+    expect(chunkJournal(items(12)).map((p) => p.length)).toEqual([10, 2])
+    expect(chunkJournal(items(13)).map((p) => p.length)).toEqual([10, 3])
+    expect(chunkJournal(items(25)).map((p) => p.length)).toEqual([10, 10, 5])
+    expect(chunkJournal(items(25)).flat()).toEqual(items(25))
   })
 
   it('preserves item order across pages', () => {
     const pages = chunkJournal(items(13))
-    expect(pages[1][0].slug).toBe('l12')
+    expect(pages[1][0].slug).toBe('l10')
   })
 
   it('honors a custom page size', () => {
