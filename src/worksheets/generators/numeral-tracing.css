@@ -19,8 +19,22 @@
 }
 
 .numeral-tracing-glyphs {
-  flex: 0 0 auto;
+  /* Safari's default print area can be narrower than 7.5in. Let the SVG
+     shrink beside the bead frame, preserving its aspect ratio and all glyphs. */
+  flex: 0 1 auto;
+  min-width: 0;
+  height: auto;
   display: block;
+}
+
+/* Keep the title and writing blanks on separate lines instead of squeezing
+   the title into a narrow column. The compact header also leaves room for
+   all ten rows when Safari scales its narrower print layout onto Letter. */
+.sheet-page:has(.numeral-tracing-rows) .sheet-header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.05in;
+  margin-bottom: 0.15in;
 }
 
 .numeral-tracing-glyphs text {
