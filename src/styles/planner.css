@@ -259,6 +259,11 @@
 .plan-preset { font-size: 0.85rem; font-style: italic; }
 .plan-footnote { margin-top: 0.3in; font-size: 0.85rem; font-style: italic; }
 
+@media print {
+  .plan-table tr { break-inside: avoid; }
+  .plan-table tr:has(.plan-day-heading) { break-after: avoid; }
+}
+
 .journal-title { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 700; text-align: center; margin: 0 0 0.2in; }
 .journal-name-line { font-size: 1.1rem; margin-bottom: 0.35in; }
 .journal-continued { text-align: center; font-size: 0.9rem; font-style: italic; margin-bottom: 0.35in; }

@@ -96,7 +96,7 @@
 
 /* Answer key: two wide columns so a full ten-ticket chain stays readable. */
 
-.skip-counting-key {
+.answer-list.skip-counting-key {
   columns: 2;
 }
 

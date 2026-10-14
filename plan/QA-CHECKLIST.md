@@ -1,5 +1,7 @@
 # Morning QA — wave 2 (all ten features)
 
+> October 13, 2026: [digital printable audit](PRINT-AUDIT-2026-10-13.md) records production PDF checks, proposed narrow fixes and the remaining physical checks. The owner-review boxes below are intentionally unchanged.
+
 Everything below shipped last night and passed automated tests (872 as of the
 review pass) plus in-browser smoke checks. What's left is what only a human can judge: paper, ears, hands, and taste. **~40 minutes total.**
 

@@ -80,7 +80,7 @@
 }
 
 /* Answer key: stacked fractions need a little more column room. */
-.fractions-key {
+.answer-list.fractions-key {
   columns: 3;
 }
 
