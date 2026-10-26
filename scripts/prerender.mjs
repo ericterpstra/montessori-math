@@ -131,6 +131,7 @@ for (const route of routes) {
     path: route.path,
     title: name === undefined ? home.title : entry.documentTitle(name),
     description: route.description ?? home.description,
+    noindex: route.noindex,
   }
   pages.push({ file: fileFor(route.path), html: entry.renderDocument(template, head, page.html) })
 }
@@ -143,11 +144,12 @@ if (problems.length > 0) {
 write(path.join(distDir, 'app-shell.html'), template)
 for (const page of pages) write(page.file, page.html)
 write(path.join(distDir, '404.html'), notFoundHtml)
-write(path.join(distDir, 'sitemap.xml'), entry.sitemapXml(routes.map((r) => r.path)))
+const listed = routes.filter((r) => !r.noindex)
+write(path.join(distDir, 'sitemap.xml'), entry.sitemapXml(listed.map((r) => r.path)))
 write(path.join(distDir, 'robots.txt'), entry.robotsTxt())
 fs.rmSync(ssrDir, { recursive: true, force: true })
 
 const kb = (pages.reduce((sum, p) => sum + Buffer.byteLength(p.html), 0) / 1024).toFixed(0)
 console.log(
-  `prerender: wrote ${pages.length} pages (${kb} KB) + 404.html, app-shell.html, sitemap.xml (${routes.length} URLs), robots.txt`,
+  `prerender: wrote ${pages.length} pages (${kb} KB) + 404.html, app-shell.html, sitemap.xml (${listed.length} URLs), robots.txt`,
 )

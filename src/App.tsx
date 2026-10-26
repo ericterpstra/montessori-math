@@ -14,6 +14,7 @@ import GuidePage from './parents/GuidePage'
 import KitsIndex from './kits/KitsIndex'
 import KitPage from './kits/KitPage'
 import PlannerPage from './planner/PlannerPage'
+import PrintAllPage from './pages/PrintAllPage'
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="parents" element={<ParentsIndex />} />
         <Route path="parents/:slug" element={<GuidePage />} />
         <Route path="ages" element={<AgesPage />} />
+        <Route path="print-all" element={<PrintAllPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

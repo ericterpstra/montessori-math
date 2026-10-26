@@ -163,6 +163,8 @@ Worksheets and lessons are designed for US Letter through the browser's print di
 
 Answer keys print on their own page so they're easy to withhold.
 
+To check how browsers print, open `/print-all` (not linked from the site, `noindex`, left out of the sitemap). It lays out every worksheet (optionally every preset) and every kit with a fixed seed. One button prints all of it as a single PDF; each sheet also has its own button. The PDF's name comes from the sheet, its settings and the browser, e.g. `numeral-tracing-color-seed424242-ios-safari.pdf`, so PDFs from different browsers sort side by side. Each entry lists how many Letter pages it should take.
+
 ## Tech stack
 
 Vite + React 19 + TypeScript (strict), react-router, plain CSS with design tokens, Vitest. No backend, no database. Worksheets are generated client-side with a seeded RNG so the same seed always reproduces the same sheet.

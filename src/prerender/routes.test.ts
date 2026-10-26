@@ -35,7 +35,11 @@ describe('siteRoutes', () => {
       ...GUIDES.map((g) => `/parents/${g.slug}`),
     ]
     for (const p of expected) expect(paths).toContain(p)
-    expect(paths).toHaveLength(expected.length + 8)
+    expect(paths).toHaveLength(expected.length + 9)
+  })
+
+  it('keeps only the print check tool out of search', () => {
+    expect(routes.filter((r) => r.noindex).map((r) => r.path)).toEqual(['/print-all'])
   })
 
   it('describes every page but home (which keeps index.html’s description)', () => {

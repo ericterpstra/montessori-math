@@ -1,0 +1,51 @@
+/* ---------- /print-all: every printable on one page ----------
+   Screen: one entry per printable (name, variant, page count, its own Print
+   button) above its pages on the desk. Paper: only the sheets reach it, as
+   on each builder and kit page; these rules pick which items print and start
+   each printed item on a fresh page. */
+
+.print-all-item + .print-all-item {
+  margin-top: var(--space-7);
+}
+
+.print-all-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--ink);
+}
+
+.print-all-item-name {
+  margin: 0;
+  font: 600 var(--fs-lede) / 1.25 var(--font-heading);
+}
+
+.print-all-item-meta {
+  margin: var(--space-1) 0 0;
+  font: 400 var(--fs-ui) / 1.45 var(--font-ui);
+  color: var(--ink-soft);
+}
+
+.print-all-filename {
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+@media print {
+  .print-all-item + .print-all-item {
+    margin-top: 0;
+  }
+
+  .print-all-item.is-skipped {
+    display: none;
+  }
+
+  .print-all-item.breaks-after {
+    break-after: page;
+  }
+}

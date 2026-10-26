@@ -4,7 +4,7 @@ import { GENERATORS } from '../worksheets/registry'
 import { KITS } from '../kits/registry'
 import { GUIDES } from '../parents/registry'
 
-/** One page of the site, as the build prerenders it and sitemap.xml lists it. */
+/** One page of the site, as the build prerenders it and sitemap.xml lists it (unless noindex). */
 export interface SiteRoute {
   /** The route, e.g. '/lessons/golden-beads-intro'. */
   path: string
@@ -13,6 +13,8 @@ export interface SiteRoute {
    * under the title. Omitted only for the home page, which keeps index.html's.
    */
   description?: string
+  /** A tool page nothing links to: prerendered, but noindex and left out of sitemap.xml. */
+  noindex?: boolean
 }
 
 /**
@@ -61,6 +63,12 @@ export function siteRoutes(): SiteRoute[] {
       path: '/ages',
       description:
         'Every lesson, material, and worksheet for ages 4–6, 6–9, or 9–12 on one page. Ages are readiness ranges, not deadlines.',
+    },
+    {
+      path: '/print-all',
+      description:
+        'Every worksheet and kit on one page, for saving PDFs from different browsers and comparing how they print.',
+      noindex: true,
     },
   ]
 }

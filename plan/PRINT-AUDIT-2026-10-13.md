@@ -86,6 +86,14 @@ Planner URLs:
 - Additional B&W captures: one, two and three rows per numeral, both with and without beads, at standard Letter width (720px / scale 1) and the narrow setup above. All twelve configurations have the expected 2/3/5 pages including keys, and no measured horizontal overflow. Build passes. These are controlled Chromium checks, not an actual iOS Safari retest.
 - **Remaining digital check:** open the updated branch preview in iOS Safari and save/preview using the same default print settings. Confirm three pages with the answer key enabled, complete bead boxes, and no split tracing rows. No paper or ruler is needed for this check. The prior downloadable audit's tracing pass applies only to its original Chromium conditions.
 
+## October 26 follow-up: `/print-all` for cross-browser PDFs
+
+- Owner request: a quick way to save PDFs of every printable worksheet from a browser, because Safari and Chrome lay the printables out differently.
+- `/print-all` is a page on the live site that nothing links to. It is prerendered with `noindex` and left out of `sitemap.xml`. It shows each worksheet generator at its defaults, optionally every preset (43 sheets), then the seven kits. Every sheet keeps the builder's print structure (`.builder-preview > SheetPreview`). Settings are in the URL: `seed` (default 424242, this audit's seed), `bw=1`, `key=0`, `presets=1`, `kits=0`.
+- **Print everything** (or ⌘P / the iOS share sheet's Print) makes one PDF with each item starting on a new page. Each item's **Print this one** button prints just that item. Before the dialog opens, `document.title` is set to the PDF's name: `<sheet>[--<preset>]-<color|bw>[-nokey]-seed<n>-<browser>`, or `all-worksheets[-presets][-kits]-…` for everything. The browser part is `chrome`, `safari`, `firefox`, `edge`, with an `ios-` prefix on iPhone and iPad. Each item lists the Letter pages it is laid out as. A browser's PDF with more pages than that is spilling.
+- Checked in headless Chromium 151 (Linux, `Page.printToPDF`, CSS page size): all 50 items (defaults, presets and kits, color) produced exactly their listed page counts, and "everything" produced 132 pages = the listed total. Every item's PDF page content streams were identical to the PDF of the same sheet printed from its own builder or kit page. A second run (B&W, no keys, no kits, seed 7) matched too: 13 items, 15 pages. ⌘P after a single-item print goes back to printing everything.
+- **Not yet checked:** the page itself in Safari (macOS and iOS) and Firefox. That comparison is the reason the page exists, so it is the owner's next step.
+
 ## Physical checks for Eric
 
 Use **US Letter, Actual size / 100%, one page per sheet**, with fit/shrink and browser headers/footers disabled. Repeat calibration if printer, driver, paper size or scaling setting changes.
